@@ -109,12 +109,14 @@ class AbstractAPIWrapper(ABC):
     def api_call(self, service_type: ServiceType, data: dict, method=HTTPMethod.POST):
         ...
 
-    def _parse_call_kwargs(self, service_type: ServiceType, data: dict) -> dict:
+    def _parse_call_kwargs(self, service_type: ServiceType, data: Optional[dict]=None) -> dict:
         payload = {
-            "ServiceType": service_type,
-            "RequestRef": str(uuid4()),
-            "Data": data,
+            "servicetype": service_type,
+            "requestref": str(uuid4()),
+            "data": data,
         }
+        if not data:
+            payload.pop('data', None)
         return {
             "url": self.base_url,
             "json": payload,
@@ -170,7 +172,7 @@ class APIWrapper(AbstractAPIWrapper):
     def headers(self) -> dict:
         return {**self.base_headers, "authorization": f"Bearer {self.token}"}
 
-    def api_call(self, service_type: ServiceType, data: dict, method=HTTPMethod.POST):
+    def api_call(self, service_type: ServiceType, data: Optional[dict]=None, method=HTTPMethod.POST):
 
         http_method_call_kwargs = self._parse_call_kwargs(
             service_type=service_type, data=data
