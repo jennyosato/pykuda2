@@ -7,6 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.9"
+httpx = "^0.23.3"
 
 
 [build-system]
