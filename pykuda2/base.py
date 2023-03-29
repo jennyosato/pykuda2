@@ -58,6 +58,16 @@ class ServiceType(str, Enum):
         NAME_ENQUIRY: Retrieve the name linked to a bank account
         SINGLE_FUND_TRANSFER: Transfer money from your main account
         VIRTUAL_ACCOUNT_FUND_TRANSFER: Transfer money from a virtual account
+        TRANSACTION_STATUS_QUERY: Get the status of a bank transfer
+        RETRIEVE_VIRTUAL_ACCOUNT_BALANCE: Retrieve the account balance on a virtual account
+        ADMIN_MAIN_ACCOUNT_TRANSACTIONS: Get all transactions on your account
+        ADMIN_MAIN_ACCOUNT_FILTERED_TRANSACTIONS: Get a date filtered range of transactions on your account
+        ADMIN_VIRTUAL_ACCOUNT_TRANSACTIONS: Get all transactions on a virtual account
+        ADMIN_VIRTUAL_ACCOUNT_FILTERED_TRANSACTIONS: Get a date filtered range of transactions on a virtual account
+        FUND_VIRTUAL_ACCOUNT: Transfer money from your main acoount to your virtual account
+        WITHDRAW_VIRTUAL_ACCOUNT: Transfer money from your virtual account to your main account
+        UPDATE_VIRTUAL_ACCOUNT_LIMIT: Updated transfer limits up to N5,000,000 daily on your most critical virtual accounts
+
     """
 
     ADMIN_CREATE_VIRTUAL_ACCOUNT = "ADMIN_CREATE_VIRTUAL_ACCOUNT"
@@ -71,6 +81,17 @@ class ServiceType(str, Enum):
     SINGLE_FUND_TRANSFER = "SINGLE_FUND_TRANSFER"
     VIRTUAL_ACCOUNT_FUND_TRANSFER = "VIRTUAL_ACCOUNT_FUND_TRANSFER"
     TRANSACTION_STATUS_QUERY = "TRANSACTION_STATUS_QUERY"
+    RETRIEVE_VIRTUAL_ACCOUNT_BALANCE = "RETRIEVE_VIRTUAL_ACCOUNT_BALANCE"
+    ADMIN_MAIN_ACCOUNT_TRANSACTIONS = "ADMIN_MAIN_ACCOUNT_TRANSACTIONS"
+    ADMIN_MAIN_ACCOUNT_FILTERED_TRANSACTIONS = "ADMIN_MAIN_ACCOUNT_FILTERED_TRANSACTIONS"
+    ADMIN_VIRTUAL_ACCOUNT_TRANSACTIONS = "ADMIN_VIRTUAL_ACCOUNT_TRANSACTIONS"
+    ADMIN_VIRTUAL_ACCOUNT_FILTERED_TRANSACTIONS = "ADMIN_VIRTUAL_ACCOUNT_FILTERED_TRANSACTIONS"
+    FUND_VIRTUAL_ACCOUNT = "FUND_VIRTUAL_ACCOUNT"
+    WITHDRAW_VIRTUAL_ACCOUNT = "WITHDRAW_VIRTUAL_ACCOUNT"
+    UPDATE_VIRTUAL_ACCOUNT_LIMIT = "UPDATE_VIRTUAL_ACCOUNT_LIMIT"
+
+
+
 
 
 class AbstractAPIWrapper(ABC):
