@@ -64,9 +64,10 @@ class ServiceType(str, Enum):
         ADMIN_MAIN_ACCOUNT_FILTERED_TRANSACTIONS: Get a date filtered range of transactions on your account
         ADMIN_VIRTUAL_ACCOUNT_TRANSACTIONS: Get all transactions on a virtual account
         ADMIN_VIRTUAL_ACCOUNT_FILTERED_TRANSACTIONS: Get a date filtered range of transactions on a virtual account
-        FUND_VIRTUAL_ACCOUNT: Transfer money from your main acoount to your virtual account
+        FUND_VIRTUAL_ACCOUNT: Transfer money from your main acount to your virtual account
         WITHDRAW_VIRTUAL_ACCOUNT: Transfer money from your virtual account to your main account
-        UPDATE_VIRTUAL_ACCOUNT_LIMIT: Updated transfer limits up to N5,000,000 daily on your most critical virtual accounts
+        UPDATE_VIRTUAL_ACCOUNT_LIMIT: Updated transfer limits up to N5,000,000 daily on your most critical virtual
+            accounts
 
     """
 
