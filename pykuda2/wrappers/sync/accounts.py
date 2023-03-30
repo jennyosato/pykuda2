@@ -2,7 +2,16 @@ from pykuda2.base import APIWrapper, ServiceType
 
 
 class Account(APIWrapper):
-    def create_virtual_account(self, email: str, phone_number: str, last_name: str, first_name: str, middle_name: str, business_name: str, tracking_reference: str):
+    def create_virtual_account(
+        self,
+        email: str,
+        phone_number: str,
+        last_name: str,
+        first_name: str,
+        middle_name: str,
+        business_name: str,
+        tracking_reference: str,
+    ):
         """Creates a new virtual account for customers
 
         Note:
@@ -15,11 +24,15 @@ class Account(APIWrapper):
             "firstName": first_name,
             "middleName": middle_name,
             "businessName": business_name,
-            "trackingReference": tracking_reference
+            "trackingReference": tracking_reference,
         }
-        return self.api_call(service_type=ServiceType.ADMIN_CREATE_VIRTUAL_ACCOUNT, data=data)
+        return self.api_call(
+            service_type=ServiceType.ADMIN_CREATE_VIRTUAL_ACCOUNT, data=data
+        )
 
-    def update_virtual_account(self, tracking_reference: str, first_name: str, last_name: str, email: str):
+    def update_virtual_account(
+        self, tracking_reference: str, first_name: str, last_name: str, email: str
+    ):
         """Modifies a virtual account data
 
         Note:
@@ -32,9 +45,11 @@ class Account(APIWrapper):
             "trackingReference": tracking_reference,
             "firstName": first_name,
             "lastName": last_name,
-            "email": email
+            "email": email,
         }
-        return self.api_call(service_type=ServiceType.ADMIN_UPDATE_VIRTUAL_ACCOUNT, data=data)
+        return self.api_call(
+            service_type=ServiceType.ADMIN_UPDATE_VIRTUAL_ACCOUNT, data=data
+        )
 
     def get_virtual_accounts(self, page_size: int, page_number: int):
         """Retrieves your existing virtual accounts"""
@@ -49,7 +64,9 @@ class Account(APIWrapper):
         data = {
             "trackingReference": tracking_reference,
         }
-        return self.api_call(service_type=ServiceType.ADMIN_RETRIEVE_SINGLE_VIRTUAL_ACCOUNT, data=data)
+        return self.api_call(
+            service_type=ServiceType.ADMIN_RETRIEVE_SINGLE_VIRTUAL_ACCOUNT, data=data
+        )
 
     def disable_virtual_account(self, tracking_reference: str):
         """Disables a user’s virtual static account.
@@ -62,22 +79,30 @@ class Account(APIWrapper):
         data = {
             "trackingReference": tracking_reference,
         }
-        return self.api_call(service_type=ServiceType.ADMIN_DISABLE_VIRTUAL_ACCOUNT, data=data)
+        return self.api_call(
+            service_type=ServiceType.ADMIN_DISABLE_VIRTUAL_ACCOUNT, data=data
+        )
 
     def enable_virtual_account(self, tracking_reference: str):
         """Enables a user’s virtual static account."""
         data = {
             "trackingReference": tracking_reference,
         }
-        return self.api_call(service_type=ServiceType.ADMIN_ENABLE_VIRTUAL_ACCOUNT, data=data)
+        return self.api_call(
+            service_type=ServiceType.ADMIN_ENABLE_VIRTUAL_ACCOUNT, data=data
+        )
 
     def get_admin_account_balance(self):
         """Retrieves the account balance on your main account."""
-        return self.api_call(service_type=ServiceType.ADMIN_RETRIEVE_MAIN_ACCOUNT_BALANCE)
+        return self.api_call(
+            service_type=ServiceType.ADMIN_RETRIEVE_MAIN_ACCOUNT_BALANCE
+        )
 
     def get_virtual_account_balance(self, tracking_reference: str):
         """Retrieves the account balance on your virtual account."""
         data = {
             "trackingReference": tracking_reference,
         }
-        return self.api_call(service_type=ServiceType.ADMIN_ENABLE_VIRTUAL_ACCOUNT, data=data)
+        return self.api_call(
+            service_type=ServiceType.ADMIN_ENABLE_VIRTUAL_ACCOUNT, data=data
+        )
