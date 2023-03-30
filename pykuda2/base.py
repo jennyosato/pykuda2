@@ -20,6 +20,32 @@ from pykuda2.exceptions import (
 
 
 @dataclass
+class TransferInstruction:
+    account_number: str
+    account_name: str
+    beneficiary_bank_code: str
+    amount: int
+    bank_code: str
+    narration: str
+    bank_name: str
+    long_code: str
+    reference: str
+
+    def to_dict(self) -> dict:
+        return {
+            "AccountNumber": self.account_number,
+            "AccountName": self.account_name,
+            "BeneficiaryBankCode": self.beneficiary_bank_code,
+            "Amount": self.amount,
+            "BankCode": self.bank_code,
+            "Narration": self.narration,
+            "BankName": self.bank_name,
+            "LongCode": self.long_code,
+            "Reference": self.reference,
+        }
+
+
+@dataclass
 class APIResponse:
     status_code: int
     status: Optional[str]
@@ -64,14 +90,13 @@ class ServiceType(str, Enum):
         ADMIN_MAIN_ACCOUNT_FILTERED_TRANSACTIONS: Get a date filtered range of transactions on your account
         ADMIN_VIRTUAL_ACCOUNT_TRANSACTIONS: Get all transactions on a virtual account
         ADMIN_VIRTUAL_ACCOUNT_FILTERED_TRANSACTIONS: Get a date filtered range of transactions on a virtual account
-        FUND_VIRTUAL_ACCOUNT: Transfer money from your main acount to your virtual account
+        FUND_VIRTUAL_ACCOUNT: Transfer money from your main account to your virtual account
         WITHDRAW_VIRTUAL_ACCOUNT: Transfer money from your virtual account to your main account
         UPDATE_VIRTUAL_ACCOUNT_LIMIT: Updated transfer limits up to N5,000,000 daily on your most critical virtual
             accounts
         FUND_TRANSFER_INSTRUCTION: Instruction for single transaction above the limit of One (1) million naira
         SEARCH_FUND_TRANSFER_INSTRUCTION: Search for transfer instructions and return the status of the transaction
         RETRIEVE_TRANSACTION_LOGS: Fetch all transaction from logs
-
     """
 
     ADMIN_CREATE_VIRTUAL_ACCOUNT = "ADMIN_CREATE_VIRTUAL_ACCOUNT"
@@ -87,18 +112,19 @@ class ServiceType(str, Enum):
     TRANSACTION_STATUS_QUERY = "TRANSACTION_STATUS_QUERY"
     RETRIEVE_VIRTUAL_ACCOUNT_BALANCE = "RETRIEVE_VIRTUAL_ACCOUNT_BALANCE"
     ADMIN_MAIN_ACCOUNT_TRANSACTIONS = "ADMIN_MAIN_ACCOUNT_TRANSACTIONS"
-    ADMIN_MAIN_ACCOUNT_FILTERED_TRANSACTIONS = "ADMIN_MAIN_ACCOUNT_FILTERED_TRANSACTIONS"
+    ADMIN_MAIN_ACCOUNT_FILTERED_TRANSACTIONS = (
+        "ADMIN_MAIN_ACCOUNT_FILTERED_TRANSACTIONS"
+    )
     ADMIN_VIRTUAL_ACCOUNT_TRANSACTIONS = "ADMIN_VIRTUAL_ACCOUNT_TRANSACTIONS"
-    ADMIN_VIRTUAL_ACCOUNT_FILTERED_TRANSACTIONS = "ADMIN_VIRTUAL_ACCOUNT_FILTERED_TRANSACTIONS"
+    ADMIN_VIRTUAL_ACCOUNT_FILTERED_TRANSACTIONS = (
+        "ADMIN_VIRTUAL_ACCOUNT_FILTERED_TRANSACTIONS"
+    )
     FUND_VIRTUAL_ACCOUNT = "FUND_VIRTUAL_ACCOUNT"
     WITHDRAW_VIRTUAL_ACCOUNT = "WITHDRAW_VIRTUAL_ACCOUNT"
     UPDATE_VIRTUAL_ACCOUNT_LIMIT = "UPDATE_VIRTUAL_ACCOUNT_LIMIT"
     FUND_TRANSFER_INSTRUCTION = "FUND_TRANSFER_INSTRUCTION"
     SEARCH_FUND_TRANSFER_INSTRUCTION = "SEARCH_FUND_TRANSFER_INSTRUCTION"
     RETRIEVE_TRANSACTION_LOGS = "RETRIEVE_TRANSACTION_LOGS"
-
-
-
 
 
 class AbstractAPIWrapper(ABC):
@@ -137,14 +163,16 @@ class AbstractAPIWrapper(ABC):
     def api_call(self, service_type: ServiceType, data: dict, method=HTTPMethod.POST):
         ...
 
-    def _parse_call_kwargs(self, service_type: ServiceType, data: Optional[dict]=None) -> dict:
+    def _parse_call_kwargs(
+        self, service_type: ServiceType, data: Optional[dict] = None
+    ) -> dict:
         payload = {
             "servicetype": service_type,
             "requestref": str(uuid4()),
             "data": data,
         }
         if not data:
-            payload.pop('data', None)
+            payload.pop("data", None)
         return {
             "url": self.base_url,
             "json": payload,
@@ -200,7 +228,12 @@ class APIWrapper(AbstractAPIWrapper):
     def headers(self) -> dict:
         return {**self.base_headers, "authorization": f"Bearer {self.token}"}
 
-    def api_call(self, service_type: ServiceType, data: Optional[dict]=None, method=HTTPMethod.POST):
+    def api_call(
+        self,
+        service_type: ServiceType,
+        data: Optional[dict] = None,
+        method=HTTPMethod.POST,
+    ):
 
         http_method_call_kwargs = self._parse_call_kwargs(
             service_type=service_type, data=data
