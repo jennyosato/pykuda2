@@ -116,6 +116,16 @@ class ServiceType(str, Enum):
         GET_ALL_CUSTOMER_FIXED_SAVE: Get all fixed account information
         COMPLETE_FIXED_SAVE_WITHDRAWAL: Close a fixed savings account
         RETRIEVE_FIXED_SAVE_TRANSACTIONS: Get all fixed savings account transaction
+        REQUEST_CARD: Request for a new card
+        GET_CUSTOMER_CARDS: Get a list of all the cards requested
+        ACTIVATE_CARD: Activates a new card
+        DEACTIVATE_CARD: Deactivate a card
+        MANAGE_CARD_TRANSACTION_LIMIT: Set a limit for a card
+        MANAGE_CARD_CHANNEL: Manage where card can be used
+        CHANGE_CARD_PIN: Change a card's 4digit PIN
+        BLOCK_CARD: Block a card
+        uNBLOCK_CARD: Unblock a card that was blocked
+
 
     """
 
@@ -165,6 +175,15 @@ class ServiceType(str, Enum):
     GET_ALL_CUSTOMER_FIXED_SAVE = "GET_ALL_CUSTOMER_FIXED_SAVE"
     COMPLETE_FIXED_SAVE_WITHDRAWAL = "COMPLETE_FIXED_SAVE_WITHDRAWAL"
     RETRIEVE_FIXED_SAVE_TRANSACTIONS = "RETRIEVE_FIXED_SAVE_TRANSACTIONS"
+    REQUEST_CARD = "REQUEST_CARD"
+    GET_CUSTOMER_CARDS = "GET_CUSTOMER_CARDS"
+    ACTIVATE_CARD = "ACTIVATE_CARD"
+    DEACTIVATE_CARD = "DEACTIVATE_CARD"
+    MANAGE_CARD_TRANSACTION_LIMIT = "MANAGE_CARD_TRANSACTION_LIMIT"
+    MANAGE_CARD_CHANNEL = "MANAGE_CARD_CHANNEL"
+    CHANGE_CARD_PIN = "CHANGE_CARD_PIN"
+    BLOCK_CARD = "BLOCK_CARD"
+    UNBLOCK_CARD = "UNBLOCK_CARD"
 
 
 
