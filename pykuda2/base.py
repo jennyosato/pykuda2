@@ -100,6 +100,22 @@ class ServiceType(str, Enum):
         ADMIN_BUY_GIFT_CARD: purchase gift card from admin account
         BUY_GIFT_CARD: purchase gift card from virtual account
         GIFT_CARD_TSQ: status of all gift cards purchased
+        CREATE_PLAIN_SAVE: Create a plain savings account
+        GET_PLAIN_SAVE: Gets a specific plain savings account information
+        GET_ALL_CUSTOMER_PLAIN_SAVE: Gets all plain savings account information
+        PLAIN_SAVE_DEBIT_CREDIT: Credit or debit a plain savings account
+        RETRIEVE_PLAIN_SAVE_TRANSACTIONS: Retrieves plain savings account transactions
+        CREATE_OPEN_FLEXIBLE_SAVE: Create an open flexible account
+        PRE_CREATE_OPEN_FLEXIBLE_SAVE: Pre create an open flexible account
+        GET_OPEN_FLEXIBLE_SAVE: Get a specific open flexible savings account information
+        GET_ALL_CUSTOMER_OPEN_FLEXIBLE_SAVE: Get all open flexible savings account information
+        COMPLETE_OPEN_FLEXIBLE_SAVE_WITHDRAWAL: Withdraw from an open flexible savings account
+        RETRIEVE_OPEN_FLEXIBLE_SAVE_TRANSACTIONS: Get all open flexible account transactions
+        CREATE_FIXED_SAVE: Create fixed savings account
+        GET_FIXED_SAVE: Get a specific fixed account information
+        GET_ALL_CUSTOMER_FIXED_SAVE: Get all fixed account information
+        COMPLETE_FIXED_SAVE_WITHDRAWAL: Close a fixed savings account
+        RETRIEVE_FIXED_SAVE_TRANSACTIONS: Get all fixed savings account transaction
 
     """
 
@@ -133,6 +149,22 @@ class ServiceType(str, Enum):
     ADMIN_BUY_GIFT_CARD = "ADMIN_BUY_GIFT_CARD"
     BUY_GIFT_CARD = "BUY_GIFT_CARD"
     GIFT_CARD_TSQ = "GIFT_CARD_TSQ"
+    CREATE_PLAIN_SAVE = "CREATE_PLAIN_SAVE"
+    GET_PLAIN_SAVE = "GET_PLAIN_SAVE"
+    GET_ALL_CUSTOMER_PLAIN_SAVE = "GET_ALL_CUSTOMER_PLAIN_SAVE"
+    PLAIN_SAVE_DEBIT_CREDIT = "PLAIN_SAVE_DEBIT_CREDIT"
+    RETRIEVE_PLAIN_SAVE_TRANSACTIONS = "RETRIEVE_PLAIN_SAVE_TRANSACTIONS"
+    CREATE_OPEN_FLEXIBLE_SAVE = "CREATE_OPEN_FLEXIBLE_SAVE"
+    PRE_CREATE_OPEN_FLEXIBLE_SAVE = "PRE_CREATE_OPEN_FLEXIBLE_SAVE"
+    GET_OPEN_FLEXIBLE_SAVE = "GET_OPEN_FLEXIBLE_SAVE"
+    GET_ALL_CUSTOMER_OPEN_FLEXIBLE_SAVE = "GET_ALL_CUSTOMER_OPEN_FLEXIBLE_SAVE"
+    COMPLETE_OPEN_FLEXIBLE_SAVE_WITHDRAWAL = "COMPLETE_OPEN_FLEXIBLE_SAVE_WITHDRAWAL"
+    RETRIEVE_OPEN_FLEXIBLE_SAVE_TRANSACTIONS = "RETRIEVE_OPEN_FLEXIBLE_SAVE_TRANSACTIONS"
+    CREATE_FIXED_SAVE = "CREATE_FIXED_SAVE"
+    GET_FIXED_SAVE = "GET_FIXED_SAVE"
+    GET_ALL_CUSTOMER_FIXED_SAVE = "GET_ALL_CUSTOMER_FIXED_SAVE"
+    COMPLETE_FIXED_SAVE_WITHDRAWAL = "COMPLETE_FIXED_SAVE_WITHDRAWAL"
+    RETRIEVE_FIXED_SAVE_TRANSACTIONS = "RETRIEVE_FIXED_SAVE_TRANSACTIONS"
 
 
 
