@@ -92,11 +92,49 @@ class ServiceType(str, Enum):
         ADMIN_VIRTUAL_ACCOUNT_FILTERED_TRANSACTIONS: Get a date filtered range of transactions on a virtual account
         FUND_VIRTUAL_ACCOUNT: Transfer money from your main account to your virtual account
         WITHDRAW_VIRTUAL_ACCOUNT: Transfer money from your virtual account to your main account
-        UPDATE_VIRTUAL_ACCOUNT_LIMIT: Updated transfer limits up to N5,000,000 daily on your most critical virtual
-            accounts
+        UPDATE_VIRTUAL_ACCOUNT_LIMIT: Updated transfer limits up to N5,000,000 daily on your most critical virtual accounts
         FUND_TRANSFER_INSTRUCTION: Instruction for single transaction above the limit of One (1) million naira
         SEARCH_FUND_TRANSFER_INSTRUCTION: Search for transfer instructions and return the status of the transaction
         RETRIEVE_TRANSACTION_LOGS: Fetch all transaction from logs
+        GET_GIFT_CARD: gets a list of all gift card supported
+        ADMIN_BUY_GIFT_CARD: purchase gift card from admin account
+        BUY_GIFT_CARD: purchase gift card from virtual account
+        GIFT_CARD_TSQ: status of all gift cards purchased
+        CREATE_PLAIN_SAVE: Create a plain savings account
+        GET_PLAIN_SAVE: Gets a specific plain savings account information
+        GET_ALL_CUSTOMER_PLAIN_SAVE: Gets all plain savings account information
+        PLAIN_SAVE_DEBIT_CREDIT: Credit or debit a plain savings account
+        RETRIEVE_PLAIN_SAVE_TRANSACTIONS: Retrieves plain savings account transactions
+        CREATE_OPEN_FLEXIBLE_SAVE: Create an open flexible account
+        PRE_CREATE_OPEN_FLEXIBLE_SAVE: Pre create an open flexible account
+        GET_OPEN_FLEXIBLE_SAVE: Get a specific open flexible savings account information
+        GET_ALL_CUSTOMER_OPEN_FLEXIBLE_SAVE: Get all open flexible savings account information
+        COMPLETE_OPEN_FLEXIBLE_SAVE_WITHDRAWAL: Withdraw from an open flexible savings account
+        RETRIEVE_OPEN_FLEXIBLE_SAVE_TRANSACTIONS: Get all open flexible account transactions
+        CREATE_FIXED_SAVE: Create fixed savings account
+        GET_FIXED_SAVE: Get a specific fixed account information
+        GET_ALL_CUSTOMER_FIXED_SAVE: Get all fixed account information
+        COMPLETE_FIXED_SAVE_WITHDRAWAL: Close a fixed savings account
+        RETRIEVE_FIXED_SAVE_TRANSACTIONS: Get all fixed savings account transaction
+        REQUEST_CARD: Request for a new card
+        GET_CUSTOMER_CARDS: Get a list of all the cards requested
+        ACTIVATE_CARD: Activates a new card
+        DEACTIVATE_CARD: Deactivate a card
+        MANAGE_CARD_TRANSACTION_LIMIT: Set a limit for a card
+        MANAGE_CARD_CHANNEL: Manage where card can be used
+        CHANGE_CARD_PIN: Change a card's 4digit PIN
+        BLOCK_CARD: Block a card
+        uNBLOCK_CARD: Unblock a card that was blocked
+        GET_BILLERS_BY_TYPE: Get type of bill
+        VERIFY_BILL_CUSTOMER: Verify customer's identity
+        ADMIN_PURCHASE_BILL: Purchase a bill from ADMIN account
+        PURCHASE_BILL: Purchase a bill from Virtual account
+        BILL_TSQ: Get status of bill 
+        ADMIN_GET_PURCHASED_BILLS: Get a list of bills purchased with ADMIN account
+        GET_PURCHASED_BILLS: Get a list of bills purchased with Virtual account
+
+
+
     """
 
     ADMIN_CREATE_VIRTUAL_ACCOUNT = "ADMIN_CREATE_VIRTUAL_ACCOUNT"
@@ -125,6 +163,44 @@ class ServiceType(str, Enum):
     FUND_TRANSFER_INSTRUCTION = "FUND_TRANSFER_INSTRUCTION"
     SEARCH_FUND_TRANSFER_INSTRUCTION = "SEARCH_FUND_TRANSFER_INSTRUCTION"
     RETRIEVE_TRANSACTION_LOGS = "RETRIEVE_TRANSACTION_LOGS"
+    GET_GIFT_CARD = " GET_GIFT_CARD"
+    ADMIN_BUY_GIFT_CARD = "ADMIN_BUY_GIFT_CARD"
+    BUY_GIFT_CARD = "BUY_GIFT_CARD"
+    GIFT_CARD_TSQ = "GIFT_CARD_TSQ"
+    CREATE_PLAIN_SAVE = "CREATE_PLAIN_SAVE"
+    GET_PLAIN_SAVE = "GET_PLAIN_SAVE"
+    GET_ALL_CUSTOMER_PLAIN_SAVE = "GET_ALL_CUSTOMER_PLAIN_SAVE"
+    PLAIN_SAVE_DEBIT_CREDIT = "PLAIN_SAVE_DEBIT_CREDIT"
+    RETRIEVE_PLAIN_SAVE_TRANSACTIONS = "RETRIEVE_PLAIN_SAVE_TRANSACTIONS"
+    CREATE_OPEN_FLEXIBLE_SAVE = "CREATE_OPEN_FLEXIBLE_SAVE"
+    PRE_CREATE_OPEN_FLEXIBLE_SAVE = "PRE_CREATE_OPEN_FLEXIBLE_SAVE"
+    GET_OPEN_FLEXIBLE_SAVE = "GET_OPEN_FLEXIBLE_SAVE"
+    GET_ALL_CUSTOMER_OPEN_FLEXIBLE_SAVE = "GET_ALL_CUSTOMER_OPEN_FLEXIBLE_SAVE"
+    COMPLETE_OPEN_FLEXIBLE_SAVE_WITHDRAWAL = "COMPLETE_OPEN_FLEXIBLE_SAVE_WITHDRAWAL"
+    RETRIEVE_OPEN_FLEXIBLE_SAVE_TRANSACTIONS = "RETRIEVE_OPEN_FLEXIBLE_SAVE_TRANSACTIONS"
+    CREATE_FIXED_SAVE = "CREATE_FIXED_SAVE"
+    GET_FIXED_SAVE = "GET_FIXED_SAVE"
+    GET_ALL_CUSTOMER_FIXED_SAVE = "GET_ALL_CUSTOMER_FIXED_SAVE"
+    COMPLETE_FIXED_SAVE_WITHDRAWAL = "COMPLETE_FIXED_SAVE_WITHDRAWAL"
+    RETRIEVE_FIXED_SAVE_TRANSACTIONS = "RETRIEVE_FIXED_SAVE_TRANSACTIONS"
+    REQUEST_CARD = "REQUEST_CARD"
+    GET_CUSTOMER_CARDS = "GET_CUSTOMER_CARDS"
+    ACTIVATE_CARD = "ACTIVATE_CARD"
+    DEACTIVATE_CARD = "DEACTIVATE_CARD"
+    MANAGE_CARD_TRANSACTION_LIMIT = "MANAGE_CARD_TRANSACTION_LIMIT"
+    MANAGE_CARD_CHANNEL = "MANAGE_CARD_CHANNEL"
+    CHANGE_CARD_PIN = "CHANGE_CARD_PIN"
+    BLOCK_CARD = "BLOCK_CARD"
+    UNBLOCK_CARD = "UNBLOCK_CARD"
+    GET_BILLERS_BY_TYPE = "GET_BILLERS_BY_TYPE"
+    VERIFY_BILL_CUSTOMER = "VERIFY_BILL_CUSTOMER"
+    ADMIN_PURCHASE_BILL = "ADMIN_PURCHASE_BILL"
+    PURCHASE_BILL = "PURCHASE_BILL"
+    BILL_TSQ = "BILL_TSQ"
+    ADMIN_GET_PURCHASED_BILLS = "ADMIN_GET_PURCHASED_BILLS"
+    GET_PURCHASED_BILLS = "GET_PURCHASED_BILLS"
+
+
 
 
 class AbstractAPIWrapper(ABC):
