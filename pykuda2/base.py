@@ -125,6 +125,14 @@ class ServiceType(str, Enum):
         CHANGE_CARD_PIN: Change a card's 4digit PIN
         BLOCK_CARD: Block a card
         uNBLOCK_CARD: Unblock a card that was blocked
+        GET_BILLERS_BY_TYPE: Get type of bill
+        VERIFY_BILL_CUSTOMER: Verify customer's identity
+        ADMIN_PURCHASE_BILL: Purchase a bill from ADMIN account
+        PURCHASE_BILL: Purchase a bill from Virtual account
+        BILL_TSQ: Get status of bill 
+        ADMIN_GET_PURCHASED_BILLS: Get a list of bills purchased with ADMIN account
+        GET_PURCHASED_BILLS: Get a list of bills purchased with Virtual account
+
 
 
     """
@@ -184,6 +192,13 @@ class ServiceType(str, Enum):
     CHANGE_CARD_PIN = "CHANGE_CARD_PIN"
     BLOCK_CARD = "BLOCK_CARD"
     UNBLOCK_CARD = "UNBLOCK_CARD"
+    GET_BILLERS_BY_TYPE = "GET_BILLERS_BY_TYPE"
+    VERIFY_BILL_CUSTOMER = "VERIFY_BILL_CUSTOMER"
+    ADMIN_PURCHASE_BILL = "ADMIN_PURCHASE_BILL"
+    PURCHASE_BILL = "PURCHASE_BILL"
+    BILL_TSQ = "BILL_TSQ"
+    ADMIN_GET_PURCHASED_BILLS = "ADMIN_GET_PURCHASED_BILLS"
+    GET_PURCHASED_BILLS = "GET_PURCHASED_BILLS"
 
 
 
