@@ -66,11 +66,14 @@ class ServiceType(str, Enum):
         ADMIN_VIRTUAL_ACCOUNT_FILTERED_TRANSACTIONS: Get a date filtered range of transactions on a virtual account
         FUND_VIRTUAL_ACCOUNT: Transfer money from your main acount to your virtual account
         WITHDRAW_VIRTUAL_ACCOUNT: Transfer money from your virtual account to your main account
-        UPDATE_VIRTUAL_ACCOUNT_LIMIT: Updated transfer limits up to N5,000,000 daily on your most critical virtual
-            accounts
+        UPDATE_VIRTUAL_ACCOUNT_LIMIT: Updated transfer limits up to N5,000,000 daily on your most critical virtual accounts
         FUND_TRANSFER_INSTRUCTION: Instruction for single transaction above the limit of One (1) million naira
         SEARCH_FUND_TRANSFER_INSTRUCTION: Search for transfer instructions and return the status of the transaction
         RETRIEVE_TRANSACTION_LOGS: Fetch all transaction from logs
+        GET_GIFT_CARD: gets a list of all gift card supported
+        ADMIN_BUY_GIFT_CARD: purchase gift card from admin account
+        BUY_GIFT_CARD: purchase gift card from virtual account
+        GIFT_CARD_TSQ: status of all gift cards purchased
 
     """
 
@@ -96,6 +99,12 @@ class ServiceType(str, Enum):
     FUND_TRANSFER_INSTRUCTION = "FUND_TRANSFER_INSTRUCTION"
     SEARCH_FUND_TRANSFER_INSTRUCTION = "SEARCH_FUND_TRANSFER_INSTRUCTION"
     RETRIEVE_TRANSACTION_LOGS = "RETRIEVE_TRANSACTION_LOGS"
+    GET_GIFT_CARD = " GET_GIFT_CARD"
+    ADMIN_BUY_GIFT_CARD = "ADMIN_BUY_GIFT_CARD"
+    BUY_GIFT_CARD = "BUY_GIFT_CARD"
+    GIFT_CARD_TSQ = "GIFT_CARD_TSQ"
+
+
 
 
 
