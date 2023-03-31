@@ -1,6 +1,7 @@
 from unittest import TestCase
 
-from pykuda2.base import APIWrapper, ServiceType, APIResponse, AsyncAPIWrapper
+from pykuda2.base import APIWrapper, AsyncAPIWrapper
+from pykuda2.utils import APIResponse, ServiceType
 from tests.mocked_api_call_testcase import (
     MockedAPICallTestCase,
     MockedAsyncAPICallTestCase,

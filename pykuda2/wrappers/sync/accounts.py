@@ -1,4 +1,5 @@
-from pykuda2.base import APIWrapper, ServiceType
+from pykuda2.base import APIWrapper
+from pykuda2.utils import ServiceType
 
 
 class Account(APIWrapper):

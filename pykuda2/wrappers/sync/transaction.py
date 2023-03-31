@@ -1,6 +1,7 @@
 from typing import Optional
 
-from pykuda2.base import APIWrapper, ServiceType, TransferInstruction
+from pykuda2.base import APIWrapper
+from pykuda2.utils import TransferInstruction, ServiceType
 
 
 class Transaction(APIWrapper):
