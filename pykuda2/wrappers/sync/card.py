@@ -1,8 +1,8 @@
-from pykuda2.base import APIWrapper
+from pykuda2.base import BaseAPIWrapper
 from pykuda2.utils import ServiceType, CardChannel
 
 
-class Card(APIWrapper):
+class Card(BaseAPIWrapper):
     def request_card(
         self,
         delivery_city: str,
@@ -33,7 +33,7 @@ class Card(APIWrapper):
         return self.api_call(
             service_type=ServiceType.REQUEST_CARD,
             data=data,
-            endpoint_url="/RequestCard",
+            endpoint_path="/RequestCard",
         )
 
     def get_cards(self, simulate_request, tracking_reference: str):
@@ -45,7 +45,7 @@ class Card(APIWrapper):
         return self.api_call(
             service_type=ServiceType.GET_CUSTOMER_CARDS,
             data=data,
-            endpoint_url="/GetCustomerCards",
+            endpoint_path="/GetCustomerCards",
         )
 
     def activate_card(
@@ -66,7 +66,7 @@ class Card(APIWrapper):
         return self.api_call(
             service_type=ServiceType.ACTIVATE_CARD,
             data=data,
-            endpoint_url="/ActivateCard",
+            endpoint_path="/ActivateCard",
         )
 
     def deactivate_card(self, id: int, tracking_reference: str, simulate_request):
@@ -78,7 +78,7 @@ class Card(APIWrapper):
         return self.api_call(
             service_type=ServiceType.DEACTIVATE_CARD,
             data=data,
-            endpoint_url="/DeactivateCard",
+            endpoint_path="/DeactivateCard",
         )
 
     def set_card_limit(
@@ -99,7 +99,7 @@ class Card(APIWrapper):
         return self.api_call(
             service_type=ServiceType.MANAGE_CARD_TRANSACTION_LIMIT,
             data=data,
-            endpoint_url="/ManageCardTransactionLimit",
+            endpoint_path="/ManageCardTransactionLimit",
         )
 
     def manage_card_channel(
@@ -120,7 +120,7 @@ class Card(APIWrapper):
         return self.api_call(
             service_type=ServiceType.MANAGE_CARD_CHANNEL,
             data=data,
-            endpoint_url="/ManageCardChannel",
+            endpoint_path="/ManageCardChannel",
         )
 
     def change_card_pin(self, tracking_reference: str, new_pin: int, id: int):
@@ -128,7 +128,7 @@ class Card(APIWrapper):
         return self.api_call(
             service_type=ServiceType.CHANGE_CARD_PIN,
             data=data,
-            endpoint_url="/ChangeCardPIN",
+            endpoint_path="/ChangeCardPIN",
         )
 
     def block_card(self, tracking_reference: str, id: int):
@@ -137,7 +137,7 @@ class Card(APIWrapper):
             "TrackingReference": tracking_reference,
         }
         return self.api_call(
-            service_type=ServiceType.BLOCK_CARD, data=data, endpoint_url="/BlockCard"
+            service_type=ServiceType.BLOCK_CARD, data=data, endpoint_path="/BlockCard"
         )
 
     def unblock_card(self, tracking_reference: str, id: int):
@@ -148,5 +148,5 @@ class Card(APIWrapper):
         return self.api_call(
             service_type=ServiceType.UNBLOCK_CARD,
             data=data,
-            endpoint_url="/UnblockCard",
+            endpoint_path="/UnblockCard",
         )

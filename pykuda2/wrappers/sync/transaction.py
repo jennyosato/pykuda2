@@ -1,10 +1,10 @@
 from typing import Optional
 
-from pykuda2.base import APIWrapper
+from pykuda2.base import BaseAPIWrapper
 from pykuda2.utils import TransferInstruction, ServiceType
 
 
-class Transaction(APIWrapper):
+class Transaction(BaseAPIWrapper):
     def get_banks(self):
         """Gets all the bank list from NIPS
         Note:

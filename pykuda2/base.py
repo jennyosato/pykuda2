@@ -20,6 +20,13 @@ from pykuda2.utils import APIResponse, HTTPMethod, Mode, ServiceType
 
 class AbstractAPIWrapper(ABC):
     def __init__(self, email: str, api_key: str, mode=Mode.DEVELOPMENT):
+        """Instantiates the APIWrapper.
+
+        Args:
+            email: The email address of your Kuda account with access to an apiKey.
+            api_key: Your Kuda apiKey.
+            mode: The mode you desire to use the wrapper in (development or production).
+        """
         self.mode = mode
         self.email = email
         self.api_key = api_key
@@ -28,15 +35,24 @@ class AbstractAPIWrapper(ABC):
     @property
     @abstractmethod
     def token(self) -> str:
+        """Returns the access token gotten.
+
+        It performs authentication with `self.email` and `self.api_key` to get it"""
         ...
 
     @property
     @abstractmethod
     def headers(self) -> dict:
+        """Returns the headers with authorization header included.
+
+        It returns the headers used in making requests with the inclusion of an authorization header"""
         ...
 
     @property
     def base_headers(self) -> dict:
+        """Returns the headers without authorization header included.
+
+        It returns the headers used in making endpoint requests with the exclusion of the authorization header"""
         return {
             "accept": "application/json; charset=utf-8",
             "content-type": "application/json",
@@ -45,8 +61,11 @@ class AbstractAPIWrapper(ABC):
 
     @property
     def base_url(self) -> str:
+        """Returns the base url.
+
+        The url returned depends on the mode in which the class was instantiated."""
         return {
-            Mode.DEVELOPMENT: "http://kuda-openapi-uat.kudabank.com/v2.1",
+            Mode.DEVELOPMENT: "https://kuda-openapi-uat.kudabank.com/v2.1",
             Mode.PRODUCTION: "https://kuda-openapi.kuda.com/v2.1",
         }[self.mode]
 
@@ -56,15 +75,38 @@ class AbstractAPIWrapper(ABC):
         service_type: ServiceType,
         data: dict,
         method=HTTPMethod.POST,
-        endpoint_url: Optional[str] = None,
+        endpoint_path: Optional[str] = None,
     ):
+        """Allows sending to request to Kuda endpoint's based on `service_type` and `endpoint_path`.
+
+        Most of Kuda APIs use a single url architecture in which the route is determined by the
+        content of the request in this case the `service_type`, for these type of endpoints, the
+        endpoint url is just the `base_url`. There are also edge cases where  this rule does not apply.
+        Take for example an end point `https://kuda-openapi-uat.kudabank.com/v2.1/Account/GetToken`
+        to send request to endpoints like this, only `/Account/GetToken` needs to be passed to
+        the `endpoint_path` since the `base_url` is `https://kuda-openapi-uat.kudabank.com/v2.1`
+        by default depending on mode.
+
+        Args:
+            service_type: The Kuda service we're interested in.
+            data: The data we're sending to the endpoint.
+            method: The HTTP method the endpoint accepts
+            endpoint_path: This is optional and only required by endpoints that don't comply with the
+                single url architecture. Only the endpoint path should be provided as a string.
+        Returns:
+            An `APIResponse` which is basically just a dataclass containing the data returned
+            by the server as result of calling this function.
+        Raises:
+            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
+            ConnectionException: when the request times out or in the absence of an internet connection.
+        """
         ...
 
     def _parse_call_kwargs(
         self,
         service_type: ServiceType,
         data: Optional[dict] = None,
-        endpoint_url: Optional[str] = None,
+        endpoint_path: Optional[str] = None,
     ) -> dict:
         payload = {
             "servicetype": service_type,
@@ -74,7 +116,9 @@ class AbstractAPIWrapper(ABC):
         if not data:
             payload.pop("data", None)
         return {
-            "url": self.base_url + endpoint_url if endpoint_url is not None else "",
+            "url": self.base_url + endpoint_path
+            if endpoint_path is not None
+            else self.base_url,
             "json": payload,
             "headers": self.headers,
         }
@@ -95,7 +139,17 @@ class AbstractAPIWrapper(ABC):
             )
 
 
-class APIWrapper(AbstractAPIWrapper):
+class BaseAPIWrapper(AbstractAPIWrapper):
+    """A base class from which synchronous API wrappers inherit from.
+
+    It provides functionalities required to make requests to Kuda API
+
+    Args:
+        email: The email address of your Kuda account with access to an apiKey
+        api_key: Your Kuda apiKey
+        mode: The mode you desire to use the wrapper in (development or production)
+    """
+
     def __init__(self, email: str, api_key: str, mode=Mode.DEVELOPMENT):
         super().__init__(email=email, api_key=api_key, mode=mode)
 
@@ -133,11 +187,11 @@ class APIWrapper(AbstractAPIWrapper):
         service_type: ServiceType,
         data: Optional[dict] = None,
         method=HTTPMethod.POST,
-        endpoint_url: Optional[str] = None,
+        endpoint_path: Optional[str] = None,
     ):
 
         http_method_call_kwargs = self._parse_call_kwargs(
-            service_type=service_type, data=data, endpoint_url=endpoint_url
+            service_type=service_type, data=data, endpoint_path=endpoint_path
         )
         http_methods_mapping = {
             HTTPMethod.GET: httpx.get,
@@ -164,7 +218,17 @@ class APIWrapper(AbstractAPIWrapper):
             raise ConnectionException("Server refused to respond")
 
 
-class AsyncAPIWrapper(AbstractAPIWrapper):
+class BaseAsyncAPIWrapper(AbstractAPIWrapper):
+    """A base class from which asynchronous API wrappers inherit from.
+
+    It provides functionalities required to make requests to Kuda API
+
+    Args:
+        email: The email address of your Kuda account with access to an apiKey
+        api_key: Your Kuda apiKey
+        mode: The mode you desire to use the wrapper in (development or production)
+    """
+
     def __init__(self, email: str, api_key: str, mode=Mode.DEVELOPMENT):
         super().__init__(email=email, api_key=api_key, mode=mode)
 
@@ -203,10 +267,10 @@ class AsyncAPIWrapper(AbstractAPIWrapper):
         service_type: ServiceType,
         data: dict,
         method=HTTPMethod.POST,
-        endpoint_url: Optional[str] = None,
+        endpoint_path: Optional[str] = None,
     ):
-        http_method_call_kwargs = await self._parse_call_kwargs(
-            service_type=service_type, data=data, endpoint_url=endpoint_url
+        http_method_call_kwargs = await self._parse_call_kwargs_async(
+            service_type=service_type, data=data, endpoint_path=endpoint_path
         )
         async with httpx.AsyncClient() as client:
             http_method_callable = getattr(client, method.value.lower(), None)
@@ -224,8 +288,8 @@ class AsyncAPIWrapper(AbstractAPIWrapper):
                 raise ConnectionException("Server refused to respond")
             return self._parse_response(response)
 
-    async def _parse_call_kwargs(
-        self, service_type: ServiceType, data: dict, endpoint_url: Optional[str] = None
+    async def _parse_call_kwargs_async(
+        self, service_type: ServiceType, data: dict, endpoint_path: Optional[str] = None
     ) -> dict:
         payload = {
             "ServiceType": service_type,
@@ -233,7 +297,7 @@ class AsyncAPIWrapper(AbstractAPIWrapper):
             "Data": data,
         }
         return {
-            "url": self.base_url + endpoint_url if endpoint_url is not None else "",
+            "url": self.base_url + endpoint_path if endpoint_path is not None else "",
             "json": payload,
             "headers": await self.headers,
         }

@@ -1,10 +1,10 @@
 from typing import Optional
 
-from pykuda2.base import APIWrapper
+from pykuda2.base import BaseAPIWrapper
 from pykuda2.utils import ServiceType
 
 
-class GiftCard(APIWrapper):
+class GiftCard(BaseAPIWrapper):
     def gift_cards(self):
         """Get a curated list of gift cards supported."""
         return self.api_call(service_type=ServiceType.GET_GIFT_CARD)

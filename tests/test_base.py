@@ -1,19 +1,18 @@
-from unittest import TestCase
+from httpx import codes as HTTP_STATUS_CODE
 
-from pykuda2.base import APIWrapper, AsyncAPIWrapper
+from pykuda2.base import BaseAPIWrapper, BaseAsyncAPIWrapper
 from pykuda2.utils import APIResponse, ServiceType
 from tests.mocked_api_call_testcase import (
     MockedAPICallTestCase,
     MockedAsyncAPICallTestCase,
 )
-from httpx import codes as HTTP_STATUS_CODE
 
 
 class APIWrapperTestCase(MockedAPICallTestCase):
     @classmethod
     def setUpClass(cls) -> None:
         super().setUpClass()
-        cls.wrapper = APIWrapper(email=cls.email, api_key=cls.api_key)
+        cls.wrapper = BaseAPIWrapper(email=cls.email, api_key=cls.api_key)
 
     def test_token(self):
         self.assertEqual(self.wrapper.token, self.mocked_api_response.text)
@@ -52,7 +51,7 @@ class AsyncAPIWrapperTestCase(MockedAsyncAPICallTestCase):
     @classmethod
     def setUpClass(cls) -> None:
         super().setUpClass()
-        cls.wrapper = AsyncAPIWrapper(email=cls.email, api_key=cls.api_key)
+        cls.wrapper = BaseAsyncAPIWrapper(email=cls.email, api_key=cls.api_key)
 
     async def test_token(self):
         self.assertEqual(await self.wrapper.token, self.mocked_api_response.text)

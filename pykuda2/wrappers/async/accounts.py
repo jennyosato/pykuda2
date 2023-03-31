@@ -1,8 +1,8 @@
-from pykuda2.base import AsyncAPIWrapper
+from pykuda2.base import BaseAsyncAPIWrapper
 from pykuda2.utils import ServiceType
 
 
-class AsyncAccount(AsyncAPIWrapper):
+class AsyncAccount(BaseAsyncAPIWrapper):
     async def create_virtual_account(
         self,
         email: str,

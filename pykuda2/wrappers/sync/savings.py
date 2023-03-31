@@ -1,8 +1,8 @@
-from pykuda2.base import APIWrapper
+from pykuda2.base import BaseAPIWrapper
 from pykuda2.utils import TransactionType, ServiceType
 
 
-class Savings(APIWrapper):
+class Savings(BaseAPIWrapper):
     def create_plain_savings_account(self, name: str, tracking_reference: str):
         data = {"Name": name, "TrackingReference": tracking_reference}
         return self.api_call(service_type=ServiceType.CREATE_PLAIN_SAVE, data=data)

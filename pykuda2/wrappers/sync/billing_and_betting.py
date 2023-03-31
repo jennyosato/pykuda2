@@ -1,8 +1,8 @@
-from pykuda2.base import APIWrapper
+from pykuda2.base import BaseAPIWrapper
 from pykuda2.utils import BillType, ServiceType
 
 
-class BillingAndBetting(APIWrapper):
+class BillingAndBetting(BaseAPIWrapper):
     def get_bill_type(self, bill_type: BillType):
         data = {"BillTypeName": bill_type}
         return self.api_call(service_type=ServiceType.GET_BILLERS_BY_TYPE, data=data)
