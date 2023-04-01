@@ -5,12 +5,16 @@ from pykuda2.utils import BillType, ServiceType
 
 
 class BillingAndBetting(BaseAPIWrapper):
-    def get_bill_type_options(self, bill_type: BillType):
+    def get_bill_type_options(
+        self, bill_type: BillType, request_reference: Optional[str] = None
+    ):
         """Retrieves all the options of a bill type that are available from Kuda.
 
         Args:
             bill_type: The bill type we want to get the options available for e.g.
                 BillType.INTERNET_DATA, BillType.CABLE_TV
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
 
         Returns:
             An `APIResponse` which is basically just a dataclass containing the data returned
@@ -21,13 +25,18 @@ class BillingAndBetting(BaseAPIWrapper):
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {"BillTypeName": bill_type}
-        return self.api_call(service_type=ServiceType.GET_BILLERS_BY_TYPE, data=data)
+        return self.api_call(
+            service_type=ServiceType.GET_BILLERS_BY_TYPE,
+            data=data,
+            request_reference=request_reference,
+        )
 
     def verify_customer_before_purchase(
         self,
         tracking_reference: str,
         kuda_bill_item_identifier: str,
         customer_identification: str,
+        request_reference: Optional[str] = None,
     ):
         """Verifies the identity of  the beneficiary.
 
@@ -41,6 +50,8 @@ class BillingAndBetting(BaseAPIWrapper):
             tracking_reference: Customer's wallet identifier.
             kuda_bill_item_identifier: The Kuda bill unique identifier.
             customer_identification: The customer's unique identifier.
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
 
         Returns:
             An `APIResponse` which is basically just a dataclass containing the data returned
@@ -55,7 +66,11 @@ class BillingAndBetting(BaseAPIWrapper):
             "KudaBillItemIdentifier": kuda_bill_item_identifier,
             "CustomerIdentification": customer_identification,
         }
-        return self.api_call(service_type=ServiceType.VERIFY_BILL_CUSTOMER, data=data)
+        return self.api_call(
+            service_type=ServiceType.VERIFY_BILL_CUSTOMER,
+            data=data,
+            request_reference=request_reference,
+        )
 
     def purchase_bill(
         self,
@@ -63,6 +78,7 @@ class BillingAndBetting(BaseAPIWrapper):
         bill_item_identifier: str,
         customer_identifier: str,
         phone_number: Optional[str] = None,
+        request_reference: Optional[str] = None,
     ):
         """Purchase a bill from your main account.
 
@@ -72,6 +88,8 @@ class BillingAndBetting(BaseAPIWrapper):
             customer_identifier: The customer's unique identifier
             phone_number: The customer's phone number It is not required
                 if you're purchasing airtime.
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
 
         Returns:
             An `APIResponse` which is basically just a dataclass containing the data returned
@@ -87,7 +105,11 @@ class BillingAndBetting(BaseAPIWrapper):
             "PhoneNumber": phone_number,
             "CustomerIdentifier": customer_identifier,
         }
-        return self.api_call(service_type=ServiceType.ADMIN_PURCHASE_BILL, data=data)
+        return self.api_call(
+            service_type=ServiceType.ADMIN_PURCHASE_BILL,
+            data=data,
+            request_reference=request_reference,
+        )
 
     def purchase_bill_from_virtual_account(
         self,
@@ -96,6 +118,7 @@ class BillingAndBetting(BaseAPIWrapper):
         bill_item_identifier: str,
         phone_number: str,
         customer_identifier: str,
+        request_reference: Optional[str] = None,
     ):
         """Purchase a bill from your virtual account.
 
@@ -105,6 +128,8 @@ class BillingAndBetting(BaseAPIWrapper):
             customer_identifier: The customer's unique identifier
             phone_number: The customer's phone number It is not required
                 if you're purchasing airtime.
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
 
         Returns:
             An `APIResponse` which is basically just a dataclass containing the data returned
@@ -121,16 +146,21 @@ class BillingAndBetting(BaseAPIWrapper):
             "CustomerIdentifier": customer_identifier,
             "TrackingReference": tracking_reference,
         }
-        return self.api_call(service_type=ServiceType.PURCHASE_BILL, data=data)
+        return self.api_call(
+            service_type=ServiceType.PURCHASE_BILL,
+            data=data,
+            request_reference=request_reference,
+        )
 
     def get_bill_purchase_status(
-        self,
-        bill_response_reference: str,
+        self, bill_response_reference: str, request_reference: Optional[str] = None
     ):
         """Retrieve the status of a bill purchase.
 
         Args:
             bill_response_reference: The bill reference gotten from purchasing the bill.
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
 
         Returns:
             An `APIResponse` which is basically just a dataclass containing the data returned
@@ -143,10 +173,18 @@ class BillingAndBetting(BaseAPIWrapper):
         data = {
             "BillResponseReference": bill_response_reference,
         }
-        return self.api_call(service_type=ServiceType.BILL_TSQ, data=data)
+        return self.api_call(
+            service_type=ServiceType.BILL_TSQ,
+            data=data,
+            request_reference=request_reference,
+        )
 
-    def get_purchased_bills(self):
+    def get_purchased_bills(self, request_reference: Optional[str] = None):
         """Retrieve bills purchased from the main account.
+
+        Args:
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
 
         Returns:
             An `APIResponse` which is basically just a dataclass containing the data returned
@@ -156,10 +194,20 @@ class BillingAndBetting(BaseAPIWrapper):
             UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
-        return self.api_call(service_type=ServiceType.ADMIN_GET_PURCHASED_BILLS)
+        return self.api_call(
+            service_type=ServiceType.ADMIN_GET_PURCHASED_BILLS,
+            request_reference=request_reference,
+        )
 
-    def get_purchased_bill_from_virtual_account(self, tracking_reference: str):
+    def get_purchased_bill_from_virtual_account(
+        self, tracking_reference: str, request_reference: Optional[str] = None
+    ):
         """Retrieve bills purchased from a virtual account.
+
+        Args:
+            tracking_reference: The unique identifier of the virtual account.
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
 
         Returns:
             An `APIResponse` which is basically just a dataclass containing the data returned
@@ -170,4 +218,8 @@ class BillingAndBetting(BaseAPIWrapper):
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {"TrackingReference": tracking_reference}
-        return self.api_call(service_type=ServiceType.GET_PURCHASED_BILLS, data=data)
+        return self.api_call(
+            service_type=ServiceType.GET_PURCHASED_BILLS,
+            data=data,
+            request_reference=request_reference,
+        )

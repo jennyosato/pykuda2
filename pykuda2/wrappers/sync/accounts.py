@@ -14,6 +14,7 @@ class Account(BaseAPIWrapper):
         middle_name: str,
         business_name: str,
         tracking_reference: str,
+        request_reference: Optional[str] = None,
     ):
         """Creates a new virtual account for customers.
 
@@ -25,6 +26,8 @@ class Account(BaseAPIWrapper):
             middle_name: customer's middle name.
             business_name: customer's business name.
             tracking_reference: a unique identifier for the account to be created.
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
 
         Returns:
             An `APIResponse` which is basically just a dataclass containing the data returned
@@ -44,7 +47,9 @@ class Account(BaseAPIWrapper):
             "trackingReference": tracking_reference,
         }
         return self.api_call(
-            service_type=ServiceType.ADMIN_CREATE_VIRTUAL_ACCOUNT, data=data
+            service_type=ServiceType.ADMIN_CREATE_VIRTUAL_ACCOUNT,
+            data=data,
+            request_reference=request_reference,
         )
 
     def update_virtual_account(
@@ -53,6 +58,7 @@ class Account(BaseAPIWrapper):
         first_name: Optional[str] = None,
         last_name: Optional[str] = None,
         email: Optional[str] = None,
+        request_reference: Optional[str] = None,
     ):
         """Modifies a virtual account data.
 
@@ -66,6 +72,8 @@ class Account(BaseAPIWrapper):
             first_name: The new first name the customer's first name should be updated to if provided.
             last_name: The new last name the customer's last name should be updated to if provided.
             email: The new email address the customer's email address should be updated to if provided.
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
 
         Returns:
             An `APIResponse` which is basically just a dataclass containing the data returned
@@ -93,15 +101,21 @@ class Account(BaseAPIWrapper):
         if not email:
             data.pop("email")
         return self.api_call(
-            service_type=ServiceType.ADMIN_UPDATE_VIRTUAL_ACCOUNT, data=data
+            service_type=ServiceType.ADMIN_UPDATE_VIRTUAL_ACCOUNT,
+            data=data,
+            request_reference=request_reference,
         )
 
-    def get_virtual_accounts(self, page_size: int, page_number: int):
+    def get_virtual_accounts(
+        self, page_size: int, page_number: int, request_reference: Optional[str] = None
+    ):
         """Retrieves your existing virtual accounts.
 
         Args:
             page_size: This specifies the number of virtual accounts to be retrieved.
             page_number: This specifies the index of the paginated results retrieved.
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
 
         Returns:
             An `APIResponse` which is basically just a dataclass containing the data returned
@@ -115,13 +129,21 @@ class Account(BaseAPIWrapper):
             "PageSize": page_size,
             "PageNumber": page_number,
         }
-        return self.api_call(service_type=ServiceType.ADMIN_VIRTUAL_ACCOUNTS, data=data)
+        return self.api_call(
+            service_type=ServiceType.ADMIN_VIRTUAL_ACCOUNTS,
+            data=data,
+            request_reference=request_reference,
+        )
 
-    def get_virtual_account(self, tracking_reference: str):
+    def get_virtual_account(
+        self, tracking_reference: str, request_reference: Optional[str] = None
+    ):
         """Retrieves an existing virtual account.
 
         Args:
             tracking_reference: the unique identifier tied to the account to be retrieved.
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
 
         Returns:
             An `APIResponse` which is basically just a dataclass containing the data returned
@@ -135,10 +157,14 @@ class Account(BaseAPIWrapper):
             "trackingReference": tracking_reference,
         }
         return self.api_call(
-            service_type=ServiceType.ADMIN_RETRIEVE_SINGLE_VIRTUAL_ACCOUNT, data=data
+            service_type=ServiceType.ADMIN_RETRIEVE_SINGLE_VIRTUAL_ACCOUNT,
+            data=data,
+            request_reference=request_reference,
         )
 
-    def disable_virtual_account(self, tracking_reference: str):
+    def disable_virtual_account(
+        self, tracking_reference: str, request_reference: Optional[str] = None
+    ):
         """Disables a user’s virtual static account.
 
         Kuda encourages Admins and account managers to review accounts and transactions
@@ -147,6 +173,8 @@ class Account(BaseAPIWrapper):
 
         Args:
             tracking_reference: the unique identifier tied to the account to be disabled.
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
 
         Returns:
             An `APIResponse` which is basically just a dataclass containing the data returned
@@ -160,14 +188,20 @@ class Account(BaseAPIWrapper):
             "trackingReference": tracking_reference,
         }
         return self.api_call(
-            service_type=ServiceType.ADMIN_DISABLE_VIRTUAL_ACCOUNT, data=data
+            service_type=ServiceType.ADMIN_DISABLE_VIRTUAL_ACCOUNT,
+            data=data,
+            request_reference=request_reference,
         )
 
-    def enable_virtual_account(self, tracking_reference: str):
+    def enable_virtual_account(
+        self, tracking_reference: str, request_reference: Optional[str] = None
+    ):
         """Enables a user’s virtual static account.
 
         Args:
             tracking_reference: the unique identifier tied to the account to be enabled.
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
 
         Returns:
             An `APIResponse` which is basically just a dataclass containing the data returned
@@ -181,12 +215,18 @@ class Account(BaseAPIWrapper):
             "trackingReference": tracking_reference,
         }
         return self.api_call(
-            service_type=ServiceType.ADMIN_ENABLE_VIRTUAL_ACCOUNT, data=data
+            service_type=ServiceType.ADMIN_ENABLE_VIRTUAL_ACCOUNT,
+            data=data,
+            request_reference=request_reference,
         )
 
-    def get_admin_account_balance(self):
+    def get_admin_account_balance(self, request_reference: Optional[str] = None):
         """Retrieves the account balance on your main account.
 
+        Args:
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
+
         Returns:
             An `APIResponse` which is basically just a dataclass containing the data returned
             by the server as result of calling this function.
@@ -196,11 +236,19 @@ class Account(BaseAPIWrapper):
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         return self.api_call(
-            service_type=ServiceType.ADMIN_RETRIEVE_MAIN_ACCOUNT_BALANCE
+            service_type=ServiceType.ADMIN_RETRIEVE_MAIN_ACCOUNT_BALANCE,
+            request_reference=request_reference,
         )
 
-    def get_virtual_account_balance(self, tracking_reference: str):
+    def get_virtual_account_balance(
+        self, tracking_reference: str, request_reference: Optional[str] = None
+    ):
         """Retrieves the account balance on your virtual account.
+
+        Args:
+            tracking_reference: a unique identifier for the virtual account.
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
 
         Returns:
             An `APIResponse` which is basically just a dataclass containing the data returned
@@ -214,5 +262,7 @@ class Account(BaseAPIWrapper):
             "trackingReference": tracking_reference,
         }
         return self.api_call(
-            service_type=ServiceType.ADMIN_ENABLE_VIRTUAL_ACCOUNT, data=data
+            service_type=ServiceType.ADMIN_ENABLE_VIRTUAL_ACCOUNT,
+            data=data,
+            request_reference=request_reference,
         )

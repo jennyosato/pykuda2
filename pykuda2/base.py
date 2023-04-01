@@ -76,6 +76,7 @@ class AbstractAPIWrapper(ABC):
         data: dict,
         method=HTTPMethod.POST,
         endpoint_path: Optional[str] = None,
+        request_reference: Optional[str] = None,
     ):
         """Allows sending to request to Kuda endpoint's based on `service_type` and `endpoint_path`.
 
@@ -93,6 +94,8 @@ class AbstractAPIWrapper(ABC):
             method: The HTTP method the endpoint accepts
             endpoint_path: This is optional and only required by endpoints that don't comply with the
                 single url architecture. Only the endpoint path should be provided as a string.
+            request_reference: A unique identifier for each reqeust. it is auto generated if
+                this parameter is not provided.
         Returns:
             An `APIResponse` which is basically just a dataclass containing the data returned
             by the server as result of calling this function.
@@ -107,10 +110,11 @@ class AbstractAPIWrapper(ABC):
         service_type: ServiceType,
         data: Optional[dict] = None,
         endpoint_path: Optional[str] = None,
+        request_reference: Optional[str] = None,
     ) -> dict:
         payload = {
             "servicetype": service_type,
-            "requestref": str(uuid4()),
+            "requestref": request_reference or str(uuid4()),
             "data": data,
         }
         if not data:
@@ -188,10 +192,14 @@ class BaseAPIWrapper(AbstractAPIWrapper):
         data: Optional[dict] = None,
         method=HTTPMethod.POST,
         endpoint_path: Optional[str] = None,
+        request_reference: Optional[str] = None,
     ):
 
         http_method_call_kwargs = self._parse_call_kwargs(
-            service_type=service_type, data=data, endpoint_path=endpoint_path
+            service_type=service_type,
+            data=data,
+            endpoint_path=endpoint_path,
+            request_reference=request_reference,
         )
         http_methods_mapping = {
             HTTPMethod.GET: httpx.get,
@@ -268,9 +276,13 @@ class BaseAsyncAPIWrapper(AbstractAPIWrapper):
         data: dict,
         method=HTTPMethod.POST,
         endpoint_path: Optional[str] = None,
+        request_reference: Optional[str] = None,
     ):
         http_method_call_kwargs = await self._parse_call_kwargs_async(
-            service_type=service_type, data=data, endpoint_path=endpoint_path
+            service_type=service_type,
+            data=data,
+            endpoint_path=endpoint_path,
+            request_reference=request_reference,
         )
         async with httpx.AsyncClient() as client:
             http_method_callable = getattr(client, method.value.lower(), None)
@@ -289,11 +301,15 @@ class BaseAsyncAPIWrapper(AbstractAPIWrapper):
             return self._parse_response(response)
 
     async def _parse_call_kwargs_async(
-        self, service_type: ServiceType, data: dict, endpoint_path: Optional[str] = None
+        self,
+        service_type: ServiceType,
+        data: dict,
+        endpoint_path: Optional[str] = None,
+        request_reference: Optional[str] = None,
     ) -> dict:
         payload = {
             "ServiceType": service_type,
-            "RequestRef": str(uuid4()),
+            "RequestRef": request_reference or str(uuid4()),
             "Data": data,
         }
         return {

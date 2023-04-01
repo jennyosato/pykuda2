@@ -5,23 +5,55 @@ from pykuda2.utils import TransferInstruction, ServiceType
 
 
 class Transaction(BaseAPIWrapper):
-    def get_banks(self):
-        """Gets all the bank list from NIPS
-        Note:
-             In production, the list of banks and bank codes may change based o
-             n the responses gotten from NIBSS (Nigerian Interbank Settlement System).
+    def get_banks(self, request_reference: Optional[str] = None):
+        """Retrieves all the banks available from NIPS
+
+         In production, the list of banks and bank codes may change based on
+         the responses gotten from NIBSS (Nigerian Interbank Settlement System).
+
+         Args:
+             request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
+
+         Returns:
+            An `APIResponse` which is basically just a dataclass containing the data returned
+            by the server as result of calling this function.
+
+        Raises:
+            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
+            ConnectionException: when the request times out or in the absence of an internet connection.
         """
-        return self.api_call(service_type=ServiceType.BANK_LIST)
+        return self.api_call(service_type=ServiceType.BANK_LIST, request_reference=request_reference)
 
     def confirm_transfer_recipient(
         self,
         beneficiary_account_number: str,
         beneficiary_bank_code: str,
-        sender_tracking_reference: str,
+        sender_tracking_reference: Optional[str],
         is_request_from_virtual_account: bool,
+            request_reference: Optional[str] = None
     ):
         """
         Retrieves information of a beneficiary for validation before initiating a transfer.
+
+        Args:
+            beneficiary_account_number: Destination bank account number.
+            beneficiary_bank_code: Destination bank code.
+            sender_tracking_reference: Tracking reference of the virtual account trying to
+                do the actual transfer. Leave it empty if the intended transfer is going to
+                be from the main account.
+            is_request_from_virtual_account: If the intended transfer is to be made by the
+                virtual account.
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
+
+        Returns:
+            An `APIResponse` which is basically just a dataclass containing the data returned
+            by the server as result of calling this function.
+
+        Raises:
+            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
+            ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {
             "beneficiaryAccountNumber": beneficiary_account_number,
@@ -29,11 +61,10 @@ class Transaction(BaseAPIWrapper):
             "SenderTrackingReference": sender_tracking_reference,
             "isRequestFromVirtualAccount": is_request_from_virtual_account,
         }
-        return self.api_call(service_type=ServiceType.NAME_ENQUIRY, data=data)
+        return self.api_call(service_type=ServiceType.NAME_ENQUIRY, data=data, request_reference=request_reference)
 
     def fund_transfer(
         self,
-        tracking_reference: str,
         beneficiary_account: str,
         beneficiary_bank_code: str,
         beneficiary_name: str,
@@ -41,15 +72,38 @@ class Transaction(BaseAPIWrapper):
         narration: str,
         name_enquiry_session_id: str,
         sender_name: str,
-        client_fee_charge: int,
+        client_fee_charge: int = 0,
         client_account_number: Optional[str] = None,
+            request_reference: Optional[str] = None
     ):
         """
         Sends money from your main Kuda account to another bank accounts.
 
-        Note:
-            Please, do not use sensitive data while doing test transactions so
-            as not to save it in your sandbox environment.
+        Please, do not use sensitive data while doing test transactions so
+        as not to save it in your sandbox environment.
+
+        Args:
+            beneficiary_account: Destination bank account number.
+            beneficiary_bank_code: Destination bank code.
+            beneficiary_name: Name of the recipient.
+            amount: Amount to be transferred.
+            narration: User defined reason for the transaction.
+            name_enquiry_session_id: Session ID generated from the nameEnquiry request.
+            sender_name: Name of the person sending money.
+            client_fee_charge: It is an amount a client wishes to charge their customer
+                for a transfer being carried out.
+            client_account_number: Account number of the client where the charged fee is
+                sent to.
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
+
+        Returns:
+            An `APIResponse` which is basically just a dataclass containing the data returned
+            by the server as result of calling this function.
+
+        Raises:
+            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
+            ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {
             "ClientAccountNumber": client_account_number,
@@ -59,11 +113,10 @@ class Transaction(BaseAPIWrapper):
             "amount": amount,
             "narration": narration,
             "nameEnquirySessionID": name_enquiry_session_id,
-            "trackingReference": tracking_reference,
             "senderName": sender_name,
             "clientFeeCharge": client_fee_charge,
         }
-        return self.api_call(service_type=ServiceType.SINGLE_FUND_TRANSFER, data=data)
+        return self.api_call(service_type=ServiceType.SINGLE_FUND_TRANSFER, data=data, request_reference=request_reference)
 
     def virtual_account_fund_transfer(
         self,
@@ -75,9 +128,36 @@ class Transaction(BaseAPIWrapper):
         beneficiary_bank_code: str,
         sender_name: str,
         name_enquiry_id: str,
-        client_fee_charge: int,
+        client_fee_charge: int = 0,
+        client_account_number: Optional[str] = None,
+            request_reference: Optional[str] = None
     ):
-        """Transfer money from a virtual account to another and any other Nigerian bank account."""
+        """Transfer money from a virtual account to another and any other Nigerian bank account.
+
+        Args:
+            tracking_reference: Unique identifier of the sender.
+            beneficiary_account: Destination bank account number.
+            beneficiary_bank_code: Destination bank code.
+            beneficiary_name: Name of the recipient.
+            amount: Amount to be transferred.
+            narration: User defined reason for the transaction.
+            name_enquiry_id: Session ID generated from the nameEnquiry request.
+            sender_name: Name of the person sending money.
+            client_fee_charge: It is an amount a client wishes to charge their customer
+                for a transfer being carried out.
+            client_account_number: Account number of the client where the charged fee is
+                sent to.
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
+
+        Returns:
+            An `APIResponse` which is basically just a dataclass containing the data returned
+            by the server as result of calling this function.
+
+        Raises:
+            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
+            ConnectionException: when the request times out or in the absence of an internet connection.
+        """
         data = {
             "trackingReference": tracking_reference,
             "beneficiaryAccount": beneficiary_account,
@@ -88,15 +168,32 @@ class Transaction(BaseAPIWrapper):
             "senderName": sender_name,
             "nameEnquiryId": name_enquiry_id,
             "clientFeeCharge": client_fee_charge,
+            "ClientAccountNumber": client_account_number
         }
         return self.api_call(
-            service_type=ServiceType.VIRTUAL_ACCOUNT_FUND_TRANSFER, data=data
+            service_type=ServiceType.VIRTUAL_ACCOUNT_FUND_TRANSFER, data=data, request_reference=request_reference
         )
 
     def process_transfers(
         self,
         fund_transfer_instructions: list[TransferInstruction],
+            request_reference: Optional[str] = None
     ):
+        """Allows you to send a list of transfer instructions to Kuda, to make the payments on your behalf.
+
+        Args:
+            fund_transfer_instructions: A list of transfer instructions for transfers to be made.
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
+
+        Returns:
+            An `APIResponse` which is basically just a dataclass containing the data returned
+            by the server as result of calling this function.
+
+        Raises:
+            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
+            ConnectionException: when the request times out or in the absence of an internet connection.
+        """
         data = {
             "FundTransferInstructions": [
                 fund_transfer_instruction.to_dict()
@@ -104,7 +201,7 @@ class Transaction(BaseAPIWrapper):
             ]
         }
         return self.api_call(
-            service_type=ServiceType.FUND_TRANSFER_INSTRUCTION, data=data
+            service_type=ServiceType.FUND_TRANSFER_INSTRUCTION, data=data, request_reference=request_reference
         )
 
     def get_transfer_instructions(
@@ -116,7 +213,13 @@ class Transaction(BaseAPIWrapper):
         status: str,
         page_number: int,
         page_size: int,
+            r
     ):
+        """Retrieves transfer instructions and returns the status of the transaction.
+
+        Args:
+            account_number: The beneficiary’s account number.
+        """
         data = {
             "AccountNumber": account_number,
             "Reference": reference,
