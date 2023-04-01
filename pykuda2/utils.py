@@ -5,12 +5,14 @@ from typing import Optional, Union
 
 class Gender(IntEnum):
     """An enum of customer genders supported by Kuda."""
+
     MALE = 1
     FEMALE = 2
 
 
 class CardChannel(IntEnum):
     """An enum of card channels supported by Kuda."""
+
     ATM = 1
     POS = 2
     WEB = 3
@@ -18,6 +20,7 @@ class CardChannel(IntEnum):
 
 class TransactionStatus(str, Enum):
     """An enum of possible transaction status."""
+
     PENDING = "Pending"
     PROCESSING = "Processing"
     SUCCESSFUL = "Successful"
@@ -26,12 +29,14 @@ class TransactionStatus(str, Enum):
 
 class TransactionType(str, Enum):
     """An enum of possible transaction types."""
+
     CREDIT = "c"
     DEBIT = "d"
 
 
 class BillType(str, Enum):
     """An enum of possible bill types."""
+
     AIRTIME = "airtime"
     BETTING = "betting"
     INTERNET_DATA = "internet_data"
@@ -54,6 +59,7 @@ class TransferInstruction:
         long_code: The beneficiary's long code.
         reference: A unique identifier for the transfer.
     """
+
     account_number: str
     account_name: str
     beneficiary_bank_code: str
@@ -92,6 +98,7 @@ class APIResponse:
             for cases where the response of a call does not comply the default
             format.
     """
+
     status_code: int
     status: Optional[str]
     message: Optional[str]
@@ -101,6 +108,7 @@ class APIResponse:
 
 class HTTPMethod(str, Enum):
     """An enum of supported HTTP verbs."""
+
     GET = "GET"
     POST = "POST"
     PUT = "PUT"
@@ -112,6 +120,7 @@ class HTTPMethod(str, Enum):
 
 class Mode(str, Enum):
     """Modes the APIWrappers can operate in"""
+
     DEVELOPMENT = "development"
     PRODUCTION = "production"
 
