@@ -1,10 +1,10 @@
 from typing import Optional
 
-from pykuda2.base import AsyncAPIWrapper
+from pykuda2.base import BaseAsyncAPIWrapper
 from pykuda2.utils import ServiceType
 
 
-class AsyncGiftCard(AsyncAPIWrapper):
+class AsyncGiftCard(BaseAsyncAPIWrapper):
     async def gift_cards(self):
         """Get a curated list of gift cards supported."""
         return await self.api_call(service_type=ServiceType.GET_GIFT_CARD)
@@ -27,7 +27,9 @@ class AsyncGiftCard(AsyncAPIWrapper):
             "billerIdentifier": biller_identifier,
             "note": note,
         }
-        return await self.api_call(service_type=ServiceType.ADMIN_BUY_GIFT_CARD, data=data)
+        return await self.api_call(
+            service_type=ServiceType.ADMIN_BUY_GIFT_CARD, data=data
+        )
 
     async def purchase_gift_card_from_virtual_account(
         self,

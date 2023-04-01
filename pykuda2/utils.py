@@ -3,10 +3,22 @@ from enum import Enum, IntEnum
 from typing import Optional, Union
 
 
+class Gender(IntEnum):
+    MALE = 1
+    FEMALE = 2
+
+
 class CardChannel(IntEnum):
     ATM = 1
     POS = 2
     WEB = 3
+
+
+class TransactionStatus(str, Enum):
+    PENDING = "Pending"
+    PROCESSING = "Processing"
+    SUCCESSFUL = "Successful"
+    FAILED = "Failed"
 
 
 class TransactionType(str, Enum):
@@ -205,3 +217,4 @@ class ServiceType(str, Enum):
     BILL_TSQ = "BILL_TSQ"
     ADMIN_GET_PURCHASED_BILLS = "ADMIN_GET_PURCHASED_BILLS"
     GET_PURCHASED_BILLS = "GET_PURCHASED_BILLS"
+    ADMIN_RETRIEVE_SINGLE_VIRTUAL_ACCOUNT = "ADMIN_RETRIEVE_SINGLE_VIRTUAL_ACCOUNT"

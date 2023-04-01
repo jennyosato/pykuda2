@@ -21,7 +21,6 @@ class BillingAndBetting(BaseAPIWrapper):
             by the server as result of calling this function.
 
         Raises:
-            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {"BillTypeName": bill_type}
@@ -58,7 +57,6 @@ class BillingAndBetting(BaseAPIWrapper):
             by the server as result of calling this function.
 
         Raises:
-            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {
@@ -96,7 +94,6 @@ class BillingAndBetting(BaseAPIWrapper):
             by the server as result of calling this function.
 
         Raises:
-            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {
@@ -123,6 +120,7 @@ class BillingAndBetting(BaseAPIWrapper):
         """Purchase a bill from your virtual account.
 
         Args:
+            tracking_reference: The customer virtual account Identifier.
             amount: Bill amount.
             bill_item_identifier: The Kuda bill unique identifier
             customer_identifier: The customer's unique identifier
@@ -136,7 +134,6 @@ class BillingAndBetting(BaseAPIWrapper):
             by the server as result of calling this function.
 
         Raises:
-            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {
@@ -167,7 +164,6 @@ class BillingAndBetting(BaseAPIWrapper):
             by the server as result of calling this function.
 
         Raises:
-            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {
@@ -191,7 +187,6 @@ class BillingAndBetting(BaseAPIWrapper):
             by the server as result of calling this function.
 
         Raises:
-            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         return self.api_call(
@@ -214,7 +209,6 @@ class BillingAndBetting(BaseAPIWrapper):
             by the server as result of calling this function.
 
         Raises:
-            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {"TrackingReference": tracking_reference}

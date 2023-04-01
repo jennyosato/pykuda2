@@ -1,8 +1,8 @@
-from pykuda2.base import AsyncAPIWrapper
+from pykuda2.base import BaseAsyncAPIWrapper
 from pykuda2.utils import ServiceType, CardChannel
 
 
-class AsyncCard(AsyncAPIWrapper):
+class AsyncCard(BaseAsyncAPIWrapper):
     async def request_card(
         self,
         delivery_city: str,
@@ -33,7 +33,7 @@ class AsyncCard(AsyncAPIWrapper):
         return await self.api_call(
             service_type=ServiceType.REQUEST_CARD,
             data=data,
-            endpoint_url="/RequestCard",
+            endpoint_path="/RequestCard",
         )
 
     async def get_cards(self, simulate_request, tracking_reference: str):
@@ -45,7 +45,7 @@ class AsyncCard(AsyncAPIWrapper):
         return await self.api_call(
             service_type=ServiceType.GET_CUSTOMER_CARDS,
             data=data,
-            endpoint_url="/GetCustomerCards",
+            endpoint_path="/GetCustomerCards",
         )
 
     async def activate_card(
@@ -66,7 +66,7 @@ class AsyncCard(AsyncAPIWrapper):
         return await self.api_call(
             service_type=ServiceType.ACTIVATE_CARD,
             data=data,
-            endpoint_url="/ActivateCard",
+            endpoint_path="/ActivateCard",
         )
 
     async def deactivate_card(self, id: int, tracking_reference: str, simulate_request):
@@ -78,7 +78,7 @@ class AsyncCard(AsyncAPIWrapper):
         return await self.api_call(
             service_type=ServiceType.DEACTIVATE_CARD,
             data=data,
-            endpoint_url="/DeactivateCard",
+            endpoint_path="/DeactivateCard",
         )
 
     async def set_card_limit(
@@ -99,7 +99,7 @@ class AsyncCard(AsyncAPIWrapper):
         return await self.api_call(
             service_type=ServiceType.MANAGE_CARD_TRANSACTION_LIMIT,
             data=data,
-            endpoint_url="/ManageCardTransactionLimit",
+            endpoint_path="/ManageCardTransactionLimit",
         )
 
     async def manage_card_channel(
@@ -120,7 +120,7 @@ class AsyncCard(AsyncAPIWrapper):
         return await self.api_call(
             service_type=ServiceType.MANAGE_CARD_CHANNEL,
             data=data,
-            endpoint_url="/ManageCardChannel",
+            endpoint_path="/ManageCardChannel",
         )
 
     async def change_card_pin(self, tracking_reference: str, new_pin: int, id: int):
@@ -128,7 +128,7 @@ class AsyncCard(AsyncAPIWrapper):
         return await self.api_call(
             service_type=ServiceType.CHANGE_CARD_PIN,
             data=data,
-            endpoint_url="/ChangeCardPIN",
+            endpoint_path="/ChangeCardPIN",
         )
 
     async def block_card(self, tracking_reference: str, id: int):
@@ -137,7 +137,7 @@ class AsyncCard(AsyncAPIWrapper):
             "TrackingReference": tracking_reference,
         }
         return await self.api_call(
-            service_type=ServiceType.BLOCK_CARD, data=data, endpoint_url="/BlockCard"
+            service_type=ServiceType.BLOCK_CARD, data=data, endpoint_path="/BlockCard"
         )
 
     async def unblock_card(self, tracking_reference: str, id: int):
@@ -148,5 +148,5 @@ class AsyncCard(AsyncAPIWrapper):
         return await self.api_call(
             service_type=ServiceType.UNBLOCK_CARD,
             data=data,
-            endpoint_url="/UnblockCard",
+            endpoint_path="/UnblockCard",
         )

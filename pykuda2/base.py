@@ -100,7 +100,7 @@ class AbstractAPIWrapper(ABC):
             An `APIResponse` which is basically just a dataclass containing the data returned
             by the server as result of calling this function.
         Raises:
-            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
+            UnsupportedHTTPMethodException: when an invalid HTTP verb is provided.
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         ...

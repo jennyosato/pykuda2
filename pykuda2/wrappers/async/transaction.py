@@ -1,10 +1,10 @@
 from typing import Optional
 
-from pykuda2.base import AsyncAPIWrapper
+from pykuda2.base import BaseAsyncAPIWrapper
 from pykuda2.utils import TransferInstruction, ServiceType
 
 
-class AsyncTransaction(AsyncAPIWrapper):
+class AsyncTransaction(BaseAsyncAPIWrapper):
     async def get_banks(self):
         """Gets all the bank list from NIPS
         Note:
@@ -63,7 +63,9 @@ class AsyncTransaction(AsyncAPIWrapper):
             "senderName": sender_name,
             "clientFeeCharge": client_fee_charge,
         }
-        return await self.api_call(service_type=ServiceType.SINGLE_FUND_TRANSFER, data=data)
+        return await self.api_call(
+            service_type=ServiceType.SINGLE_FUND_TRANSFER, data=data
+        )
 
     async def virtual_account_fund_transfer(
         self,
@@ -231,7 +233,9 @@ class AsyncTransaction(AsyncAPIWrapper):
             "amount": amount,
             "narration": narration,
         }
-        return await self.api_call(service_type=ServiceType.FUND_VIRTUAL_ACCOUNT, data=data)
+        return await self.api_call(
+            service_type=ServiceType.FUND_VIRTUAL_ACCOUNT, data=data
+        )
 
     async def withdraw_from_virtual_account(
         self,

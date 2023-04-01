@@ -1,7 +1,7 @@
 from typing import Optional
 
 from pykuda2.base import BaseAPIWrapper
-from pykuda2.utils import TransferInstruction, ServiceType
+from pykuda2.utils import TransferInstruction, ServiceType, TransactionStatus
 
 
 class Transaction(BaseAPIWrapper):
@@ -20,10 +20,11 @@ class Transaction(BaseAPIWrapper):
             by the server as result of calling this function.
 
         Raises:
-            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
-        return self.api_call(service_type=ServiceType.BANK_LIST, request_reference=request_reference)
+        return self.api_call(
+            service_type=ServiceType.BANK_LIST, request_reference=request_reference
+        )
 
     def confirm_transfer_recipient(
         self,
@@ -31,7 +32,7 @@ class Transaction(BaseAPIWrapper):
         beneficiary_bank_code: str,
         sender_tracking_reference: Optional[str],
         is_request_from_virtual_account: bool,
-            request_reference: Optional[str] = None
+        request_reference: Optional[str] = None,
     ):
         """
         Retrieves information of a beneficiary for validation before initiating a transfer.
@@ -52,7 +53,6 @@ class Transaction(BaseAPIWrapper):
             by the server as result of calling this function.
 
         Raises:
-            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {
@@ -61,7 +61,11 @@ class Transaction(BaseAPIWrapper):
             "SenderTrackingReference": sender_tracking_reference,
             "isRequestFromVirtualAccount": is_request_from_virtual_account,
         }
-        return self.api_call(service_type=ServiceType.NAME_ENQUIRY, data=data, request_reference=request_reference)
+        return self.api_call(
+            service_type=ServiceType.NAME_ENQUIRY,
+            data=data,
+            request_reference=request_reference,
+        )
 
     def fund_transfer(
         self,
@@ -74,7 +78,7 @@ class Transaction(BaseAPIWrapper):
         sender_name: str,
         client_fee_charge: int = 0,
         client_account_number: Optional[str] = None,
-            request_reference: Optional[str] = None
+        request_reference: Optional[str] = None,
     ):
         """
         Sends money from your main Kuda account to another bank accounts.
@@ -102,7 +106,6 @@ class Transaction(BaseAPIWrapper):
             by the server as result of calling this function.
 
         Raises:
-            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {
@@ -116,7 +119,11 @@ class Transaction(BaseAPIWrapper):
             "senderName": sender_name,
             "clientFeeCharge": client_fee_charge,
         }
-        return self.api_call(service_type=ServiceType.SINGLE_FUND_TRANSFER, data=data, request_reference=request_reference)
+        return self.api_call(
+            service_type=ServiceType.SINGLE_FUND_TRANSFER,
+            data=data,
+            request_reference=request_reference,
+        )
 
     def virtual_account_fund_transfer(
         self,
@@ -130,7 +137,7 @@ class Transaction(BaseAPIWrapper):
         name_enquiry_id: str,
         client_fee_charge: int = 0,
         client_account_number: Optional[str] = None,
-            request_reference: Optional[str] = None
+        request_reference: Optional[str] = None,
     ):
         """Transfer money from a virtual account to another and any other Nigerian bank account.
 
@@ -155,7 +162,6 @@ class Transaction(BaseAPIWrapper):
             by the server as result of calling this function.
 
         Raises:
-            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {
@@ -168,16 +174,18 @@ class Transaction(BaseAPIWrapper):
             "senderName": sender_name,
             "nameEnquiryId": name_enquiry_id,
             "clientFeeCharge": client_fee_charge,
-            "ClientAccountNumber": client_account_number
+            "ClientAccountNumber": client_account_number,
         }
         return self.api_call(
-            service_type=ServiceType.VIRTUAL_ACCOUNT_FUND_TRANSFER, data=data, request_reference=request_reference
+            service_type=ServiceType.VIRTUAL_ACCOUNT_FUND_TRANSFER,
+            data=data,
+            request_reference=request_reference,
         )
 
     def process_transfers(
         self,
         fund_transfer_instructions: list[TransferInstruction],
-            request_reference: Optional[str] = None
+        request_reference: Optional[str] = None,
     ):
         """Allows you to send a list of transfer instructions to Kuda, to make the payments on your behalf.
 
@@ -191,7 +199,6 @@ class Transaction(BaseAPIWrapper):
             by the server as result of calling this function.
 
         Raises:
-            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {
@@ -201,7 +208,9 @@ class Transaction(BaseAPIWrapper):
             ]
         }
         return self.api_call(
-            service_type=ServiceType.FUND_TRANSFER_INSTRUCTION, data=data, request_reference=request_reference
+            service_type=ServiceType.FUND_TRANSFER_INSTRUCTION,
+            data=data,
+            request_reference=request_reference,
         )
 
     def get_transfer_instructions(
@@ -210,15 +219,30 @@ class Transaction(BaseAPIWrapper):
         reference: str,
         amount: int,
         original_request_ref: str,
-        status: str,
+        status: TransactionStatus,
         page_number: int,
         page_size: int,
-            r
+        request_reference: Optional[str] = None,
     ):
         """Retrieves transfer instructions and returns the status of the transaction.
 
         Args:
             account_number: The beneficiary’s account number.
+            reference: The reference on the transfer instruction.
+            amount: The transaction amount.
+            original_request_ref: The request reference used in logging the instruction.
+            status: The status of the transaction.
+            page_size: This specifies the number of transfer instructions to be retrieved.
+            page_number: This specifies the index of the paginated results retrieved.
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
+
+        Returns:
+            An `APIResponse` which is basically just a dataclass containing the data returned
+            by the server as result of calling this function.
+
+        Raises:
+            ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {
             "AccountNumber": account_number,
@@ -230,7 +254,9 @@ class Transaction(BaseAPIWrapper):
             "PageSize": page_size,
         }
         return self.api_call(
-            service_type=ServiceType.SEARCH_FUND_TRANSFER_INSTRUCTION, data=data
+            service_type=ServiceType.SEARCH_FUND_TRANSFER_INSTRUCTION,
+            data=data,
+            request_reference=request_reference,
         )
 
     def get_transaction_logs(
@@ -238,13 +264,36 @@ class Transaction(BaseAPIWrapper):
         request_reference: str,
         response_reference: str,
         transaction_date: str,
-        has_transaction_date_range_filter: str,
+        has_transaction_date_range_filter: bool,
         start_date: str,
         end_date: str,
         page_size: str,
         page_number: str,
         fetch_successful_records=False,
     ):
+        """Retrieves all transactions.
+
+        Args:
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
+            response_reference: Transaction response reference.
+            fetch_successful_records: If set to `True`, only successful transactions
+                will be retrieved.
+            transaction_date: The transaction date. Format (YYYY-MM-DD)
+            has_transaction_date_range_filter: Is set to `True`, then the `start_date` and
+                `end_date` parameter will be used instead of `transaction_date`
+            start_date: Transaction start date. Format (YYYY-MM-DD)
+            end_date: Transaction end date. Format (YYYY-MM-DD)
+            page_size: This specifies the number of transactions to be retrieved.
+            page_number: This specifies the index of the paginated results retrieved.
+
+        Returns:
+            An `APIResponse` which is basically just a dataclass containing the data returned
+            by the server as result of calling this function.
+
+        Raises:
+            ConnectionException: when the request times out or in the absence of an internet connection.
+        """
         data = {
             "RequestReference": request_reference,
             "ResponseReference": response_reference,
@@ -257,18 +306,61 @@ class Transaction(BaseAPIWrapper):
             "PageNumber": page_number,
         }
         return self.api_call(
-            service_type=ServiceType.RETRIEVE_TRANSACTION_LOGS, data=data
+            service_type=ServiceType.RETRIEVE_TRANSACTION_LOGS,
+            data=data,
+            request_reference=request_reference,
         )
 
-    def get_transaction_history(self, page_size: int, page_number: int):
+    def get_transaction_history(
+        self, page_size: int, page_number: int, request_reference: Optional[str] = None
+    ):
+        """Retrieves a list of all main account transactions.
+
+        Args:
+            page_size: This specifies the number of transactions to be retrieved.
+            page_number: This specifies the index of the paginated results retrieved.
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
+
+        Returns:
+            An `APIResponse` which is basically just a dataclass containing the data returned
+            by the server as result of calling this function.
+
+        Raises:
+            ConnectionException: when the request times out or in the absence of an internet connection.
+        """
         data = {"pageSize": page_size, "pageNumber": page_number}
         return self.api_call(
-            service_type=ServiceType.ADMIN_MAIN_ACCOUNT_TRANSACTIONS, data=data
+            service_type=ServiceType.ADMIN_MAIN_ACCOUNT_TRANSACTIONS,
+            data=data,
+            request_reference=request_reference,
         )
 
     def get_filtered_transaction_history(
-        self, page_size: int, page_number: int, start_date: str, end_date: str
+        self,
+        page_size: int,
+        page_number: int,
+        start_date: str,
+        end_date: str,
+        request_reference: Optional[str] = None,
     ):
+        """Retrieves a filtered transaction history.
+
+        Args:
+            start_date: Transaction start date. Format (YYYY-MM-DD)
+            end_date: Transaction end date. Format (YYYY-MM-DD)
+            page_size: This specifies the number of transactions to be retrieved.
+            page_number: This specifies the index of the paginated results retrieved.
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
+
+        Returns:
+            An `APIResponse` which is basically just a dataclass containing the data returned
+            by the server as result of calling this function.
+
+        Raises:
+            ConnectionException: when the request times out or in the absence of an internet connection.
+        """
         data = {
             "pageSize": page_size,
             "pageNumber": page_number,
@@ -276,31 +368,72 @@ class Transaction(BaseAPIWrapper):
             "endDate": end_date,
         }
         return self.api_call(
-            service_type=ServiceType.ADMIN_MAIN_ACCOUNT_FILTERED_TRANSACTIONS, data=data
+            service_type=ServiceType.ADMIN_MAIN_ACCOUNT_FILTERED_TRANSACTIONS,
+            data=data,
+            request_reference=request_reference,
         )
 
     def get_virtual_account_transaction_history(
-        self, page_size: int, page_number: int, tracking_reference: str
+        self,
+        tracking_reference: str,
+        page_size: int,
+        page_number: int,
+        request_reference: Optional[str] = None,
     ):
-        """Retrieves a list of all virtual account transactions"""
+        """Retrieves a list of all virtual account transactions.
+
+        Args:
+            tracking_reference: The virtual account unique identifier.
+            page_size: This specifies the number of transactions to be retrieved.
+            page_number: This specifies the index of the paginated results retrieved.
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
+
+        Returns:
+            An `APIResponse` which is basically just a dataclass containing the data returned
+            by the server as result of calling this function.
+
+        Raises:
+            ConnectionException: when the request times out or in the absence of an internet connection.
+        """
         data = {
             "trackingReference": tracking_reference,
             "pageSize": page_size,
             "pageNumber": page_number,
         }
         return self.api_call(
-            service_type=ServiceType.ADMIN_VIRTUAL_ACCOUNT_TRANSACTIONS, data=data
+            service_type=ServiceType.ADMIN_VIRTUAL_ACCOUNT_TRANSACTIONS,
+            data=data,
+            request_reference=request_reference,
         )
 
     def get_virtual_account_filtered_transaction_history(
         self,
+        tracking_reference: str,
         page_size: str,
         page_number: str,
         start_date: str,
         end_date: str,
-        tracking_reference: str,
+        request_reference: Optional[str] = None,
     ):
-        """Retrieves a filtered list of all virtual account transactions"""
+        """Retrieves a filtered list of all virtual account transactions.
+
+        Args:
+            tracking_reference: The virtual account unique identifier.
+            page_size: This specifies the number of transactions to be retrieved.
+            page_number: This specifies the index of the paginated results retrieved.
+            start_date: Transaction start date. Format (YYYY-MM-DD)
+            end_date: Transaction end date. Format (YYYY-MM-DD)
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
+
+        Returns:
+            An `APIResponse` which is basically just a dataclass containing the data returned
+            by the server as result of calling this function.
+
+        Raises:
+            ConnectionException: when the request times out or in the absence of an internet connection.
+        """
         data = {
             "trackingReference": tracking_reference,
             "pageSize": page_size,
@@ -311,30 +444,74 @@ class Transaction(BaseAPIWrapper):
         return self.api_call(
             service_type=ServiceType.ADMIN_VIRTUAL_ACCOUNT_FILTERED_TRANSACTIONS,
             data=data,
+            request_reference=request_reference,
         )
 
     def get_status(
-        self, is_third_party_bank_transfer: bool, transaction_request_reference: str
+        self,
+        is_third_party_bank_transfer: bool,
+        transaction_request_reference: str,
+        request_reference: Optional[str] = None,
     ):
-        """Retrieves the status of a transaction."""
+        """Retrieves the status of a transaction.
+
+        Args:
+            is_third_party_bank_transfer: Flag to determine if the transaction was interbank or
+                intra-bank.
+            transaction_request_reference: The request reference used when make transaction.
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
+
+        Returns:
+            An `APIResponse` which is basically just a dataclass containing the data returned
+            by the server as result of calling this function.
+
+        Raises:
+            ConnectionException: when the request times out or in the absence of an internet connection.
+        """
         data = {
             "isThirdPartyBankTransfer": is_third_party_bank_transfer,
             "transactionRequestReference": transaction_request_reference,
         }
         return self.api_call(
-            service_type=ServiceType.TRANSACTION_STATUS_QUERY, data=data
+            service_type=ServiceType.TRANSACTION_STATUS_QUERY,
+            data=data,
+            request_reference=request_reference,
         )
 
     def fund_virtual_account(
-        self, tracking_reference: str, amount: int, narration: str
+        self,
+        tracking_reference: str,
+        amount: int,
+        narration: str,
+        request_reference: Optional[str] = None,
     ):
-        """Add funds to a virtual account"""
+        """Add funds to a virtual account.
+
+        Args:
+            tracking_reference: The virtual account tracking reference.
+            amount: The amount you want to fund your account.
+            narration: The additional description for the transaction.
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
+
+        Returns:
+            An `APIResponse` which is basically just a dataclass containing the data returned
+            by the server as result of calling this function.
+
+        Raises:
+            ConnectionException: when the request times out or in the absence of an internet connection.
+        """
         data = {
             "trackingReference": tracking_reference,
             "amount": amount,
             "narration": narration,
         }
-        return self.api_call(service_type=ServiceType.FUND_VIRTUAL_ACCOUNT, data=data)
+        return self.api_call(
+            service_type=ServiceType.FUND_VIRTUAL_ACCOUNT,
+            data=data,
+            request_reference=request_reference,
+        )
 
     def withdraw_from_virtual_account(
         self,
@@ -342,9 +519,25 @@ class Transaction(BaseAPIWrapper):
         amount: int,
         narration: str,
         client_fee_charge: int,
+        request_reference: Optional[str],
     ):
-        """Lets you transfer funds from a virtual account to an associated Kuda
-        account or to any other Nigerian Bank account.
+        """Transfer funds from a virtual account to an associated Kuda account or to any other Nigerian Bank account.
+
+        Args:
+            tracking_reference: The virtual account tracking reference.
+            amount: The amount you want to fund your account.
+            narration: The additional description for the transaction.
+            client_fee_charge: It is an amount a client wishes to charge their customer for a transfer
+                being carried out.
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
+
+        Returns:
+            An `APIResponse` which is basically just a dataclass containing the data returned
+            by the server as result of calling this function.
+
+        Raises:
+            ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {
             "trackingReference": tracking_reference,
@@ -353,5 +546,7 @@ class Transaction(BaseAPIWrapper):
             "ClientFeeCharge": client_fee_charge,
         }
         return self.api_call(
-            service_type=ServiceType.WITHDRAW_VIRTUAL_ACCOUNT, data=data
+            service_type=ServiceType.WITHDRAW_VIRTUAL_ACCOUNT,
+            data=data,
+            request_reference=request_reference,
         )

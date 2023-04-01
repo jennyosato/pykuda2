@@ -34,7 +34,6 @@ class Account(BaseAPIWrapper):
             by the server as result of calling this function.
 
         Raises:
-            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {
@@ -80,7 +79,6 @@ class Account(BaseAPIWrapper):
             by the server as result of calling this function.
 
         Raises:
-            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
             ConnectionException: when the request times out or in the absence of an internet connection.
             ValueError: If none of the optional parameters is provided.
         """
@@ -122,7 +120,6 @@ class Account(BaseAPIWrapper):
             by the server as result of calling this function.
 
         Raises:
-            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {
@@ -150,7 +147,6 @@ class Account(BaseAPIWrapper):
             by the server as result of calling this function.
 
         Raises:
-            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {
@@ -181,7 +177,6 @@ class Account(BaseAPIWrapper):
             by the server as result of calling this function.
 
         Raises:
-            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {
@@ -208,7 +203,6 @@ class Account(BaseAPIWrapper):
             by the server as result of calling this function.
 
         Raises:
-            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {
@@ -232,7 +226,6 @@ class Account(BaseAPIWrapper):
             by the server as result of calling this function.
 
         Raises:
-            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         return self.api_call(
@@ -255,7 +248,6 @@ class Account(BaseAPIWrapper):
             by the server as result of calling this function.
 
         Raises:
-            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {

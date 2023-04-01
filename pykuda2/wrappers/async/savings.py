@@ -1,11 +1,13 @@
-from pykuda2.base import AsyncAPIWrapper
+from pykuda2.base import BaseAsyncAPIWrapper
 from pykuda2.utils import TransactionType, ServiceType
 
 
-class AsyncSavings(AsyncAPIWrapper):
+class AsyncSavings(BaseAsyncAPIWrapper):
     async def create_plain_savings_account(self, name: str, tracking_reference: str):
         data = {"Name": name, "TrackingReference": tracking_reference}
-        return await self.api_call(service_type=ServiceType.CREATE_PLAIN_SAVE, data=data)
+        return await self.api_call(
+            service_type=ServiceType.CREATE_PLAIN_SAVE, data=data
+        )
 
     async def get_plain_savings_account(
         self, tracking_reference: str, primary_account_number: str
@@ -110,7 +112,9 @@ class AsyncSavings(AsyncAPIWrapper):
             "TrackingReference": tracking_reference,
             "PrimaryAccountNumber": primary_account_number,
         }
-        return await self.api_call(service_type=ServiceType.GET_OPEN_FLEXIBLE_SAVE, data=data)
+        return await self.api_call(
+            service_type=ServiceType.GET_OPEN_FLEXIBLE_SAVE, data=data
+        )
 
     async def get_open_flexible_savings_accounts(self, primary_account_number):
         data = {"PrimaryAccountNumber": primary_account_number}
@@ -161,7 +165,9 @@ class AsyncSavings(AsyncAPIWrapper):
             "StartData": start_date,
             "IsInterestEarning": is_interest_earning,
         }
-        return await self.api_call(service_type=ServiceType.CREATE_FIXED_SAVE, data=data)
+        return await self.api_call(
+            service_type=ServiceType.CREATE_FIXED_SAVE, data=data
+        )
 
     async def get_fixed_savings_account(
         self, tracking_reference: str, primary_account_number: str

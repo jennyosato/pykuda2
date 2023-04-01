@@ -30,6 +30,7 @@ class AsyncAccount(BaseAsyncAPIWrapper):
         return await self.api_call(
             service_type=ServiceType.ADMIN_CREATE_VIRTUAL_ACCOUNT, data=data
         )
+
     async def update_virtual_account(
         self, tracking_reference: str, first_name: str, last_name: str, email: str
     ):
@@ -50,13 +51,16 @@ class AsyncAccount(BaseAsyncAPIWrapper):
         return await self.api_call(
             service_type=ServiceType.ADMIN_UPDATE_VIRTUAL_ACCOUNT, data=data
         )
+
     async def get_virtual_accounts(self, page_size: int, page_number: int):
         """Retrieves your existing virtual accounts"""
         data = {
             "PageSize": page_size,
             "PageNumber": page_number,
         }
-        return await self.api_call(service_type=ServiceType.ADMIN_VIRTUAL_ACCOUNTS, data=data)
+        return await self.api_call(
+            service_type=ServiceType.ADMIN_VIRTUAL_ACCOUNTS, data=data
+        )
 
     async def get_virtual_account(self, tracking_reference: str):
         """Retrieves an existing virtual account"""
