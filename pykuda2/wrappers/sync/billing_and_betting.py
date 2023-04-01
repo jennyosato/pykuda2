@@ -1,9 +1,25 @@
+from typing import Optional
+
 from pykuda2.base import BaseAPIWrapper
 from pykuda2.utils import BillType, ServiceType
 
 
 class BillingAndBetting(BaseAPIWrapper):
-    def get_bill_type(self, bill_type: BillType):
+    def get_bill_type_options(self, bill_type: BillType):
+        """Retrieves all the options of a bill type that are available from Kuda.
+
+        Args:
+            bill_type: The bill type we want to get the options available for e.g.
+                BillType.INTERNET_DATA, BillType.CABLE_TV
+
+        Returns:
+            An `APIResponse` which is basically just a dataclass containing the data returned
+            by the server as result of calling this function.
+
+        Raises:
+            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
+            ConnectionException: when the request times out or in the absence of an internet connection.
+        """
         data = {"BillTypeName": bill_type}
         return self.api_call(service_type=ServiceType.GET_BILLERS_BY_TYPE, data=data)
 
@@ -13,6 +29,27 @@ class BillingAndBetting(BaseAPIWrapper):
         kuda_bill_item_identifier: str,
         customer_identification: str,
     ):
+        """Verifies the identity of  the beneficiary.
+
+        Just like an account or bank transfer, You need to verify a customer's identity before
+        successfully initiating a bill purchase instance. This way you reduce the issue of theft
+        or erroneous bill payments which are hard to retrieve.
+        You don't need to verify the customer if the bill type is airtime
+
+
+        Args:
+            tracking_reference: Customer's wallet identifier.
+            kuda_bill_item_identifier: The Kuda bill unique identifier.
+            customer_identification: The customer's unique identifier.
+
+        Returns:
+            An `APIResponse` which is basically just a dataclass containing the data returned
+            by the server as result of calling this function.
+
+        Raises:
+            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
+            ConnectionException: when the request times out or in the absence of an internet connection.
+        """
         data = {
             "TrackingRef": tracking_reference,
             "KudaBillItemIdentifier": kuda_bill_item_identifier,
@@ -24,10 +61,26 @@ class BillingAndBetting(BaseAPIWrapper):
         self,
         amount: int,
         bill_item_identifier: str,
-        phone_number: str,
         customer_identifier: str,
+        phone_number: Optional[str] = None,
     ):
-        """Purchase a bill from your main account"""
+        """Purchase a bill from your main account.
+
+        Args:
+            amount: Bill amount.
+            bill_item_identifier: The Kuda bill unique identifier
+            customer_identifier: The customer's unique identifier
+            phone_number: The customer's phone number It is not required
+                if you're purchasing airtime.
+
+        Returns:
+            An `APIResponse` which is basically just a dataclass containing the data returned
+            by the server as result of calling this function.
+
+        Raises:
+            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
+            ConnectionException: when the request times out or in the absence of an internet connection.
+        """
         data = {
             "Amount": amount,
             "BillItemIdentifier": bill_item_identifier,
@@ -44,6 +97,23 @@ class BillingAndBetting(BaseAPIWrapper):
         phone_number: str,
         customer_identifier: str,
     ):
+        """Purchase a bill from your virtual account.
+
+        Args:
+            amount: Bill amount.
+            bill_item_identifier: The Kuda bill unique identifier
+            customer_identifier: The customer's unique identifier
+            phone_number: The customer's phone number It is not required
+                if you're purchasing airtime.
+
+        Returns:
+            An `APIResponse` which is basically just a dataclass containing the data returned
+            by the server as result of calling this function.
+
+        Raises:
+            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
+            ConnectionException: when the request times out or in the absence of an internet connection.
+        """
         data = {
             "Amount": amount,
             "BillItemIdentifier": bill_item_identifier,
@@ -54,18 +124,50 @@ class BillingAndBetting(BaseAPIWrapper):
         return self.api_call(service_type=ServiceType.PURCHASE_BILL, data=data)
 
     def get_bill_purchase_status(
-        self, bill_response_reference: str, bill_request_reference: str
+        self,
+        bill_response_reference: str,
     ):
+        """Retrieve the status of a bill purchase.
+
+        Args:
+            bill_response_reference: The bill reference gotten from purchasing the bill.
+
+        Returns:
+            An `APIResponse` which is basically just a dataclass containing the data returned
+            by the server as result of calling this function.
+
+        Raises:
+            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
+            ConnectionException: when the request times out or in the absence of an internet connection.
+        """
         data = {
             "BillResponseReference": bill_response_reference,
-            "BillRequestRef": bill_request_reference,
         }
         return self.api_call(service_type=ServiceType.BILL_TSQ, data=data)
 
     def get_purchased_bills(self):
-        """Get bills purchased from the main account"""
+        """Retrieve bills purchased from the main account.
+
+        Returns:
+            An `APIResponse` which is basically just a dataclass containing the data returned
+            by the server as result of calling this function.
+
+        Raises:
+            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
+            ConnectionException: when the request times out or in the absence of an internet connection.
+        """
         return self.api_call(service_type=ServiceType.ADMIN_GET_PURCHASED_BILLS)
 
     def get_purchased_bill_from_virtual_account(self, tracking_reference: str):
+        """Retrieve bills purchased from a virtual account.
+
+        Returns:
+            An `APIResponse` which is basically just a dataclass containing the data returned
+            by the server as result of calling this function.
+
+        Raises:
+            UnsupportedHTTPMethodException: when and invalid HTTP verb is provided.
+            ConnectionException: when the request times out or in the absence of an internet connection.
+        """
         data = {"TrackingReference": tracking_reference}
         return self.api_call(service_type=ServiceType.GET_PURCHASED_BILLS, data=data)

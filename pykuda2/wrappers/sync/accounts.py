@@ -5,7 +5,6 @@ from pykuda2.utils import ServiceType
 
 
 class Account(BaseAPIWrapper):
-
     def create_virtual_account(
         self,
         email: str,
