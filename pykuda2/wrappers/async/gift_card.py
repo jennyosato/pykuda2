@@ -5,9 +5,23 @@ from pykuda2.utils import ServiceType
 
 
 class AsyncGiftCard(BaseAsyncAPIWrapper):
-    async def gift_cards(self):
-        """Get a curated list of gift cards supported."""
-        return await self.api_call(service_type=ServiceType.GET_GIFT_CARD)
+    async def gift_cards(self, request_reference: Optional[str] = None):
+        """Retrieves a curated list of gift cards supported by Kuda.
+
+        Args:
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
+
+        Returns:
+            An `APIResponse` which is basically just a dataclass containing the data returned
+            by the server as result of calling this function.
+
+        Raises:
+            ConnectionException: when the request times out or in the absence of an internet connection.
+        """
+        return await self.api_call(
+            service_type=ServiceType.GET_GIFT_CARD, request_reference=request_reference
+        )
 
     async def purchase_gift_card(
         self,
@@ -17,8 +31,28 @@ class AsyncGiftCard(BaseAsyncAPIWrapper):
         customer_email: str,
         biller_identifier: str,
         note: Optional[str] = None,
+        request_reference: Optional[str] = None,
     ):
-        """Buy gift cards from the admin account"""
+        """Buy gift cards from the admin account
+
+        Args:
+            amount: The gift card amount to be purchased. It could be in USD/ GBP/ EUR/ NGN/ AED , e.t.c.
+            customer_name: Name of the customer receiving the gift card.
+            customer_mobile: Mobile number of customer.
+            customer_email: The email address of customer.
+            biller_identifier: The Biller ID or identifier. You can find it in the `APIResponse` of
+                `self.gift_cards`.
+            note: An optional gift card note.
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
+
+        Returns:
+            An `APIResponse` which is basically just a dataclass containing the data returned
+            by the server as result of calling this function.
+
+        Raises:
+            ConnectionException: when the request times out or in the absence of an internet connection.
+        """
         data = {
             "amount": amount,
             "requestingCustomerName": customer_name,
@@ -28,7 +62,9 @@ class AsyncGiftCard(BaseAsyncAPIWrapper):
             "note": note,
         }
         return await self.api_call(
-            service_type=ServiceType.ADMIN_BUY_GIFT_CARD, data=data
+            service_type=ServiceType.ADMIN_BUY_GIFT_CARD,
+            data=data,
+            request_reference=request_reference,
         )
 
     async def purchase_gift_card_from_virtual_account(
@@ -40,8 +76,29 @@ class AsyncGiftCard(BaseAsyncAPIWrapper):
         customer_email: str,
         biller_identifier: str,
         note: Optional[str] = None,
+        request_reference: Optional[str] = None,
     ):
-        """Buy gift cards from the virtual account"""
+        """Buy gift cards from the virtual account.
+
+        Args:
+            tracking_reference: The unique identifier of the virtual account.
+            amount: The gift card amount to be purchased. It could be in USD/ GBP/ EUR/ NGN/ AED , e.t.c.
+            customer_name: Name of the customer receiving the gift card.
+            customer_mobile: Mobile number of customer.
+            customer_email: The email address of customer.
+            biller_identifier: The Biller ID or identifier. You can find it in the `APIResponse` of
+                `self.gift_cards`.
+            note: An optional gift card note.
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
+
+        Returns:
+            An `APIResponse` which is basically just a dataclass containing the data returned
+            by the server as result of calling this function.
+
+        Raises:
+            ConnectionException: when the request times out or in the absence of an internet connection.
+        """
         data = {
             "trackingReference": tracking_reference,
             "amount": amount,
@@ -51,7 +108,11 @@ class AsyncGiftCard(BaseAsyncAPIWrapper):
             "billerIdentifier": biller_identifier,
             "note": note,
         }
-        return await self.api_call(service_type=ServiceType.BUY_GIFT_CARD, data=data)
+        return await self.api_call(
+            service_type=ServiceType.BUY_GIFT_CARD,
+            data=data,
+            request_reference=request_reference,
+        )
 
     async def get_gift_card_status(
         self,
@@ -62,8 +123,29 @@ class AsyncGiftCard(BaseAsyncAPIWrapper):
         customer_email: str,
         biller_identifier: str,
         note: str,
+        request_reference: Optional[str] = None,
     ):
-        """Status of all gift cards purchased"""
+        """Retrieves the status of all gift cards purchased.
+
+        Args:
+            tracking_reference: The unique identifier of the virtual account.
+            amount: The gift card amount to be purchased. It could be in USD/ GBP/ EUR/ NGN/ AED , e.t.c.
+            customer_name: Name of the customer receiving the gift card.
+            customer_mobile: Mobile number of customer.
+            customer_email: The email address of customer.
+            biller_identifier: The Biller ID or identifier. You can find it in the `APIResponse` of
+                `self.gift_cards`.
+            note: An optional gift card note.
+            request_reference: a unique identifier for this api call.
+                it is automatically generated if not provided.
+
+        Returns:
+            An `APIResponse` which is basically just a dataclass containing the data returned
+            by the server as result of calling this function.
+
+        Raises:
+            ConnectionException: when the request times out or in the absence of an internet connection.
+        """
         data = {
             "trackingReference": tracking_reference,
             "amount": amount,
@@ -73,4 +155,8 @@ class AsyncGiftCard(BaseAsyncAPIWrapper):
             "billerIdentifier": biller_identifier,
             "note": note,
         }
-        return await self.api_call(service_type=ServiceType.GIFT_CARD_TSQ, data=data)
+        return await self.api_call(
+            service_type=ServiceType.GIFT_CARD_TSQ,
+            data=data,
+            request_reference=request_reference,
+        )
