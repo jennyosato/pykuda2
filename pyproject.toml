@@ -10,6 +10,11 @@ python = "^3.9"
 httpx = "^0.23.3"
 
 
+[tool.poetry.group.dev.dependencies]
+mkdocs = "^1.4.2"
+mkdocstrings = {extras = ["python"], version = "^0.21.2"}
+mkdocs-material = "^9.1.6"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
