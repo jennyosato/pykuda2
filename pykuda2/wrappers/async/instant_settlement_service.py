@@ -1,8 +1,8 @@
 from pykuda2 import Mode, ServiceType
-from pykuda2.base import BaseAPIWrapper
+from pykuda2.base import BaseAPIWrapper, BaseAsyncAPIWrapper
 
 
-class InstantSettlementService(BaseAPIWrapper):
+class AsyncInstantSettlementService(BaseAsyncAPIWrapper):
     def __init__(self, secret_key: str, client_password: str, mode=Mode.DEVELOPMENT):
         super().__init__(email="", api_key="", mode=mode)
         self.secret_key = secret_key
@@ -19,11 +19,11 @@ class InstantSettlementService(BaseAPIWrapper):
         }[self.mode]
 
     @property
-    def token(self) -> str:
+    async def token(self) -> str:
         if self._token:
             return self._token
         else:
-            response = self.api_call(
+            response = await self.api_call(
                 service_type=ServiceType.NO_OP,
                 data={
                     "secretKey": self.secret_key,
@@ -34,7 +34,7 @@ class InstantSettlementService(BaseAPIWrapper):
             self._token = response.data["auth_token"]
             return self._token
 
-    def create_terminal(
+    async def create_terminal(
         self,
         terminal_id: str,
         merchant_id: str,
@@ -70,13 +70,13 @@ class InstantSettlementService(BaseAPIWrapper):
             "isReceivingPayment": is_receiving_payment,
             "isActive": is_active,
         }
-        return self.api_call(
+        return await self.api_call(
             service_type=ServiceType.NO_OP,
             data=payload,
             endpoint_path="/api/terminal/api/terminal/createterminal",
         )
 
-    def update_terminal(
+    async def update_terminal(
         self,
         kuda_merchant_id: str,
         terminal_id: str,
@@ -120,13 +120,13 @@ class InstantSettlementService(BaseAPIWrapper):
             "feePercentage": fee_percentage,
             "dateCreated": date_created,
         }
-        return self.api_call(
+        return await self.api_call(
             service_type=ServiceType.NO_OP,
             data=payload,
             endpoint_path="/api/terminal/EditTerminal",
         )
 
-    def all(self, page_size: int, page_number: int):
+    async def all(self, page_size: int, page_number: int):
         """Allows a user to get all merchants and the terminals assigned to them.
 
         Args:
@@ -141,13 +141,13 @@ class InstantSettlementService(BaseAPIWrapper):
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         payload = {"pageSize": page_size, "pageNumber": page_number}
-        return self.api_call(
+        return await self.api_call(
             service_type=ServiceType.NO_OP,
             data=payload,
             endpoint_path="/RetrieveMerchantTerminals",
         )
 
-    def get_settlement_status(self, transaction_id: str):
+    async def get_settlement_status(self, transaction_id: str):
         """Retrieves insight on the status of a particular/all settlements for a terminal.
 
         Args:
@@ -161,13 +161,13 @@ class InstantSettlementService(BaseAPIWrapper):
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         payload = {"transactionId": transaction_id}
-        return self.api_call(
+        return await self.api_call(
             service_type=ServiceType.NO_OP,
             data=payload,
             endpoint_path="/api/terminal/settlementstatus",
         )
 
-    def log_transaction(self, amount: int, transaction_id: str, terminal_id: str):
+    async def log_transaction(self, amount: int, transaction_id: str, terminal_id: str):
         """Logs a complete transaction.
 
         For complete transaction fulfilment, a user will call this method with the transaction amount
@@ -193,13 +193,13 @@ class InstantSettlementService(BaseAPIWrapper):
             "transactionId": transaction_id,
             "terminalId": terminal_id,
         }
-        return self.api_call(
+        return await self.api_call(
             service_type=ServiceType.NO_OP,
             data=payload,
             endpoint_path="/api/terminal/logtransaction",
         )
 
-    def transactions(
+    async def transactions(
         self, terminal_id: str, from_: str, to: str, page_size: int, page_number: int
     ):
         """Retrieves transactions.
@@ -227,7 +227,7 @@ class InstantSettlementService(BaseAPIWrapper):
             "pageSize": page_size,
             "pageNumber": page_number,
         }
-        return self.api_call(
+        return await self.api_call(
             service_type=ServiceType.NO_OP,
             data=payload,
             endpoint_path="/api/terminal/searchtransaction",

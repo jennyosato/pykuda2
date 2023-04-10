@@ -188,7 +188,8 @@ class ServiceType(str, Enum):
         BILL_TSQ: Get status of bill
         ADMIN_GET_PURCHASED_BILLS: Get a list of bills purchased with ADMIN account
         GET_PURCHASED_BILLS: Get a list of bills purchased with Virtual account
-
+        NO_OP: This is a non-existent service type. It's used to for endpoints with
+            no service type so as not to alter the already existing API.
 
 
     """
@@ -259,3 +260,4 @@ class ServiceType(str, Enum):
     ADMIN_GET_PURCHASED_BILLS = "ADMIN_GET_PURCHASED_BILLS"
     GET_PURCHASED_BILLS = "GET_PURCHASED_BILLS"
     ADMIN_RETRIEVE_SINGLE_VIRTUAL_ACCOUNT = "ADMIN_RETRIEVE_SINGLE_VIRTUAL_ACCOUNT"
+    NO_OP = "NO_OP"

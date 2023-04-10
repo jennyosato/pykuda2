@@ -119,6 +119,8 @@ class AbstractAPIWrapper(ABC):
         }
         if not data:
             payload.pop("data", None)
+        if service_type == ServiceType.NO_OP:
+            payload.pop("servicetype", None)
         return {
             "url": self.base_url + endpoint_path
             if endpoint_path is not None
@@ -303,7 +305,7 @@ class BaseAsyncAPIWrapper(AbstractAPIWrapper):
     async def _parse_call_kwargs_async(
         self,
         service_type: ServiceType,
-        data: dict,
+        data: Optional[dict],
         endpoint_path: Optional[str] = None,
         request_reference: Optional[str] = None,
     ) -> dict:
@@ -312,6 +314,10 @@ class BaseAsyncAPIWrapper(AbstractAPIWrapper):
             "RequestRef": request_reference or str(uuid4()),
             "Data": data,
         }
+        if not data:
+            payload.pop("data", None)
+        if service_type == ServiceType.NO_OP:
+            payload.pop("servicetype", None)
         return {
             "url": self.base_url + endpoint_path if endpoint_path is not None else "",
             "json": payload,
