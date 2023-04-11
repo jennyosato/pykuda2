@@ -1,5 +1,3 @@
-
-
 class KudaTestCase:
     def test_attributes(self):
         ...

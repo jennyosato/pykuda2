@@ -1,4 +1,3 @@
-
 class MockedAsyncTransaction:
     async def test_can_get_banks(self):
         ...
@@ -14,7 +13,6 @@ class MockedAsyncTransaction:
 
     async def test_can_process_transfers(self):
         ...
-
 
     async def test_can_get_transfer_instructions(self):
         ...
