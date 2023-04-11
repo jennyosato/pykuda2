@@ -1,0 +1,26 @@
+class MockedAsyncGiftCardTestCase:
+    async def test_can_gift_cards(self):
+        ...
+
+    async def test_can_purchase_gift_card(self):
+        ...
+
+    async def test_can_purchase_gift_card_from_virtual_account(self):
+        ...
+
+    async def test_can_get_gift_card_status(self):
+        ...
+
+
+class AsyncGiftCardTestCase:
+    async def test_can_gift_cards(self):
+        ...
+
+    async def test_can_purchase_gift_card(self):
+        ...
+
+    async def test_can_purchase_gift_card_from_virtual_account(self):
+        ...
+
+    async def test_can_get_gift_card_status(self):
+        ...
