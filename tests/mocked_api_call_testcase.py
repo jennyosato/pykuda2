@@ -1,5 +1,8 @@
+import os
 from unittest import TestCase, IsolatedAsyncioTestCase
 from unittest.mock import Mock, patch
+
+from dotenv import load_dotenv
 
 
 class TestDummyData:
@@ -87,3 +90,11 @@ class MockedAsyncAPICallTestCase(TestDummyData, IsolatedAsyncioTestCase):
 
         mock_head = head_patcher.start()
         mock_head.return_value = cls.mocked_api_response
+
+
+class CredentialMixin:
+    @classmethod
+    def setUpClass(cls) -> None:
+        load_dotenv()
+        cls.email = os.getenv("KUDA_EMAIL_ADDRESS")
+        cls.api_key = os.getenv("KUDA_API_KEY")

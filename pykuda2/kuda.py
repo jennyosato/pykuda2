@@ -1,11 +1,11 @@
 from pykuda2.base import BaseAPIWrapper, BaseAsyncAPIWrapper
 from pykuda2.utils import Mode
-from pykuda2.wrappers.sync.accounts import Account
-from pykuda2.wrappers.sync.billing_and_betting import BillingAndBetting
-from pykuda2.wrappers.sync.card import Card
-from pykuda2.wrappers.sync.gift_card import GiftCard
-from pykuda2.wrappers.sync.savings import Savings
-from pykuda2.wrappers.sync.transaction import Transaction
+from pykuda2.wrappers.sync_wrappers.accounts import Account
+from pykuda2.wrappers.sync_wrappers.billing_and_betting import BillingAndBetting
+from pykuda2.wrappers.sync_wrappers.card import Card
+from pykuda2.wrappers.sync_wrappers.gift_card import GiftCard
+from pykuda2.wrappers.sync_wrappers.savings import Savings
+from pykuda2.wrappers.sync_wrappers.transaction import Transaction
 
 
 class Kuda(BaseAPIWrapper):

@@ -319,7 +319,9 @@ class BaseAsyncAPIWrapper(AbstractAPIWrapper):
         if service_type == ServiceType.NO_OP:
             payload.pop("servicetype", None)
         return {
-            "url": self.base_url + endpoint_path if endpoint_path is not None else "",
+            "url": self.base_url + endpoint_path
+            if endpoint_path is not None
+            else self.base_url,
             "json": payload,
             "headers": await self.headers,
         }
