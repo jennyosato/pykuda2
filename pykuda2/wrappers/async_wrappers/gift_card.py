@@ -122,7 +122,7 @@ class AsyncGiftCard(BaseAsyncAPIWrapper):
         customer_mobile: str,
         customer_email: str,
         biller_identifier: str,
-        note: str,
+        note: Optional[str] = None,
         request_reference: Optional[str] = None,
     ):
         """Retrieves the status of all gift cards purchased.

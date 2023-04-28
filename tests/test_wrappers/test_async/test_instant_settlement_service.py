@@ -1,6 +1,25 @@
-class MockedAsyncInstantSettlementServiceTestCase:
+from unittest import IsolatedAsyncioTestCase
+
+from pykuda2 import Mode
+from pykuda2.wrappers.async_wrappers.instant_settlement_service import (
+    AsyncInstantSettlementService,
+)
+from tests.mocked_api_call_testcase import MockedAsyncAPICallTestCase, CredentialMixin
+
+
+class MockedAsyncInstantSettlementServiceTestCase(MockedAsyncAPICallTestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        # TODO: Requires partnership credentials to really work
+        super().setUpClass()
+        cls.wrapper = AsyncInstantSettlementService(
+            secret_key="invalid-secret", client_password="invalid-password"
+        )
+
     def test_base_url(self):
-        ...
+        self.assertEqual(self.wrapper.base_url, "https://partners-uat.kudabank.com")
+        self.wrapper.mode = Mode.PRODUCTION
+        self.assertEqual(self.wrapper.base_url, "https://partners.kuda.com")
 
     async def test_token(self):
         ...
@@ -27,7 +46,15 @@ class MockedAsyncInstantSettlementServiceTestCase:
         ...
 
 
-class AsyncInstantSettlementServiceTestCase:
+class AsyncInstantSettlementServiceTestCase(CredentialMixin, IsolatedAsyncioTestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        # TODO: Requires partnership credentials to really work
+        super().setUpClass()
+        cls.wrapper = AsyncInstantSettlementService(
+            secret_key="invalid-secret", client_password="invalid-password"
+        )
+
     async def test_can_create_terminal(self):
         ...
 

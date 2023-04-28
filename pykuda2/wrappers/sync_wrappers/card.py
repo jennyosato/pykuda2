@@ -60,7 +60,6 @@ class Card(BaseAPIWrapper):
         return self.api_call(
             service_type=ServiceType.REQUEST_CARD,
             data=data,
-            endpoint_path="/RequestCard",
             request_reference=request_reference,
         )
 
@@ -92,7 +91,6 @@ class Card(BaseAPIWrapper):
         return self.api_call(
             service_type=ServiceType.GET_CUSTOMER_CARDS,
             data=data,
-            endpoint_path="/GetCustomerCards",
             request_reference=request_reference,
         )
 
@@ -133,7 +131,6 @@ class Card(BaseAPIWrapper):
         return self.api_call(
             service_type=ServiceType.ACTIVATE_CARD,
             data=data,
-            endpoint_path="/ActivateCard",
             request_reference=request_reference,
         )
 
@@ -168,7 +165,6 @@ class Card(BaseAPIWrapper):
         return self.api_call(
             service_type=ServiceType.DEACTIVATE_CARD,
             data=data,
-            endpoint_path="/DeactivateCard",
             request_reference=request_reference,
         )
 
@@ -216,7 +212,6 @@ class Card(BaseAPIWrapper):
         return self.api_call(
             service_type=ServiceType.MANAGE_CARD_TRANSACTION_LIMIT,
             data=data,
-            endpoint_path="/ManageCardTransactionLimit",
             request_reference=request_reference,
         )
 
@@ -257,7 +252,6 @@ class Card(BaseAPIWrapper):
         return self.api_call(
             service_type=ServiceType.MANAGE_CARD_CHANNEL,
             data=data,
-            endpoint_path="/ManageCardChannel",
             request_reference=request_reference,
         )
 
@@ -287,7 +281,6 @@ class Card(BaseAPIWrapper):
         return self.api_call(
             service_type=ServiceType.CHANGE_CARD_PIN,
             data=data,
-            endpoint_path="/ChangeCardPIN",
             request_reference=request_reference,
         )
 
@@ -320,7 +313,6 @@ class Card(BaseAPIWrapper):
         return self.api_call(
             service_type=ServiceType.BLOCK_CARD,
             data=data,
-            endpoint_path="/BlockCard",
             request_reference=request_reference,
         )
 
@@ -349,6 +341,5 @@ class Card(BaseAPIWrapper):
         return self.api_call(
             service_type=ServiceType.UNBLOCK_CARD,
             data=data,
-            endpoint_path="/UnblockCard",
             request_reference=request_reference,
         )

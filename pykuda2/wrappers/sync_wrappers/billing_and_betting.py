@@ -150,7 +150,10 @@ class BillingAndBetting(BaseAPIWrapper):
         )
 
     def get_bill_purchase_status(
-        self, bill_response_reference: str, request_reference: Optional[str] = None
+        self,
+        bill_request_ref: Optional[str],
+        bill_response_reference: Optional[str],
+        request_reference: Optional[str] = None,
     ):
         """Retrieve the status of a bill purchase.
 
@@ -166,8 +169,14 @@ class BillingAndBetting(BaseAPIWrapper):
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
+        if bill_response_reference and bill_request_ref:
+            raise ValueError(
+                "Both `bill_response_reference` and `bill_request_ref` should"
+                " not be provided. Please provide any but not both"
+            )
         data = {
             "BillResponseReference": bill_response_reference,
+            "BillRequestRef": bill_request_ref,
         }
         return self.api_call(
             service_type=ServiceType.BILL_TSQ,

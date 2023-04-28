@@ -60,7 +60,7 @@ class AsyncCard(BaseAsyncAPIWrapper):
         return await self.api_call(
             service_type=ServiceType.REQUEST_CARD,
             data=data,
-            endpoint_path="/RequestCard",
+            # endpoint_path="/RequestCard",
             request_reference=request_reference,
         )
 
@@ -92,7 +92,7 @@ class AsyncCard(BaseAsyncAPIWrapper):
         return await self.api_call(
             service_type=ServiceType.GET_CUSTOMER_CARDS,
             data=data,
-            endpoint_path="/GetCustomerCards",
+            # endpoint_path="/GetCustomerCards",
             request_reference=request_reference,
         )
 
@@ -133,7 +133,7 @@ class AsyncCard(BaseAsyncAPIWrapper):
         return await self.api_call(
             service_type=ServiceType.ACTIVATE_CARD,
             data=data,
-            endpoint_path="/ActivateCard",
+            # endpoint_path="/ActivateCard",
             request_reference=request_reference,
         )
 
@@ -168,7 +168,7 @@ class AsyncCard(BaseAsyncAPIWrapper):
         return await self.api_call(
             service_type=ServiceType.DEACTIVATE_CARD,
             data=data,
-            endpoint_path="/DeactivateCard",
+            # endpoint_path="/DeactivateCard",
             request_reference=request_reference,
         )
 
@@ -216,7 +216,7 @@ class AsyncCard(BaseAsyncAPIWrapper):
         return await self.api_call(
             service_type=ServiceType.MANAGE_CARD_TRANSACTION_LIMIT,
             data=data,
-            endpoint_path="/ManageCardTransactionLimit",
+            # endpoint_path="/ManageCardTransactionLimit",
             request_reference=request_reference,
         )
 
@@ -257,7 +257,7 @@ class AsyncCard(BaseAsyncAPIWrapper):
         return await self.api_call(
             service_type=ServiceType.MANAGE_CARD_CHANNEL,
             data=data,
-            endpoint_path="/ManageCardChannel",
+            # endpoint_path="/ManageCardChannel",
             request_reference=request_reference,
         )
 
@@ -287,7 +287,7 @@ class AsyncCard(BaseAsyncAPIWrapper):
         return await self.api_call(
             service_type=ServiceType.CHANGE_CARD_PIN,
             data=data,
-            endpoint_path="/ChangeCardPIN",
+            # endpoint_path="/ChangeCardPIN",
             request_reference=request_reference,
         )
 
@@ -320,7 +320,7 @@ class AsyncCard(BaseAsyncAPIWrapper):
         return await self.api_call(
             service_type=ServiceType.BLOCK_CARD,
             data=data,
-            endpoint_path="/BlockCard",
+            # endpoint_path="/BlockCard",
             request_reference=request_reference,
         )
 
@@ -349,6 +349,6 @@ class AsyncCard(BaseAsyncAPIWrapper):
         return await self.api_call(
             service_type=ServiceType.UNBLOCK_CARD,
             data=data,
-            endpoint_path="/UnblockCard",
+            # endpoint_path="/UnblockCard",
             request_reference=request_reference,
         )

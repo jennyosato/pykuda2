@@ -267,8 +267,8 @@ class Transaction(BaseAPIWrapper):
         has_transaction_date_range_filter: bool,
         start_date: str,
         end_date: str,
-        page_size: str,
-        page_number: str,
+        page_size: int,
+        page_number: int,
         fetch_successful_records=False,
     ):
         """Retrieves all transactions.
@@ -410,8 +410,8 @@ class Transaction(BaseAPIWrapper):
     def get_virtual_account_filtered_transaction_history(
         self,
         tracking_reference: str,
-        page_size: str,
-        page_number: str,
+        page_size: int,
+        page_number: int,
         start_date: str,
         end_date: str,
         request_reference: Optional[str] = None,
@@ -518,8 +518,8 @@ class Transaction(BaseAPIWrapper):
         tracking_reference: str,
         amount: int,
         narration: str,
-        client_fee_charge: int,
-        request_reference: Optional[str],
+        client_fee_charge: int = 0,
+        request_reference: Optional[str] = None,
     ):
         """Transfer funds from a virtual account to an associated Kuda account or to any other Nigerian Bank account.
 

@@ -15,7 +15,9 @@ from pykuda2.exceptions import (
     InvalidResponseException,
     TokenException,
 )
-from pykuda2.utils import APIResponse, HTTPMethod, Mode, ServiceType
+from pykuda2.utils import APIResponse, HTTPMethod, Mode, ServiceType, generate_number
+
+REFERENCE_NUMBER_LENGTH = 10
 
 
 class AbstractAPIWrapper(ABC):
@@ -111,10 +113,12 @@ class AbstractAPIWrapper(ABC):
         data: Optional[dict] = None,
         endpoint_path: Optional[str] = None,
         request_reference: Optional[str] = None,
+        exclude_auth_header=False,
     ) -> dict:
         payload = {
             "servicetype": service_type,
-            "requestref": request_reference or str(uuid4()),
+            "requestref": request_reference
+            or str(generate_number(REFERENCE_NUMBER_LENGTH)),
             "data": data,
         }
         if not data:
@@ -126,7 +130,7 @@ class AbstractAPIWrapper(ABC):
             if endpoint_path is not None
             else self.base_url,
             "json": payload,
-            "headers": self.headers,
+            "headers": self.headers if not exclude_auth_header else self.base_headers,
         }
 
     def _parse_response(self, response: httpx.Response) -> APIResponse:
@@ -195,6 +199,7 @@ class BaseAPIWrapper(AbstractAPIWrapper):
         method=HTTPMethod.POST,
         endpoint_path: Optional[str] = None,
         request_reference: Optional[str] = None,
+        exclude_auth_header=False,
     ):
 
         http_method_call_kwargs = self._parse_call_kwargs(
@@ -202,6 +207,7 @@ class BaseAPIWrapper(AbstractAPIWrapper):
             data=data,
             endpoint_path=endpoint_path,
             request_reference=request_reference,
+            exclude_auth_header=exclude_auth_header,
         )
         http_methods_mapping = {
             HTTPMethod.GET: httpx.get,
@@ -224,7 +230,7 @@ class BaseAPIWrapper(AbstractAPIWrapper):
             raise ConnectionException(
                 "Unable to connect to server. Please ensure you have an internet connection"
             )
-        except httpx.ConnectTimeout:
+        except (httpx.ConnectTimeout, httpx.ReadTimeout):
             raise ConnectionException("Server refused to respond")
 
 
@@ -258,7 +264,7 @@ class BaseAsyncAPIWrapper(AbstractAPIWrapper):
                 raise ConnectionException(
                     "Unable to connect to server. Please ensure you have an internet connection"
                 )
-            except httpx.ConnectTimeout:
+            except (httpx.ConnectTimeout, httpx.ReadTimeout):
                 raise ConnectionException("Server refused to respond")
             if response.status_code == HTTP_STATUS_CODE.OK:
                 return response.text
@@ -275,16 +281,18 @@ class BaseAsyncAPIWrapper(AbstractAPIWrapper):
     async def api_call(
         self,
         service_type: ServiceType,
-        data: dict,
+        data: Optional[dict] = None,
         method=HTTPMethod.POST,
         endpoint_path: Optional[str] = None,
         request_reference: Optional[str] = None,
+        exclude_auth_header=False,
     ):
         http_method_call_kwargs = await self._parse_call_kwargs_async(
             service_type=service_type,
             data=data,
             endpoint_path=endpoint_path,
             request_reference=request_reference,
+            exclude_auth_header=exclude_auth_header,
         )
         async with httpx.AsyncClient() as client:
             http_method_callable = getattr(client, method.value.lower(), None)
@@ -298,7 +306,7 @@ class BaseAsyncAPIWrapper(AbstractAPIWrapper):
                 raise ConnectionException(
                     "Unable to connect to server. Please ensure you have an internet connection"
                 )
-            except httpx.ConnectTimeout:
+            except (httpx.ConnectTimeout, httpx.ReadTimeout):
                 raise ConnectionException("Server refused to respond")
             return self._parse_response(response)
 
@@ -308,10 +316,12 @@ class BaseAsyncAPIWrapper(AbstractAPIWrapper):
         data: Optional[dict],
         endpoint_path: Optional[str] = None,
         request_reference: Optional[str] = None,
+        exclude_auth_header=False,
     ) -> dict:
         payload = {
             "ServiceType": service_type,
-            "RequestRef": request_reference or str(uuid4()),
+            "RequestRef": request_reference
+            or str(generate_number(REFERENCE_NUMBER_LENGTH)),
             "Data": data,
         }
         if not data:
@@ -323,5 +333,7 @@ class BaseAsyncAPIWrapper(AbstractAPIWrapper):
             if endpoint_path is not None
             else self.base_url,
             "json": payload,
-            "headers": await self.headers,
+            "headers": await self.headers
+            if not exclude_auth_header
+            else self.base_headers,
         }

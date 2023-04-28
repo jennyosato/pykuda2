@@ -1,6 +1,20 @@
+import secrets
+import string
 from dataclasses import dataclass
 from enum import Enum, IntEnum
 from typing import Optional, Union
+
+
+def generate_number(length: int) -> int:
+    """
+    Generates random numbers of the provided length.
+
+    Args:
+        length: The length the generated number should be.
+    Returns:
+        The random number.
+    """
+    return int("".join(secrets.choice(string.digits) for _ in range(length)))
 
 
 class Gender(IntEnum):
@@ -221,7 +235,7 @@ class ServiceType(str, Enum):
     FUND_TRANSFER_INSTRUCTION = "FUND_TRANSFER_INSTRUCTION"
     SEARCH_FUND_TRANSFER_INSTRUCTION = "SEARCH_FUND_TRANSFER_INSTRUCTION"
     RETRIEVE_TRANSACTION_LOGS = "RETRIEVE_TRANSACTION_LOGS"
-    GET_GIFT_CARD = " GET_GIFT_CARD"
+    GET_GIFT_CARD = "GET_GIFT_CARD"
     ADMIN_BUY_GIFT_CARD = "ADMIN_BUY_GIFT_CARD"
     BUY_GIFT_CARD = "BUY_GIFT_CARD"
     GIFT_CARD_TSQ = "GIFT_CARD_TSQ"

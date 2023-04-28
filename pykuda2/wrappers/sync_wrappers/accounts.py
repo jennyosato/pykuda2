@@ -254,7 +254,7 @@ class Account(BaseAPIWrapper):
             "trackingReference": tracking_reference,
         }
         return self.api_call(
-            service_type=ServiceType.ADMIN_ENABLE_VIRTUAL_ACCOUNT,
+            service_type=ServiceType.RETRIEVE_VIRTUAL_ACCOUNT_BALANCE,
             data=data,
             request_reference=request_reference,
         )

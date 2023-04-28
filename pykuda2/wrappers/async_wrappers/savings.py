@@ -296,11 +296,15 @@ class AsyncSavings(BaseAsyncAPIWrapper):
         )
 
     async def get_open_flexible_savings_accounts(
-        self, primary_account_number, request_reference: Optional[str] = None
+        self,
+        tracking_reference: str,
+        primary_account_number: str,
+        request_reference: Optional[str] = None,
     ):
         """Retrieves all flexible savings account.
 
         Args:
+            tracking_reference: Account transaction reference number of the savings you want to retrieve.
             primary_account_number: Account number of the specific customer.
             request_reference: a unique identifier for this api call.
                 it is automatically generated if not provided.
@@ -312,7 +316,10 @@ class AsyncSavings(BaseAsyncAPIWrapper):
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
-        data = {"PrimaryAccountNumber": primary_account_number}
+        data = {
+            "TrackingReference": tracking_reference,
+            "PrimaryAccountNumber": primary_account_number,
+        }
         return await self.api_call(
             service_type=ServiceType.GET_ALL_CUSTOMER_OPEN_FLEXIBLE_SAVE,
             data=data,

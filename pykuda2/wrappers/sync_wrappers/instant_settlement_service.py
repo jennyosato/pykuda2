@@ -1,5 +1,8 @@
 from pykuda2 import Mode, ServiceType
 from pykuda2.base import BaseAPIWrapper
+from httpx import codes as HTTP_STATUS_CODE
+
+from pykuda2.exceptions import TokenException
 
 
 class InstantSettlementService(BaseAPIWrapper):
@@ -30,9 +33,14 @@ class InstantSettlementService(BaseAPIWrapper):
                     "clientPassword": self.client_password,
                 },
                 endpoint_path="/api/Auth/authenticate",
+                exclude_auth_header=True,
             )
-            self._token = response.data["auth_token"]
-            return self._token
+            if response.data:
+                self._token = response.data["auth_token"]
+                return self._token
+            raise TokenException(
+                f"Unable to get access token for InstantSettlementService. {response.message}. Please ensure valid credentials were provided"
+            )
 
     def create_terminal(
         self,
