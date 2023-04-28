@@ -5,7 +5,6 @@ from httpx import codes as HTTP_STATUS_CODE
 
 __version__ = "0.1.0"
 
-from uuid import uuid4
 
 import httpx
 

@@ -1,6 +1,5 @@
 from pykuda2 import Mode, ServiceType
 from pykuda2.base import BaseAPIWrapper
-from httpx import codes as HTTP_STATUS_CODE
 
 from pykuda2.exceptions import TokenException
 

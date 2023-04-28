@@ -4,7 +4,7 @@ from pykuda2 import Mode
 from pykuda2.wrappers.sync_wrappers.instant_settlement_service import (
     InstantSettlementService,
 )
-from tests.mocked_api_call_testcase import CredentialMixin, MockedAPICallTestCase
+from tests.mocked_api_call_testcase import MockedAPICallTestCase
 
 
 class MockedInstantSettlementServiceTestCase(MockedAPICallTestCase):

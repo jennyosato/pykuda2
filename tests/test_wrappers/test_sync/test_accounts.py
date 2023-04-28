@@ -1,5 +1,4 @@
 from unittest import TestCase
-from uuid import uuid4
 
 from pykuda2.utils import generate_number
 from pykuda2.wrappers.sync_wrappers.accounts import Account

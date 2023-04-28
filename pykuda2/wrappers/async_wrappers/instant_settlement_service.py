@@ -1,5 +1,5 @@
 from pykuda2 import Mode, ServiceType
-from pykuda2.base import BaseAPIWrapper, BaseAsyncAPIWrapper
+from pykuda2.base import BaseAsyncAPIWrapper
 from pykuda2.exceptions import TokenException
 
 
