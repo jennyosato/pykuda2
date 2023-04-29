@@ -1,0 +1,66 @@
+site_name: PyKuda2
+site_description: A developer friendly wrapper for kuda API
+site_url: https://github.com/
+
+theme:
+  name: "material"
+  palette:
+    - media: '(prefers-color-scheme: light)'
+      scheme: kuda
+      toggle:
+        icon: material/lightbulb
+        name: Switch to light mode
+    - media: '(prefers-color-scheme: dark)'
+      scheme: slate
+      primary: deep purple
+      accent: purple
+      toggle:
+        icon: material/lightbulb-outline
+        name: Switch to dark mode
+  features:
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - content.code.copy
+    - content.code.select
+  icon:
+    repo: fontawesome/brands/github-alt
+  logo: assets/pykuda2.svg
+  favicon: assets/pykuda2.svg
+  language: en
+repo_name: jennyosato/pykuda2
+repo_url: https://github.com/jennyosato/pykuda2
+edit_uri: ''
+
+plugins:
+  - search
+  - mkdocstrings
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - tables
+
+nav:
+  - PyKuda2: index.md
+  - tutorials.md
+  - How-To Guides: how-to-guides.md
+  - Reference:
+    - Introduction: "reference/index.md"
+    - "reference/utils.md"
+    - "reference/kuda.md"
+    - Wrappers:
+       - Introduction: "reference/wrappers/index.md"
+  - explanation.md
+
+extra_css:
+  - stylesheets/extra.css
+  - stylesheets/termynal.css
+  - stylesheets/custom.css
+extra_javascript:
+  - js/termynal.js
+  - js/custom.js

@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "pykuda2"
+version = "0.1.0"
+description = ""
+authors = ["Jennifer <st.jennyandy@gmail.com>","Gbenga Adeyi <adeyigbenga005@gmail.com>"]
+readme = "README.md"
+packages = [{ include = "pykuda2" }]
+keywords = ["kuda", "pykuda", "kudapy"]
+license = "MIT"
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+httpx = "^0.24.0"
+
+
+[tool.poetry.group.dev.dependencies]
+mkdocs = "^1.4.2"
+mkdocstrings = {extras = ["python"], version = "^0.21.2"}
+mkdocs-material = "^9.1.6"
+python-dotenv = "^1.0.0"
+fastapi = "^0.95.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
