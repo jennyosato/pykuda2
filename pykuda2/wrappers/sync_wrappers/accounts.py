@@ -1,7 +1,7 @@
 from typing import Optional
 
 from pykuda2.base import BaseAPIWrapper
-from pykuda2.utils import ServiceType
+from pykuda2.utils import ServiceType, APIResponse
 
 
 class Account(BaseAPIWrapper):
@@ -15,7 +15,7 @@ class Account(BaseAPIWrapper):
         business_name: str,
         tracking_reference: str,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Creates a new virtual account for customers.
 
         Args:
@@ -30,8 +30,8 @@ class Account(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -45,7 +45,7 @@ class Account(BaseAPIWrapper):
             "businessName": business_name,
             "trackingReference": tracking_reference,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.ADMIN_CREATE_VIRTUAL_ACCOUNT,
             data=data,
             request_reference=request_reference,
@@ -58,7 +58,7 @@ class Account(BaseAPIWrapper):
         last_name: Optional[str] = None,
         email: Optional[str] = None,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Modifies a virtual account data.
 
         Good to know: For context, you cannot alter the phone number of the customer.
@@ -75,8 +75,8 @@ class Account(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -98,7 +98,7 @@ class Account(BaseAPIWrapper):
             data.pop("lastName")
         if not email:
             data.pop("email")
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.ADMIN_UPDATE_VIRTUAL_ACCOUNT,
             data=data,
             request_reference=request_reference,
@@ -106,7 +106,7 @@ class Account(BaseAPIWrapper):
 
     def get_virtual_accounts(
         self, page_size: int, page_number: int, request_reference: Optional[str] = None
-    ):
+    ) -> APIResponse:
         """Retrieves your existing virtual accounts.
 
         Args:
@@ -116,8 +116,8 @@ class Account(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -126,7 +126,7 @@ class Account(BaseAPIWrapper):
             "PageSize": page_size,
             "PageNumber": page_number,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.ADMIN_VIRTUAL_ACCOUNTS,
             data=data,
             request_reference=request_reference,
@@ -134,7 +134,7 @@ class Account(BaseAPIWrapper):
 
     def get_virtual_account(
         self, tracking_reference: str, request_reference: Optional[str] = None
-    ):
+    ) -> APIResponse:
         """Retrieves an existing virtual account.
 
         Args:
@@ -143,8 +143,8 @@ class Account(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -152,7 +152,7 @@ class Account(BaseAPIWrapper):
         data = {
             "trackingReference": tracking_reference,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.ADMIN_RETRIEVE_SINGLE_VIRTUAL_ACCOUNT,
             data=data,
             request_reference=request_reference,
@@ -160,7 +160,7 @@ class Account(BaseAPIWrapper):
 
     def disable_virtual_account(
         self, tracking_reference: str, request_reference: Optional[str] = None
-    ):
+    ) -> APIResponse:
         """Disables a user’s virtual static account.
 
         Kuda encourages Admins and account managers to review accounts and transactions
@@ -173,8 +173,8 @@ class Account(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -182,7 +182,7 @@ class Account(BaseAPIWrapper):
         data = {
             "trackingReference": tracking_reference,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.ADMIN_DISABLE_VIRTUAL_ACCOUNT,
             data=data,
             request_reference=request_reference,
@@ -190,7 +190,7 @@ class Account(BaseAPIWrapper):
 
     def enable_virtual_account(
         self, tracking_reference: str, request_reference: Optional[str] = None
-    ):
+    ) -> APIResponse:
         """Enables a user’s virtual static account.
 
         Args:
@@ -199,8 +199,8 @@ class Account(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -208,13 +208,15 @@ class Account(BaseAPIWrapper):
         data = {
             "trackingReference": tracking_reference,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.ADMIN_ENABLE_VIRTUAL_ACCOUNT,
             data=data,
             request_reference=request_reference,
         )
 
-    def get_admin_account_balance(self, request_reference: Optional[str] = None):
+    def get_admin_account_balance(
+        self, request_reference: Optional[str] = None
+    ) -> APIResponse:
         """Retrieves the account balance on your main account.
 
         Args:
@@ -222,20 +224,20 @@ class Account(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.ADMIN_RETRIEVE_MAIN_ACCOUNT_BALANCE,
             request_reference=request_reference,
         )
 
     def get_virtual_account_balance(
         self, tracking_reference: str, request_reference: Optional[str] = None
-    ):
+    ) -> APIResponse:
         """Retrieves the account balance on your virtual account.
 
         Args:
@@ -244,8 +246,8 @@ class Account(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -253,7 +255,7 @@ class Account(BaseAPIWrapper):
         data = {
             "trackingReference": tracking_reference,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.RETRIEVE_VIRTUAL_ACCOUNT_BALANCE,
             data=data,
             request_reference=request_reference,

@@ -1,11 +1,11 @@
 from typing import Optional
 
 from pykuda2.base import BaseAsyncAPIWrapper
-from pykuda2.utils import TransferInstruction, ServiceType, TransactionStatus
+from pykuda2.utils import TransferInstruction, ServiceType, TransactionStatus, APIResponse
 
 
 class AsyncTransaction(BaseAsyncAPIWrapper):
-    async def get_banks(self, request_reference: Optional[str] = None):
+    async def get_banks(self, request_reference: Optional[str] = None) -> APIResponse:
         """Retrieves all the banks available from NIPS
 
          In production, the list of banks and bank codes may change based on
@@ -16,13 +16,13 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
                 it is automatically generated if not provided.
 
          Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.BANK_LIST, request_reference=request_reference
         )
 
@@ -33,7 +33,7 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
         sender_tracking_reference: Optional[str],
         is_request_from_virtual_account: bool,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """
         Retrieves information of a beneficiary for validation before initiating a transfer.
 
@@ -49,8 +49,8 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -61,7 +61,7 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
             "SenderTrackingReference": sender_tracking_reference,
             "isRequestFromVirtualAccount": is_request_from_virtual_account,
         }
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.NAME_ENQUIRY,
             data=data,
             request_reference=request_reference,
@@ -79,7 +79,7 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
         client_fee_charge: int = 0,
         client_account_number: Optional[str] = None,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """
         Sends money from your main Kuda account to another bank accounts.
 
@@ -102,8 +102,8 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -119,7 +119,7 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
             "senderName": sender_name,
             "clientFeeCharge": client_fee_charge,
         }
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.SINGLE_FUND_TRANSFER,
             data=data,
             request_reference=request_reference,
@@ -138,7 +138,7 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
         client_fee_charge: int = 0,
         client_account_number: Optional[str] = None,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Transfer money from a virtual account to another and any other Nigerian bank account.
 
         Args:
@@ -158,8 +158,8 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -176,7 +176,7 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
             "clientFeeCharge": client_fee_charge,
             "ClientAccountNumber": client_account_number,
         }
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.VIRTUAL_ACCOUNT_FUND_TRANSFER,
             data=data,
             request_reference=request_reference,
@@ -186,7 +186,7 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
         self,
         fund_transfer_instructions: list[TransferInstruction],
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Allows you to send a list of transfer instructions to Kuda, to make the payments on your behalf.
 
         Args:
@@ -195,8 +195,8 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -207,7 +207,7 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
                 for fund_transfer_instruction in fund_transfer_instructions
             ]
         }
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.FUND_TRANSFER_INSTRUCTION,
             data=data,
             request_reference=request_reference,
@@ -223,7 +223,7 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
         page_number: int,
         page_size: int,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Retrieves transfer instructions and returns the status of the transaction.
 
         Args:
@@ -238,8 +238,8 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -253,7 +253,7 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
             "PageNumber": page_number,
             "PageSize": page_size,
         }
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.SEARCH_FUND_TRANSFER_INSTRUCTION,
             data=data,
             request_reference=request_reference,
@@ -269,8 +269,8 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
         end_date: str,
         page_size: int,
         page_number: int,
-        fetch_successful_records=False,
-    ):
+        fetch_successful_records: bool =False,
+    ) -> APIResponse:
         """Retrieves all transactions.
 
         Args:
@@ -288,8 +288,8 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
             page_number: This specifies the index of the paginated results retrieved.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -305,7 +305,7 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
             "PageSize": page_size,
             "PageNumber": page_number,
         }
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.RETRIEVE_TRANSACTION_LOGS,
             data=data,
             request_reference=request_reference,
@@ -313,7 +313,7 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
 
     async def get_transaction_history(
         self, page_size: int, page_number: int, request_reference: Optional[str] = None
-    ):
+    ) -> APIResponse:
         """Retrieves a list of all main account transactions.
 
         Args:
@@ -323,14 +323,14 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {"pageSize": page_size, "pageNumber": page_number}
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.ADMIN_MAIN_ACCOUNT_TRANSACTIONS,
             data=data,
             request_reference=request_reference,
@@ -343,7 +343,7 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
         start_date: str,
         end_date: str,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Retrieves a filtered transaction history.
 
         Args:
@@ -355,8 +355,8 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -367,7 +367,7 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
             "startDate": start_date,
             "endDate": end_date,
         }
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.ADMIN_MAIN_ACCOUNT_FILTERED_TRANSACTIONS,
             data=data,
             request_reference=request_reference,
@@ -379,7 +379,7 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
         page_size: int,
         page_number: int,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Retrieves a list of all virtual account transactions.
 
         Args:
@@ -390,8 +390,8 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -401,7 +401,7 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
             "pageSize": page_size,
             "pageNumber": page_number,
         }
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.ADMIN_VIRTUAL_ACCOUNT_TRANSACTIONS,
             data=data,
             request_reference=request_reference,
@@ -415,7 +415,7 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
         start_date: str,
         end_date: str,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Retrieves a filtered list of all virtual account transactions.
 
         Args:
@@ -428,8 +428,8 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -441,7 +441,7 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
             "startDate": start_date,
             "endDate": end_date,
         }
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.ADMIN_VIRTUAL_ACCOUNT_FILTERED_TRANSACTIONS,
             data=data,
             request_reference=request_reference,
@@ -452,7 +452,7 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
         is_third_party_bank_transfer: bool,
         transaction_request_reference: str,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Retrieves the status of a transaction.
 
         Args:
@@ -463,8 +463,8 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -473,7 +473,7 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
             "isThirdPartyBankTransfer": is_third_party_bank_transfer,
             "transactionRequestReference": transaction_request_reference,
         }
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.TRANSACTION_STATUS_QUERY,
             data=data,
             request_reference=request_reference,
@@ -485,7 +485,7 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
         amount: int,
         narration: str,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Add funds to a virtual account.
 
         Args:
@@ -496,8 +496,8 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -507,7 +507,7 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
             "amount": amount,
             "narration": narration,
         }
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.FUND_VIRTUAL_ACCOUNT,
             data=data,
             request_reference=request_reference,
@@ -520,7 +520,7 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
         narration: str,
         client_fee_charge: int = 0,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Transfer funds from a virtual account to an associated Kuda account or to any other Nigerian Bank account.
 
         Args:
@@ -533,8 +533,8 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -545,7 +545,7 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
             "narration": narration,
             "ClientFeeCharge": client_fee_charge,
         }
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.WITHDRAW_VIRTUAL_ACCOUNT,
             data=data,
             request_reference=request_reference,

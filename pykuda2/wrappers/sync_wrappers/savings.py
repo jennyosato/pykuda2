@@ -1,7 +1,7 @@
 from typing import Optional
 
 from pykuda2.base import BaseAPIWrapper
-from pykuda2.utils import TransactionType, ServiceType
+from pykuda2.utils import TransactionType, ServiceType, APIResponse
 
 
 class Savings(BaseAPIWrapper):
@@ -10,7 +10,7 @@ class Savings(BaseAPIWrapper):
         name: str,
         tracking_reference: str,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Create a Plain Savings Account.
 
         To create a Plain savings, in your request, you need to state the Virtual Account
@@ -24,14 +24,14 @@ class Savings(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {"Name": name, "TrackingReference": tracking_reference}
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.CREATE_PLAIN_SAVE,
             data=data,
             request_reference=request_reference,
@@ -42,7 +42,7 @@ class Savings(BaseAPIWrapper):
         tracking_reference: str,
         primary_account_number: str,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Retrieves a customers plain savings account
 
         Args:
@@ -53,8 +53,8 @@ class Savings(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -63,11 +63,11 @@ class Savings(BaseAPIWrapper):
             "TrackingReference": tracking_reference,
             "PrimaryAccountNumber": primary_account_number,
         }
-        return self.api_call(service_type=ServiceType.GET_PLAIN_SAVE, data=data)
+        return self._api_call(service_type=ServiceType.GET_PLAIN_SAVE, data=data)
 
     def get_plain_savings_accounts(
         self, tracking_reference: str, request_reference: Optional[str] = None
-    ):
+    ) -> APIResponse:
         """Retrieves all customers plain savings accounts
 
         Args:
@@ -77,14 +77,14 @@ class Savings(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {"TrackingReference": tracking_reference}
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.GET_ALL_CUSTOMER_PLAIN_SAVE,
             data=data,
             request_reference=request_reference,
@@ -97,7 +97,7 @@ class Savings(BaseAPIWrapper):
         transaction_type: TransactionType,
         tracking_reference: str,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Adds or removes money from a plain savings account.
 
         Args:
@@ -109,8 +109,8 @@ class Savings(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -121,7 +121,7 @@ class Savings(BaseAPIWrapper):
             "TransactionType": transaction_type,
             "TrackingReference": tracking_reference,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.PLAIN_SAVE_DEBIT_CREDIT,
             data=data,
             request_reference=request_reference,
@@ -133,7 +133,7 @@ class Savings(BaseAPIWrapper):
         page_number: int,
         tracking_reference: str,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Retrieves all plain savings account transaction data.
 
         Args:
@@ -144,8 +144,8 @@ class Savings(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -155,7 +155,7 @@ class Savings(BaseAPIWrapper):
             "PageNumber": page_number,
             "TrackingReference": tracking_reference,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.RETRIEVE_PLAIN_SAVE_TRANSACTIONS,
             data=data,
             request_reference=request_reference,
@@ -172,7 +172,7 @@ class Savings(BaseAPIWrapper):
         start_now: bool,
         start_date: Optional[str],
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Create an open savings plan.
 
         Args:
@@ -189,8 +189,8 @@ class Savings(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -205,7 +205,7 @@ class Savings(BaseAPIWrapper):
             "StartNow": start_now,
             "StartData": start_date,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.CREATE_OPEN_FLEXIBLE_SAVE,
             data=data,
             request_reference=request_reference,
@@ -223,7 +223,7 @@ class Savings(BaseAPIWrapper):
         start_date: str,
         is_interest_earning: bool,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Pre create an Open Flexible Savings account.
 
         Args:
@@ -241,8 +241,8 @@ class Savings(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -258,7 +258,7 @@ class Savings(BaseAPIWrapper):
             "StartData": start_date,
             "IsInterestEarning": is_interest_earning,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.PRE_CREATE_OPEN_FLEXIBLE_SAVE,
             data=data,
             request_reference=request_reference,
@@ -269,7 +269,7 @@ class Savings(BaseAPIWrapper):
         tracking_reference: str,
         primary_account_number: str,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Retrieve an open flexible savings account.
 
         Args:
@@ -279,8 +279,8 @@ class Savings(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -289,7 +289,7 @@ class Savings(BaseAPIWrapper):
             "TrackingReference": tracking_reference,
             "PrimaryAccountNumber": primary_account_number,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.GET_OPEN_FLEXIBLE_SAVE,
             data=data,
             request_reference=request_reference,
@@ -300,7 +300,7 @@ class Savings(BaseAPIWrapper):
         tracking_reference: str,
         primary_account_number: str,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Retrieves all flexible savings account.
 
         Args:
@@ -310,8 +310,8 @@ class Savings(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -320,7 +320,7 @@ class Savings(BaseAPIWrapper):
             "TrackingReference": tracking_reference,
             "PrimaryAccountNumber": primary_account_number,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.GET_ALL_CUSTOMER_OPEN_FLEXIBLE_SAVE,
             data=data,
             request_reference=request_reference,
@@ -331,7 +331,7 @@ class Savings(BaseAPIWrapper):
         amount: int,
         tracking_reference: str,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """
 
         Args:
@@ -341,14 +341,14 @@ class Savings(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {"Amount": amount, "TrackingReference": tracking_reference}
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.COMPLETE_OPEN_FLEXIBLE_SAVE_WITHDRAWAL,
             data=data,
             request_reference=request_reference,
@@ -360,7 +360,7 @@ class Savings(BaseAPIWrapper):
         page_size: int,
         page_number: int,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """
 
         Args:
@@ -371,8 +371,8 @@ class Savings(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -382,7 +382,7 @@ class Savings(BaseAPIWrapper):
             "PageNumber": page_number,
             "TrackingReference": tracking_reference,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.RETRIEVE_OPEN_FLEXIBLE_SAVE_TRANSACTIONS,
             data=data,
             request_reference=request_reference,
@@ -400,7 +400,7 @@ class Savings(BaseAPIWrapper):
         start_date: str,
         is_interest_earning: bool,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Creates a fixed account.
 
         Args:
@@ -418,8 +418,8 @@ class Savings(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -435,7 +435,7 @@ class Savings(BaseAPIWrapper):
             "StartData": start_date,
             "IsInterestEarning": is_interest_earning,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.CREATE_FIXED_SAVE,
             data=data,
             request_reference=request_reference,
@@ -445,7 +445,7 @@ class Savings(BaseAPIWrapper):
         self,
         tracking_reference: str,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Retrieves a fixed savings account.
 
         Args:
@@ -454,8 +454,8 @@ class Savings(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -463,7 +463,7 @@ class Savings(BaseAPIWrapper):
         data = {
             "SavingsId": tracking_reference,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.GET_FIXED_SAVE,
             data=data,
             request_reference=request_reference,
@@ -471,7 +471,7 @@ class Savings(BaseAPIWrapper):
 
     def get_fixed_savings_accounts(
         self, tracking_reference: str, request_reference: Optional[str] = None
-    ):
+    ) -> APIResponse:
         """Retrieves all fixed savings you want to retrieve.
 
         Args:
@@ -480,14 +480,14 @@ class Savings(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {"TrackingReference": tracking_reference}
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.GET_ALL_CUSTOMER_FIXED_SAVE,
             data=data,
             request_reference=request_reference,
@@ -498,7 +498,7 @@ class Savings(BaseAPIWrapper):
         amount: int,
         tracking_reference: str,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """
 
         Args:
@@ -508,14 +508,14 @@ class Savings(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {"Amount": amount, "SavingsId": tracking_reference}
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.COMPLETE_FIXED_SAVE_WITHDRAWAL,
             data=data,
             request_reference=request_reference,
@@ -527,7 +527,7 @@ class Savings(BaseAPIWrapper):
         page_number: int,
         page_size: int,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Retrieves all fixed savings account transaction
 
         Args:
@@ -538,8 +538,8 @@ class Savings(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -549,7 +549,7 @@ class Savings(BaseAPIWrapper):
             "PageSize": page_size,
             "SavingsId": tracking_reference,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.RETRIEVE_FIXED_SAVE_TRANSACTIONS,
             data=data,
             request_reference=request_reference,

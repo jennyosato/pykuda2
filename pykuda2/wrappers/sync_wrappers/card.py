@@ -1,7 +1,7 @@
 from typing import Optional
 
 from pykuda2.base import BaseAPIWrapper
-from pykuda2.utils import ServiceType, CardChannel, Gender
+from pykuda2.utils import ServiceType, CardChannel, Gender, APIResponse
 
 
 class Card(BaseAPIWrapper):
@@ -19,7 +19,7 @@ class Card(BaseAPIWrapper):
         delivery_state: str,
         delivery_street_no_and_name: str,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Request for a new card for a customer and get it delivered to their location.
 
         Args:
@@ -38,8 +38,8 @@ class Card(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -57,7 +57,7 @@ class Card(BaseAPIWrapper):
             "Country": country,
             "additionalPhoneNumber": additional_phone_number,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.REQUEST_CARD,
             data=data,
             request_reference=request_reference,
@@ -66,9 +66,9 @@ class Card(BaseAPIWrapper):
     def get_cards(
         self,
         tracking_reference: str,
-        simulate_request=False,
+        simulate_request: bool = False,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Retrieves a list of cards requested.
 
         Args:
@@ -78,8 +78,8 @@ class Card(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -88,7 +88,7 @@ class Card(BaseAPIWrapper):
             "TrackingReference": tracking_reference,
             "SimulateRequest": simulate_request,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.GET_CUSTOMER_CARDS,
             data=data,
             request_reference=request_reference,
@@ -100,9 +100,9 @@ class Card(BaseAPIWrapper):
         cvv: int,
         id: int,
         tracking_reference: str,
-        simulate_request=False,
+        simulate_request: bool = False,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Allows customers activate their cards once they receive it.
 
         Args:
@@ -115,8 +115,8 @@ class Card(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -128,7 +128,7 @@ class Card(BaseAPIWrapper):
             "TrackingReference": tracking_reference,
             "SimulateRequest": simulate_request,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.ACTIVATE_CARD,
             data=data,
             request_reference=request_reference,
@@ -138,9 +138,9 @@ class Card(BaseAPIWrapper):
         self,
         id: int,
         tracking_reference: str,
-        simulate_request=False,
+        simulate_request: bool = False,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Allows customers deactivate their cards.
 
         Args:
@@ -151,8 +151,8 @@ class Card(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -162,7 +162,7 @@ class Card(BaseAPIWrapper):
             "TrackingReference": tracking_reference,
             "SimulateRequest": simulate_request,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.DEACTIVATE_CARD,
             data=data,
             request_reference=request_reference,
@@ -174,9 +174,9 @@ class Card(BaseAPIWrapper):
         tracking_reference: str,
         channel: CardChannel,
         limit: int,
-        simulate_request=False,
+        simulate_request: bool = False,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Set spend limit on a card.
 
         Card limits are a good way to manage individual spend on their accounts.
@@ -196,8 +196,8 @@ class Card(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -209,7 +209,7 @@ class Card(BaseAPIWrapper):
             "Limit": limit,
             "SimulateRequest": simulate_request,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.MANAGE_CARD_TRANSACTION_LIMIT,
             data=data,
             request_reference=request_reference,
@@ -221,9 +221,9 @@ class Card(BaseAPIWrapper):
         tracking_reference: str,
         channel: CardChannel,
         limit: int,
-        simulate_request=False,
+        simulate_request: bool = False,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Allows customers manage where their cards can be used.
 
         Args:
@@ -236,8 +236,8 @@ class Card(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -249,7 +249,7 @@ class Card(BaseAPIWrapper):
             "Limit": limit,
             "SimulateRequest": simulate_request,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.MANAGE_CARD_CHANNEL,
             data=data,
             request_reference=request_reference,
@@ -261,7 +261,7 @@ class Card(BaseAPIWrapper):
         tracking_reference: str,
         new_pin: int,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Allows customers change their 4 digits PIN to any combination they desire.
 
         Args:
@@ -272,13 +272,13 @@ class Card(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection."""
         data = {"Id": id, "TrackingReference": tracking_reference, "NewPIN": new_pin}
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.CHANGE_CARD_PIN,
             data=data,
             request_reference=request_reference,
@@ -286,7 +286,7 @@ class Card(BaseAPIWrapper):
 
     def block_card(
         self, tracking_reference: str, id: int, request_reference: Optional[str] = None
-    ):
+    ) -> APIResponse:
         """Block a customer's card.
 
         It allows them to longer be able to make card transactions with it.
@@ -300,8 +300,8 @@ class Card(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -310,7 +310,7 @@ class Card(BaseAPIWrapper):
             "Id": id,
             "TrackingReference": tracking_reference,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.BLOCK_CARD,
             data=data,
             request_reference=request_reference,
@@ -318,7 +318,7 @@ class Card(BaseAPIWrapper):
 
     def unblock_card(
         self, tracking_reference: str, id: int, request_reference: Optional[str] = None
-    ):
+    ) -> APIResponse:
         """Unblocks a customers card.
 
         Args:
@@ -328,8 +328,8 @@ class Card(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -338,7 +338,7 @@ class Card(BaseAPIWrapper):
             "Id": id,
             "TrackingReference": tracking_reference,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.UNBLOCK_CARD,
             data=data,
             request_reference=request_reference,

@@ -49,6 +49,10 @@ print(response)
 response = kuda.transactions.get_transaction_history(page_size=50, page_number=1)
 print(response)
 ```
+All you need to interact with Kuda's Open API in your python project is the `Kuda class` it has [attributes](reference/kuda.md#attributes-on-the-kuda-and-asynckuda-classes)
+bounded to it that provides methods you can call in your code to make API calls to Kuda. Every method call on the wrapper
+has the same return type, which is an [APIResponse](reference/utils.md#pykuda2.utils.APIResponse). A data class containing
+the data from making the actual call to Kuda servers 
 
 ## Async Too!
 PyKuda2 also lets you use `async/await` out of the box. See what it looks like in a [FastAPI](https://fastapi.tiangolo.com/)
@@ -75,3 +79,18 @@ async def get_banks():
 
 ## License
 This project is licensed under the terms of the MIT license.
+
+## Notice
+This project is a third party open source project and is in no way directly related to Kuda. It's made out of love ♥️
+for the services offered by Kuda. You can help make it better. If you find typos while reading this documentation or
+you find any part of it that's out of date, also if you find any bugs while using it or have ideas to make it better,
+please create an issue at the projects [github repo](https://github.com/jennyosato/pykuda2).
+
+## Contributors
+- [jennyosato](https://github.com/jennyosato)
+- [gray-adeyi](https://github.com/gray-adeyi)
+
+## Buy me a coffee
+```python
+3000606742 Kuda Gbenga Adeyi
+```

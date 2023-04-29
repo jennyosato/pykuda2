@@ -28,14 +28,14 @@ class AbstractAPIWrapper(ABC):
             api_key: Your Kuda apiKey.
             mode: The mode you desire to use the wrapper in (development or production).
         """
-        self.mode = mode
-        self.email = email
-        self.api_key = api_key
-        self._token: Optional[str] = None
+        self._mode = mode
+        self._email = email
+        self._api_key = api_key
+        self._saved_token: Optional[str] = None
 
     @property
     @abstractmethod
-    def token(self) -> str:
+    def _token(self) -> str:
         """Returns the access token gotten.
 
         It performs authentication with `self.email` and `self.api_key` to get it"""
@@ -43,14 +43,14 @@ class AbstractAPIWrapper(ABC):
 
     @property
     @abstractmethod
-    def headers(self) -> dict:
+    def _headers(self) -> dict:
         """Returns the headers with authorization header included.
 
         It returns the headers used in making requests with the inclusion of an authorization header"""
         ...
 
     @property
-    def base_headers(self) -> dict:
+    def _base_headers(self) -> dict:
         """Returns the headers without authorization header included.
 
         It returns the headers used in making endpoint requests with the exclusion of the authorization header"""
@@ -61,17 +61,17 @@ class AbstractAPIWrapper(ABC):
         }
 
     @property
-    def base_url(self) -> str:
+    def _base_url(self) -> str:
         """Returns the base url.
 
         The url returned depends on the mode in which the class was instantiated."""
         return {
             Mode.DEVELOPMENT: "https://kuda-openapi-uat.kudabank.com/v2.1",
             Mode.PRODUCTION: "https://kuda-openapi.kuda.com/v2.1",
-        }[self.mode]
+        }[self._mode]
 
     @abstractmethod
-    def api_call(
+    def _api_call(
         self,
         service_type: ServiceType,
         data: dict,
@@ -125,11 +125,11 @@ class AbstractAPIWrapper(ABC):
         if service_type == ServiceType.NO_OP:
             payload.pop("servicetype", None)
         return {
-            "url": self.base_url + endpoint_path
+            "url": self._base_url + endpoint_path
             if endpoint_path is not None
-            else self.base_url,
+            else self._base_url,
             "json": payload,
-            "headers": self.headers if not exclude_auth_header else self.base_headers,
+            "headers": self._headers if not exclude_auth_header else self._base_headers,
         }
 
     def _parse_response(self, response: httpx.Response) -> APIResponse:
@@ -163,15 +163,15 @@ class BaseAPIWrapper(AbstractAPIWrapper):
         super().__init__(email=email, api_key=api_key, mode=mode)
 
     @property
-    def token(self) -> str:
-        if self._token:
-            return self._token
+    def _token(self) -> str:
+        if self._saved_token:
+            return self._saved_token
         else:
-            token_url = f"{self.base_url}/Account/GetToken"
-            auth_data = {"email": self.email, "apiKey": self.api_key}
+            token_url = f"{self._base_url}/Account/GetToken"
+            auth_data = {"email": self._email, "apiKey": self._api_key}
             try:
                 response = httpx.post(
-                    url=token_url, json=auth_data, headers=self.base_headers
+                    url=token_url, json=auth_data, headers=self._base_headers
                 )
             except httpx.ConnectError:
                 raise ConnectionException(
@@ -188,10 +188,10 @@ class BaseAPIWrapper(AbstractAPIWrapper):
             )
 
     @property
-    def headers(self) -> dict:
-        return {**self.base_headers, "authorization": f"Bearer {self.token}"}
+    def _headers(self) -> dict:
+        return {**self._base_headers, "authorization": f"Bearer {self._token}"}
 
-    def api_call(
+    def _api_call(
         self,
         service_type: ServiceType,
         data: Optional[dict] = None,
@@ -248,16 +248,16 @@ class BaseAsyncAPIWrapper(AbstractAPIWrapper):
         super().__init__(email=email, api_key=api_key, mode=mode)
 
     @property
-    async def token(self) -> str:
-        if self._token:
-            return self._token
+    async def _token(self) -> str:
+        if self._saved_token:
+            return self._saved_token
         else:
-            token_url = f"{self.base_url}/Account/GetToken"
-            auth_data = {"email": self.email, "apiKey": self.api_key}
+            token_url = f"{self._base_url}/Account/GetToken"
+            auth_data = {"email": self._email, "apiKey": self._api_key}
             try:
                 async with httpx.AsyncClient() as client:
                     response = await client.post(
-                        url=token_url, json=auth_data, headers=self.base_headers
+                        url=token_url, json=auth_data, headers=self._base_headers
                     )
             except httpx.ConnectError:
                 raise ConnectionException(
@@ -274,10 +274,10 @@ class BaseAsyncAPIWrapper(AbstractAPIWrapper):
             )
 
     @property
-    async def headers(self) -> dict:
-        return {**self.base_headers, "authorization": f"Bearer {await self.token}"}
+    async def _headers(self) -> dict:
+        return {**self._base_headers, "authorization": f"Bearer {await self._token}"}
 
-    async def api_call(
+    async def _api_call(
         self,
         service_type: ServiceType,
         data: Optional[dict] = None,
@@ -326,13 +326,13 @@ class BaseAsyncAPIWrapper(AbstractAPIWrapper):
         if not data:
             payload.pop("data", None)
         if service_type == ServiceType.NO_OP:
-            payload.pop("servicetype", None)
+            payload.pop("ServiceType", None)
         return {
-            "url": self.base_url + endpoint_path
+            "url": self._base_url + endpoint_path
             if endpoint_path is not None
-            else self.base_url,
+            else self._base_url,
             "json": payload,
-            "headers": await self.headers
+            "headers": await self._headers
             if not exclude_auth_header
-            else self.base_headers,
+            else self._base_headers,
         }

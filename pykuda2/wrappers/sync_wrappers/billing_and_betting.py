@@ -1,13 +1,13 @@
 from typing import Optional
 
 from pykuda2.base import BaseAPIWrapper
-from pykuda2.utils import BillType, ServiceType
+from pykuda2.utils import BillType, ServiceType, APIResponse
 
 
 class BillingAndBetting(BaseAPIWrapper):
     def get_bill_type_options(
         self, bill_type: BillType, request_reference: Optional[str] = None
-    ):
+    ) -> APIResponse:
         """Retrieves all the options of a bill type that are available from Kuda.
 
         Args:
@@ -17,14 +17,14 @@ class BillingAndBetting(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {"BillTypeName": bill_type}
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.GET_BILLERS_BY_TYPE,
             data=data,
             request_reference=request_reference,
@@ -36,7 +36,7 @@ class BillingAndBetting(BaseAPIWrapper):
         kuda_bill_item_identifier: str,
         customer_identification: str,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Verifies the identity of  the beneficiary.
 
         Just like an account or bank transfer, You need to verify a customer's identity before
@@ -53,8 +53,8 @@ class BillingAndBetting(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -64,7 +64,7 @@ class BillingAndBetting(BaseAPIWrapper):
             "KudaBillItemIdentifier": kuda_bill_item_identifier,
             "CustomerIdentification": customer_identification,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.VERIFY_BILL_CUSTOMER,
             data=data,
             request_reference=request_reference,
@@ -77,7 +77,7 @@ class BillingAndBetting(BaseAPIWrapper):
         customer_identifier: str,
         phone_number: Optional[str] = None,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Purchase a bill from your main account.
 
         Args:
@@ -90,8 +90,8 @@ class BillingAndBetting(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -102,7 +102,7 @@ class BillingAndBetting(BaseAPIWrapper):
             "PhoneNumber": phone_number,
             "CustomerIdentifier": customer_identifier,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.ADMIN_PURCHASE_BILL,
             data=data,
             request_reference=request_reference,
@@ -116,7 +116,7 @@ class BillingAndBetting(BaseAPIWrapper):
         phone_number: str,
         customer_identifier: str,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Purchase a bill from your virtual account.
 
         Args:
@@ -130,8 +130,8 @@ class BillingAndBetting(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -143,7 +143,7 @@ class BillingAndBetting(BaseAPIWrapper):
             "CustomerIdentifier": customer_identifier,
             "TrackingReference": tracking_reference,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.PURCHASE_BILL,
             data=data,
             request_reference=request_reference,
@@ -154,17 +154,18 @@ class BillingAndBetting(BaseAPIWrapper):
         bill_request_ref: Optional[str],
         bill_response_reference: Optional[str],
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Retrieve the status of a bill purchase.
 
         Args:
+            bill_request_ref: The bill request reference.
             bill_response_reference: The bill reference gotten from purchasing the bill.
             request_reference: a unique identifier for this api call.
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -178,13 +179,15 @@ class BillingAndBetting(BaseAPIWrapper):
             "BillResponseReference": bill_response_reference,
             "BillRequestRef": bill_request_ref,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.BILL_TSQ,
             data=data,
             request_reference=request_reference,
         )
 
-    def get_purchased_bills(self, request_reference: Optional[str] = None):
+    def get_purchased_bills(
+        self, request_reference: Optional[str] = None
+    ) -> APIResponse:
         """Retrieve bills purchased from the main account.
 
         Args:
@@ -192,20 +195,20 @@ class BillingAndBetting(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.ADMIN_GET_PURCHASED_BILLS,
             request_reference=request_reference,
         )
 
     def get_purchased_bill_from_virtual_account(
         self, tracking_reference: str, request_reference: Optional[str] = None
-    ):
+    ) -> APIResponse:
         """Retrieve bills purchased from a virtual account.
 
         Args:
@@ -214,14 +217,14 @@ class BillingAndBetting(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         data = {"TrackingReference": tracking_reference}
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.GET_PURCHASED_BILLS,
             data=data,
             request_reference=request_reference,

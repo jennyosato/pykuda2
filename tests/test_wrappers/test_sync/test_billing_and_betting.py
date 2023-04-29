@@ -73,7 +73,10 @@ class BillingAndBettingTestCase(CredentialMixin, TestCase):
     def test_can_get_bill_type_options(self):
         response = self.wrapper.get_bill_type_options(bill_type=BillType.INTERNET_DATA)
         self.assertEqual(response.status_code, HTTP_STATUS_CODE.OK)
-        self.assertEqual(response.message, "This is a mocked response. No real API call to Kuda servers was made.")
+        self.assertEqual(
+            response.message,
+            "This is a mocked response. No real API call to Kuda servers was made.",
+        )
 
     def test_can_verify_customer_before_purchase(self):
         # TODO: Properly test this method.

@@ -13,7 +13,7 @@ class MockedGiftCardTestCase(MockedAPICallTestCase):
         cls.wrapper = GiftCard(email=cls.email, api_key=cls.api_key)
 
     def test_can_gift_cards(self):
-        response = self.wrapper.gift_cards()
+        response = self.wrapper.get_gift_cards()
         self.assertEqual(response.status_code, HTTP_STATUS_CODE.OK)
         self.assertTrue(response.status)
 
@@ -59,7 +59,7 @@ class GiftCardTestCase(CredentialMixin, TestCase):
         cls.wrapper = GiftCard(email=cls.email, api_key=cls.api_key)
 
     def test_can_gift_cards(self):
-        response = self.wrapper.gift_cards()
+        response = self.wrapper.get_gift_cards()
         self.assertEqual(response.status_code, HTTP_STATUS_CODE.OK)
         self.assertTrue(response.status)
 

@@ -1,4 +1,2 @@
-This part of the project documentation focuses on
-an **information-oriented** approach. Use it as a
-reference for the technical implementation of the
+This provides implementation details of `pykuda2`. Use it as a reference for the technical implementation of the
 `pykuda2` project code.

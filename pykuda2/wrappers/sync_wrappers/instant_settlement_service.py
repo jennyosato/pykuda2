@@ -1,4 +1,4 @@
-from pykuda2 import Mode, ServiceType
+from pykuda2 import Mode, ServiceType, APIResponse
 from pykuda2.base import BaseAPIWrapper
 
 from pykuda2.exceptions import TokenException
@@ -11,21 +11,21 @@ class InstantSettlementService(BaseAPIWrapper):
         self.client_password = client_password
 
     @property
-    def base_url(self) -> str:
+    def _base_url(self) -> str:
         """Returns the base url.
 
         The url returned depends on the mode in which the class was instantiated."""
         return {
             Mode.DEVELOPMENT: "https://partners-uat.kudabank.com",
             Mode.PRODUCTION: "https://partners.kuda.com",
-        }[self.mode]
+        }[self._mode]
 
     @property
-    def token(self) -> str:
+    def _token(self) -> str:
         if self._token:
             return self._token
         else:
-            response = self.api_call(
+            response = self._api_call(
                 service_type=ServiceType.NO_OP,
                 data={
                     "secretKey": self.secret_key,
@@ -38,7 +38,8 @@ class InstantSettlementService(BaseAPIWrapper):
                 self._token = response.data["auth_token"]
                 return self._token
             raise TokenException(
-                f"Unable to get access token for InstantSettlementService. {response.message}. Please ensure valid credentials were provided"
+                "Unable to get access token for InstantSettlementService. "
+                f"{response.message}. Please ensure valid credentials were provided"
             )
 
     def create_terminal(
@@ -49,7 +50,7 @@ class InstantSettlementService(BaseAPIWrapper):
         serial_number: str,
         is_receiving_payment: bool,
         is_active: bool,
-    ):
+    ) -> APIResponse:
         """Gives the partner the ability to add certain parameters to a POS device.
 
         It allows the partner to anchor routing communications between the processor and the Kuda settlement system.
@@ -63,8 +64,8 @@ class InstantSettlementService(BaseAPIWrapper):
             is_active: Set to `True` for an active terminal or `False` for otherwise.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -77,7 +78,7 @@ class InstantSettlementService(BaseAPIWrapper):
             "isReceivingPayment": is_receiving_payment,
             "isActive": is_active,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.NO_OP,
             data=payload,
             endpoint_path="/api/terminal/api/terminal/createterminal",
@@ -94,7 +95,7 @@ class InstantSettlementService(BaseAPIWrapper):
         is_receiving_payment: bool,
         fee_percentage: float,
         date_created: str,
-    ):
+    ) -> APIResponse:
         """Allows a partner to swap the location and user of a POS device.
 
         Args:
@@ -109,8 +110,8 @@ class InstantSettlementService(BaseAPIWrapper):
             date_created: The date the terminal was created
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -127,13 +128,13 @@ class InstantSettlementService(BaseAPIWrapper):
             "feePercentage": fee_percentage,
             "dateCreated": date_created,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.NO_OP,
             data=payload,
             endpoint_path="/api/terminal/EditTerminal",
         )
 
-    def all(self, page_size: int, page_number: int):
+    def all(self, page_size: int, page_number: int) -> APIResponse:
         """Allows a user to get all merchants and the terminals assigned to them.
 
         Args:
@@ -141,40 +142,42 @@ class InstantSettlementService(BaseAPIWrapper):
             page_number: This specifies the index of the paginated results retrieved.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         payload = {"pageSize": page_size, "pageNumber": page_number}
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.NO_OP,
             data=payload,
             endpoint_path="/RetrieveMerchantTerminals",
         )
 
-    def get_settlement_status(self, transaction_id: str):
+    def get_settlement_status(self, transaction_id: str) -> APIResponse:
         """Retrieves insight on the status of a particular/all settlements for a terminal.
 
         Args:
             transaction_id: The transaction reference number or unique identifier.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         payload = {"transactionId": transaction_id}
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.NO_OP,
             data=payload,
             endpoint_path="/api/terminal/settlementstatus",
         )
 
-    def log_transaction(self, amount: int, transaction_id: str, terminal_id: str):
+    def log_transaction(
+        self, amount: int, transaction_id: str, terminal_id: str
+    ) -> APIResponse:
         """Logs a complete transaction.
 
         For complete transaction fulfilment, a user will call this method with the transaction amount
@@ -189,8 +192,8 @@ class InstantSettlementService(BaseAPIWrapper):
             terminal_id: The terminal unique identifier.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -200,7 +203,7 @@ class InstantSettlementService(BaseAPIWrapper):
             "transactionId": transaction_id,
             "terminalId": terminal_id,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.NO_OP,
             data=payload,
             endpoint_path="/api/terminal/logtransaction",
@@ -208,7 +211,7 @@ class InstantSettlementService(BaseAPIWrapper):
 
     def transactions(
         self, terminal_id: str, from_: str, to: str, page_size: int, page_number: int
-    ):
+    ) -> APIResponse:
         """Retrieves transactions.
 
         This method allows a user to do back office operations while searching for transactions disputes.
@@ -221,8 +224,8 @@ class InstantSettlementService(BaseAPIWrapper):
             page_number: This specifies the index of the paginated results retrieved.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -234,7 +237,7 @@ class InstantSettlementService(BaseAPIWrapper):
             "pageSize": page_size,
             "pageNumber": page_number,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.NO_OP,
             data=payload,
             endpoint_path="/api/terminal/searchtransaction",

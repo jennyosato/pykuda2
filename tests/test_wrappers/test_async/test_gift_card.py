@@ -13,7 +13,7 @@ class MockedAsyncGiftCardTestCase(MockedAsyncAPICallTestCase):
         cls.wrapper = AsyncGiftCard(email=cls.email, api_key=cls.api_key)
 
     async def test_can_gift_cards(self):
-        response = await self.wrapper.gift_cards()
+        response = await self.wrapper.get_gift_cards()
         self.assertEqual(response.status_code, HTTP_STATUS_CODE.OK)
         self.assertTrue(response.status)
 
@@ -59,7 +59,7 @@ class AsyncGiftCardTestCase(CredentialMixin, IsolatedAsyncioTestCase):
         cls.wrapper = AsyncGiftCard(email=cls.email, api_key=cls.api_key)
 
     async def test_can_gift_cards(self):
-        response = await self.wrapper.gift_cards()
+        response = await self.wrapper.get_gift_cards()
         self.assertEqual(response.status_code, HTTP_STATUS_CODE.OK)
         self.assertTrue(response.status)
 

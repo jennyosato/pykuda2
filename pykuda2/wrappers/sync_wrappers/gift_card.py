@@ -1,11 +1,11 @@
 from typing import Optional
 
 from pykuda2.base import BaseAPIWrapper
-from pykuda2.utils import ServiceType
+from pykuda2.utils import ServiceType, APIResponse
 
 
 class GiftCard(BaseAPIWrapper):
-    def gift_cards(self, request_reference: Optional[str] = None):
+    def get_gift_cards(self, request_reference: Optional[str] = None) -> APIResponse:
         """Retrieves a curated list of gift cards supported by Kuda.
 
         Args:
@@ -13,13 +13,13 @@ class GiftCard(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.GET_GIFT_CARD, request_reference=request_reference
         )
 
@@ -32,7 +32,7 @@ class GiftCard(BaseAPIWrapper):
         biller_identifier: str,
         note: Optional[str] = None,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Buy gift cards from the admin account
 
         Args:
@@ -47,8 +47,8 @@ class GiftCard(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -61,7 +61,7 @@ class GiftCard(BaseAPIWrapper):
             "billerIdentifier": biller_identifier,
             "note": note,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.ADMIN_BUY_GIFT_CARD,
             data=data,
             request_reference=request_reference,
@@ -77,7 +77,7 @@ class GiftCard(BaseAPIWrapper):
         biller_identifier: str,
         note: Optional[str] = None,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Buy gift cards from the virtual account.
 
         Args:
@@ -93,8 +93,8 @@ class GiftCard(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -108,7 +108,7 @@ class GiftCard(BaseAPIWrapper):
             "billerIdentifier": biller_identifier,
             "note": note,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.BUY_GIFT_CARD,
             data=data,
             request_reference=request_reference,
@@ -124,7 +124,7 @@ class GiftCard(BaseAPIWrapper):
         biller_identifier: str,
         note: Optional[str] = None,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Retrieves the status of all gift cards purchased.
 
         Args:
@@ -140,8 +140,8 @@ class GiftCard(BaseAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -155,7 +155,7 @@ class GiftCard(BaseAPIWrapper):
             "billerIdentifier": biller_identifier,
             "note": note,
         }
-        return self.api_call(
+        return self._api_call(
             service_type=ServiceType.GIFT_CARD_TSQ,
             data=data,
             request_reference=request_reference,

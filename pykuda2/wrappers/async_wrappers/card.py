@@ -1,7 +1,7 @@
 from typing import Optional
 
 from pykuda2.base import BaseAsyncAPIWrapper
-from pykuda2.utils import ServiceType, CardChannel, Gender
+from pykuda2.utils import ServiceType, CardChannel, Gender, APIResponse
 
 
 class AsyncCard(BaseAsyncAPIWrapper):
@@ -19,7 +19,7 @@ class AsyncCard(BaseAsyncAPIWrapper):
         delivery_state: str,
         delivery_street_no_and_name: str,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Request for a new card for a customer and get it delivered to their location.
 
         Args:
@@ -38,8 +38,8 @@ class AsyncCard(BaseAsyncAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -57,7 +57,7 @@ class AsyncCard(BaseAsyncAPIWrapper):
             "Country": country,
             "additionalPhoneNumber": additional_phone_number,
         }
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.REQUEST_CARD,
             data=data,
             # endpoint_path="/RequestCard",
@@ -67,9 +67,9 @@ class AsyncCard(BaseAsyncAPIWrapper):
     async def get_cards(
         self,
         tracking_reference: str,
-        simulate_request=False,
+        simulate_request: bool = False,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Retrieves a list of cards requested.
 
         Args:
@@ -79,8 +79,8 @@ class AsyncCard(BaseAsyncAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -89,7 +89,7 @@ class AsyncCard(BaseAsyncAPIWrapper):
             "TrackingReference": tracking_reference,
             "SimulateRequest": simulate_request,
         }
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.GET_CUSTOMER_CARDS,
             data=data,
             # endpoint_path="/GetCustomerCards",
@@ -102,9 +102,9 @@ class AsyncCard(BaseAsyncAPIWrapper):
         cvv: int,
         id: int,
         tracking_reference: str,
-        simulate_request=False,
+        simulate_request: bool = False,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Allows customers activate their cards once they receive it.
 
         Args:
@@ -117,8 +117,8 @@ class AsyncCard(BaseAsyncAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -130,7 +130,7 @@ class AsyncCard(BaseAsyncAPIWrapper):
             "TrackingReference": tracking_reference,
             "SimulateRequest": simulate_request,
         }
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.ACTIVATE_CARD,
             data=data,
             # endpoint_path="/ActivateCard",
@@ -141,9 +141,9 @@ class AsyncCard(BaseAsyncAPIWrapper):
         self,
         id: int,
         tracking_reference: str,
-        simulate_request=False,
+        simulate_request: bool = False,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Allows customers deactivate their cards.
 
         Args:
@@ -154,8 +154,8 @@ class AsyncCard(BaseAsyncAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -165,7 +165,7 @@ class AsyncCard(BaseAsyncAPIWrapper):
             "TrackingReference": tracking_reference,
             "SimulateRequest": simulate_request,
         }
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.DEACTIVATE_CARD,
             data=data,
             # endpoint_path="/DeactivateCard",
@@ -178,9 +178,9 @@ class AsyncCard(BaseAsyncAPIWrapper):
         tracking_reference: str,
         channel: CardChannel,
         limit: int,
-        simulate_request=False,
+        simulate_request: bool = False,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Set spend limit on a card.
 
         Card limits are a good way to manage individual spend on their accounts.
@@ -200,8 +200,8 @@ class AsyncCard(BaseAsyncAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -213,7 +213,7 @@ class AsyncCard(BaseAsyncAPIWrapper):
             "Limit": limit,
             "SimulateRequest": simulate_request,
         }
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.MANAGE_CARD_TRANSACTION_LIMIT,
             data=data,
             # endpoint_path="/ManageCardTransactionLimit",
@@ -226,9 +226,9 @@ class AsyncCard(BaseAsyncAPIWrapper):
         tracking_reference: str,
         channel: CardChannel,
         limit: int,
-        simulate_request=False,
+        simulate_request: bool = False,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Allows customers manage where their cards can be used.
 
         Args:
@@ -241,8 +241,8 @@ class AsyncCard(BaseAsyncAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -254,7 +254,7 @@ class AsyncCard(BaseAsyncAPIWrapper):
             "Limit": limit,
             "SimulateRequest": simulate_request,
         }
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.MANAGE_CARD_CHANNEL,
             data=data,
             # endpoint_path="/ManageCardChannel",
@@ -267,7 +267,7 @@ class AsyncCard(BaseAsyncAPIWrapper):
         tracking_reference: str,
         new_pin: int,
         request_reference: Optional[str] = None,
-    ):
+    ) -> APIResponse:
         """Allows customers change their 4 digits PIN to any combination they desire.
 
         Args:
@@ -278,13 +278,13 @@ class AsyncCard(BaseAsyncAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection."""
         data = {"Id": id, "TrackingReference": tracking_reference, "NewPIN": new_pin}
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.CHANGE_CARD_PIN,
             data=data,
             # endpoint_path="/ChangeCardPIN",
@@ -293,7 +293,7 @@ class AsyncCard(BaseAsyncAPIWrapper):
 
     async def block_card(
         self, tracking_reference: str, id: int, request_reference: Optional[str] = None
-    ):
+    ) -> APIResponse:
         """Block a customer's card.
 
         It allows them to longer be able to make card transactions with it.
@@ -307,8 +307,8 @@ class AsyncCard(BaseAsyncAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -317,7 +317,7 @@ class AsyncCard(BaseAsyncAPIWrapper):
             "Id": id,
             "TrackingReference": tracking_reference,
         }
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.BLOCK_CARD,
             data=data,
             # endpoint_path="/BlockCard",
@@ -326,7 +326,7 @@ class AsyncCard(BaseAsyncAPIWrapper):
 
     async def unblock_card(
         self, tracking_reference: str, id: int, request_reference: Optional[str] = None
-    ):
+    ) -> APIResponse:
         """Unblocks a customers card.
 
         Args:
@@ -336,8 +336,8 @@ class AsyncCard(BaseAsyncAPIWrapper):
                 it is automatically generated if not provided.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -346,7 +346,7 @@ class AsyncCard(BaseAsyncAPIWrapper):
             "Id": id,
             "TrackingReference": tracking_reference,
         }
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.UNBLOCK_CARD,
             data=data,
             # endpoint_path="/UnblockCard",

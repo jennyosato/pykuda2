@@ -17,7 +17,7 @@ class Kuda(BaseAPIWrapper):
         mode: The mode you desire to use the wrapper in (development or production)
     """
 
-    def __init__(self, email: str, api_key: str, mode=Mode.DEVELOPMENT):
+    def __init__(self, email: str, api_key: str, mode: Mode = Mode.DEVELOPMENT):
         super().__init__(email=email, api_key=api_key, mode=mode)
         self.accounts = Account(email=email, api_key=api_key, mode=mode)
         self.transactions = Transaction(email=email, api_key=api_key, mode=mode)
@@ -33,12 +33,12 @@ class Kuda(BaseAPIWrapper):
         # a hacky solution to this issue. We use this `Kuda` wrapper to get the
         # `access_token` and feed it to all these attributes, so they don't have
         # to make a request to get the access token.
-        self.accounts._token = self.token
-        self.transactions._token = self.token
-        self.billing_and_betting._token = self.token
-        self.gift_cards._token = self.token
-        self.savings._token = self.token
-        self.cards._token = self.token
+        self.accounts._token = self._token
+        self.transactions._token = self._token
+        self.billing_and_betting._token = self._token
+        self.gift_cards._token = self._token
+        self.savings._token = self._token
+        self.cards._token = self._token
 
 
 class AsyncKuda(BaseAsyncAPIWrapper):
@@ -50,7 +50,7 @@ class AsyncKuda(BaseAsyncAPIWrapper):
         mode: The mode you desire to use the wrapper in (development or production)
     """
 
-    def __init__(self, email: str, api_key: str, mode=Mode.DEVELOPMENT):
+    def __init__(self, email: str, api_key: str, mode: Mode = Mode.DEVELOPMENT):
         super().__init__(email=email, api_key=api_key, mode=mode)
         self.accounts = Account(email=email, api_key=api_key, mode=mode)
         self.transactions = Transaction(email=email, api_key=api_key, mode=mode)

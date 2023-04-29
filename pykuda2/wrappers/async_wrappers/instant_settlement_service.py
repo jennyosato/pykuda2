@@ -1,4 +1,4 @@
-from pykuda2 import Mode, ServiceType
+from pykuda2 import Mode, ServiceType, APIResponse
 from pykuda2.base import BaseAsyncAPIWrapper
 from pykuda2.exceptions import TokenException
 
@@ -10,21 +10,21 @@ class AsyncInstantSettlementService(BaseAsyncAPIWrapper):
         self.client_password = client_password
 
     @property
-    def base_url(self) -> str:
+    def _base_url(self) -> str:
         """Returns the base url.
 
         The url returned depends on the mode in which the class was instantiated."""
         return {
             Mode.DEVELOPMENT: "https://partners-uat.kudabank.com",
             Mode.PRODUCTION: "https://partners.kuda.com",
-        }[self.mode]
+        }[self._mode]
 
     @property
-    async def token(self) -> str:
+    async def _token(self) -> str:
         if self._token:
             return self._token
         else:
-            response = await self.api_call(
+            response = await self._api_call(
                 service_type=ServiceType.NO_OP,
                 data={
                     "secretKey": self.secret_key,
@@ -48,7 +48,7 @@ class AsyncInstantSettlementService(BaseAsyncAPIWrapper):
         serial_number: str,
         is_receiving_payment: bool,
         is_active: bool,
-    ):
+    ) -> APIResponse:
         """Gives the partner the ability to add certain parameters to a POS device.
 
         It allows the partner to anchor routing communications between the processor and the Kuda settlement system.
@@ -62,8 +62,8 @@ class AsyncInstantSettlementService(BaseAsyncAPIWrapper):
             is_active: Set to `True` for an active terminal or `False` for otherwise.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -76,7 +76,7 @@ class AsyncInstantSettlementService(BaseAsyncAPIWrapper):
             "isReceivingPayment": is_receiving_payment,
             "isActive": is_active,
         }
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.NO_OP,
             data=payload,
             endpoint_path="/api/terminal/api/terminal/createterminal",
@@ -93,7 +93,7 @@ class AsyncInstantSettlementService(BaseAsyncAPIWrapper):
         is_receiving_payment: bool,
         fee_percentage: float,
         date_created: str,
-    ):
+    ) -> APIResponse:
         """Allows a partner to swap the location and user of a POS device.
 
         Args:
@@ -108,8 +108,8 @@ class AsyncInstantSettlementService(BaseAsyncAPIWrapper):
             date_created: The date the terminal was created
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -126,13 +126,13 @@ class AsyncInstantSettlementService(BaseAsyncAPIWrapper):
             "feePercentage": fee_percentage,
             "dateCreated": date_created,
         }
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.NO_OP,
             data=payload,
             endpoint_path="/api/terminal/EditTerminal",
         )
 
-    async def all(self, page_size: int, page_number: int):
+    async def all(self, page_size: int, page_number: int) -> APIResponse:
         """Allows a user to get all merchants and the terminals assigned to them.
 
         Args:
@@ -140,40 +140,40 @@ class AsyncInstantSettlementService(BaseAsyncAPIWrapper):
             page_number: This specifies the index of the paginated results retrieved.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         payload = {"pageSize": page_size, "pageNumber": page_number}
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.NO_OP,
             data=payload,
             endpoint_path="/RetrieveMerchantTerminals",
         )
 
-    async def get_settlement_status(self, transaction_id: str):
+    async def get_settlement_status(self, transaction_id: str) -> APIResponse:
         """Retrieves insight on the status of a particular/all settlements for a terminal.
 
         Args:
             transaction_id: The transaction reference number or unique identifier.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
         """
         payload = {"transactionId": transaction_id}
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.NO_OP,
             data=payload,
             endpoint_path="/api/terminal/settlementstatus",
         )
 
-    async def log_transaction(self, amount: int, transaction_id: str, terminal_id: str):
+    async def log_transaction(self, amount: int, transaction_id: str, terminal_id: str) -> APIResponse:
         """Logs a complete transaction.
 
         For complete transaction fulfilment, a user will call this method with the transaction amount
@@ -188,8 +188,8 @@ class AsyncInstantSettlementService(BaseAsyncAPIWrapper):
             terminal_id: The terminal unique identifier.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -199,7 +199,7 @@ class AsyncInstantSettlementService(BaseAsyncAPIWrapper):
             "transactionId": transaction_id,
             "terminalId": terminal_id,
         }
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.NO_OP,
             data=payload,
             endpoint_path="/api/terminal/logtransaction",
@@ -207,7 +207,7 @@ class AsyncInstantSettlementService(BaseAsyncAPIWrapper):
 
     async def transactions(
         self, terminal_id: str, from_: str, to: str, page_size: int, page_number: int
-    ):
+    ) -> APIResponse:
         """Retrieves transactions.
 
         This method allows a user to do back office operations while searching for transactions disputes.
@@ -220,8 +220,8 @@ class AsyncInstantSettlementService(BaseAsyncAPIWrapper):
             page_number: This specifies the index of the paginated results retrieved.
 
         Returns:
-            An `APIResponse` which is basically just a dataclass containing the data returned
-            by the server as result of calling this function.
+            An `APIResponse` which is basically just a dataclass containing the data returned by the server as result
+                of calling this function.
 
         Raises:
             ConnectionException: when the request times out or in the absence of an internet connection.
@@ -233,7 +233,7 @@ class AsyncInstantSettlementService(BaseAsyncAPIWrapper):
             "pageSize": page_size,
             "pageNumber": page_number,
         }
-        return await self.api_call(
+        return await self._api_call(
             service_type=ServiceType.NO_OP,
             data=payload,
             endpoint_path="/api/terminal/searchtransaction",

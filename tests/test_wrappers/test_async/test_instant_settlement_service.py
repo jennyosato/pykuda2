@@ -17,9 +17,9 @@ class MockedAsyncInstantSettlementServiceTestCase(MockedAsyncAPICallTestCase):
         )
 
     def test_base_url(self):
-        self.assertEqual(self.wrapper.base_url, "https://partners-uat.kudabank.com")
-        self.wrapper.mode = Mode.PRODUCTION
-        self.assertEqual(self.wrapper.base_url, "https://partners.kuda.com")
+        self.assertEqual(self.wrapper._base_url, "https://partners-uat.kudabank.com")
+        self.wrapper._mode = Mode.PRODUCTION
+        self.assertEqual(self.wrapper._base_url, "https://partners.kuda.com")
 
     async def test_token(self):
         ...
