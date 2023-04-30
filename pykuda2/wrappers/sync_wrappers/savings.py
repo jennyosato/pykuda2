@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 
 from pykuda2.base import BaseAPIWrapper
 from pykuda2.utils import TransactionType, ServiceType, APIResponse
@@ -92,7 +92,7 @@ class Savings(BaseAPIWrapper):
 
     def credit_or_debit_plain_savings_account(
         self,
-        amount: int,
+        amount: Union[int, float],
         narration: str,
         transaction_type: TransactionType,
         tracking_reference: str,
@@ -101,7 +101,10 @@ class Savings(BaseAPIWrapper):
         """Adds or removes money from a plain savings account.
 
         Args:
-            amount: The amount to be added or removed.
+            amount: The amount to be added or removed. Note care should be taken when performing calculations as money is involved.
+                a `Decimal` would have been the preferred type compared to `Union[int, float]` that was used.
+                it is advisable that static values are passed for this parameter. see
+                https://stackoverflow.com/questions/3730019/why-not-use-double-or-float-to-represent-currency
             narration: The transaction description.
             transaction_type: The transaction type e.g. TransactionType.CREDIT.
             tracking_reference: Unique identifier for savings.
@@ -166,7 +169,7 @@ class Savings(BaseAPIWrapper):
         savings_tracking_reference: str,
         name: str,
         virtual_account_tracking_reference: str,
-        amount: int,
+        amount: Union[int, float],
         duration: str,
         frequency: str,
         start_now: bool,
@@ -179,7 +182,10 @@ class Savings(BaseAPIWrapper):
             savings_tracking_reference: The unique identifier for savings.
             name: Name of the savings plan.
             virtual_account_tracking_reference: Unique identifier for the associated virtual account.
-            amount: Amount to be saved.
+            amount: Amount to be saved. Note care should be taken when performing calculations as money is involved.
+                a `Decimal` would have been the preferred type compared to `Union[int, float]` that was used.
+                it is advisable that static values are passed for this parameter. see
+                https://stackoverflow.com/questions/3730019/why-not-use-double-or-float-to-represent-currency
             duration: Length of savings.
             frequency: How often the savings should happen.
             start_now: Flag to start the savings immediately.
@@ -216,7 +222,7 @@ class Savings(BaseAPIWrapper):
         savings_tracking_reference: str,
         name: str,
         virtual_account_tracking_reference: str,
-        amount: int,
+        amount: Union[int, float],
         duration: str,
         frequency: str,
         start_now: bool,
@@ -230,7 +236,10 @@ class Savings(BaseAPIWrapper):
             savings_tracking_reference: The unique identifier for savings.
             name: Name of the savings plan.
             virtual_account_tracking_reference: Unique identifier for the associated virtual account.
-            amount: Amount to be saved.
+            amount: Amount to be saved. Note care should be taken when performing calculations as money is involved.
+                a `Decimal` would have been the preferred type compared to `Union[int, float]` that was used.
+                it is advisable that static values are passed for this parameter. see
+                https://stackoverflow.com/questions/3730019/why-not-use-double-or-float-to-represent-currency
             duration: Length of savings.
             frequency: How often the savings should happen.
             start_now: Flag to start the savings immediately.
@@ -328,14 +337,17 @@ class Savings(BaseAPIWrapper):
 
     def withdrawal_from_flexible_savings_account(
         self,
-        amount: int,
+        amount: Union[int, float],
         tracking_reference: str,
         request_reference: Optional[str] = None,
     ) -> APIResponse:
         """
 
         Args:
-            amount: Amount to be removed.
+            amount: Amount to be removed. Note care should be taken when performing calculations as money is involved.
+                a `Decimal` would have been the preferred type compared to `Union[int, float]` that was used.
+                it is advisable that static values are passed for this parameter. see
+                https://stackoverflow.com/questions/3730019/why-not-use-double-or-float-to-represent-currency
             tracking_reference: Unique identifier for savings.
             request_reference: a unique identifier for this api call.
                 it is automatically generated if not provided.
@@ -393,7 +405,7 @@ class Savings(BaseAPIWrapper):
         savings_tracking_reference: str,
         name: str,
         virtual_account_tracking_reference: str,
-        amount: int,
+        amount: Union[int, float],
         duration: str,
         frequency: str,
         start_now: bool,
@@ -407,7 +419,10 @@ class Savings(BaseAPIWrapper):
             savings_tracking_reference: The unique identifier for savings.
             name: Name of the savings plan.
             virtual_account_tracking_reference: Unique identifier for the associated virtual account.
-            amount: Amount to be saved.
+            amount: Amount to be saved. Note care should be taken when performing calculations as money is involved.
+                a `Decimal` would have been the preferred type compared to `Union[int, float]` that was used.
+                it is advisable that static values are passed for this parameter. see
+                https://stackoverflow.com/questions/3730019/why-not-use-double-or-float-to-represent-currency
             duration: Length of savings.
             frequency: How often the savings should happen.
             start_now: Flag to start the savings immediately.
@@ -495,14 +510,17 @@ class Savings(BaseAPIWrapper):
 
     def close_fixed_savings_account(
         self,
-        amount: int,
+        amount: Union[int, float],
         tracking_reference: str,
         request_reference: Optional[str] = None,
     ) -> APIResponse:
         """
 
         Args:
-            amount: amount to be removed.
+            amount: amount to be removed. Note care should be taken when performing calculations as money is involved.
+                a `Decimal` would have been the preferred type compared to `Union[int, float]` that was used.
+                it is advisable that static values are passed for this parameter. see
+                https://stackoverflow.com/questions/3730019/why-not-use-double-or-float-to-represent-currency
             tracking_reference: unique identifier for the savings.
             request_reference: a unique identifier for this api call.
                 it is automatically generated if not provided.

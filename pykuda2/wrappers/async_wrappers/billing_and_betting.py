@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 
 from pykuda2.base import BaseAsyncAPIWrapper
 from pykuda2.utils import BillType, ServiceType, APIResponse
@@ -72,7 +72,7 @@ class AsyncBillingAndBetting(BaseAsyncAPIWrapper):
 
     async def purchase_bill(
         self,
-        amount: int,
+        amount: Union[int, float],
         bill_item_identifier: str,
         customer_identifier: str,
         phone_number: Optional[str] = None,
@@ -81,7 +81,10 @@ class AsyncBillingAndBetting(BaseAsyncAPIWrapper):
         """Purchase a bill from your main account.
 
         Args:
-            amount: Bill amount.
+            amount: Bill amount. Note care should be taken when performing calculations as money is involved.
+                a `Decimal` would have been the preferred type compared to `Union[int, float]` that was used.
+                it is advisable that static values are passed for this parameter. see
+                https://stackoverflow.com/questions/3730019/why-not-use-double-or-float-to-represent-currency
             bill_item_identifier: The Kuda bill unique identifier
             customer_identifier: The customer's unique identifier
             phone_number: The customer's phone number It is not required
@@ -111,7 +114,7 @@ class AsyncBillingAndBetting(BaseAsyncAPIWrapper):
     async def purchase_bill_from_virtual_account(
         self,
         tracking_reference: str,
-        amount: int,
+        amount: Union[int, float],
         bill_item_identifier: str,
         phone_number: str,
         customer_identifier: str,
@@ -121,7 +124,10 @@ class AsyncBillingAndBetting(BaseAsyncAPIWrapper):
 
         Args:
             tracking_reference: The customer virtual account Identifier.
-            amount: Bill amount.
+            amount: Bill amount. Note care should be taken when performing calculations as money is involved.
+                a `Decimal` would have been the preferred type compared to `Union[int, float]` that was used.
+                it is advisable that static values are passed for this parameter. see
+                https://stackoverflow.com/questions/3730019/why-not-use-double-or-float-to-represent-currency
             bill_item_identifier: The Kuda bill unique identifier
             customer_identifier: The customer's unique identifier
             phone_number: The customer's phone number It is not required
@@ -158,6 +164,7 @@ class AsyncBillingAndBetting(BaseAsyncAPIWrapper):
         """Retrieve the status of a bill purchase.
 
         Args:
+            bill_request_ref: The bill request reference.
             bill_response_reference: The bill reference gotten from purchasing the bill.
             request_reference: a unique identifier for this api call.
                 it is automatically generated if not provided.

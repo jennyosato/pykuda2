@@ -77,7 +77,7 @@ class TransferInstruction:
     account_number: str
     account_name: str
     beneficiary_bank_code: str
-    amount: int
+    amount: Union[int, float]
     bank_code: str
     narration: str
     bank_name: str
