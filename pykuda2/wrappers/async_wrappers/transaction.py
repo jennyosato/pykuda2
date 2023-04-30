@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 
 from pykuda2.base import BaseAsyncAPIWrapper
 from pykuda2.utils import TransferInstruction, ServiceType, TransactionStatus, APIResponse
@@ -72,7 +72,7 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
         beneficiary_account: str,
         beneficiary_bank_code: str,
         beneficiary_name: str,
-        amount: int,
+        amount: Union[int, float],
         narration: str,
         name_enquiry_session_id: str,
         sender_name: str,
@@ -90,7 +90,10 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
             beneficiary_account: Destination bank account number.
             beneficiary_bank_code: Destination bank code.
             beneficiary_name: Name of the recipient.
-            amount: Amount to be transferred.
+            amount: Amount to be transferred. Note care should be taken when performing calculations as money is involved.
+                a `Decimal` would have been the preferred type compared to `Union[int, float]` that was used.
+                it is advisable that static values are passed for this parameter. see
+                https://stackoverflow.com/questions/3730019/why-not-use-double-or-float-to-represent-currency
             narration: User defined reason for the transaction.
             name_enquiry_session_id: Session ID generated from the nameEnquiry request.
             sender_name: Name of the person sending money.
@@ -129,13 +132,13 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
         self,
         tracking_reference: str,
         beneficiary_account: str,
-        amount: int,
+        amount: Union[int, float],
         beneficiary_name: str,
         narration: str,
         beneficiary_bank_code: str,
         sender_name: str,
         name_enquiry_id: str,
-        client_fee_charge: int = 0,
+        client_fee_charge: Union[int, float] = 0,
         client_account_number: Optional[str] = None,
         request_reference: Optional[str] = None,
     ) -> APIResponse:
@@ -146,12 +149,18 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
             beneficiary_account: Destination bank account number.
             beneficiary_bank_code: Destination bank code.
             beneficiary_name: Name of the recipient.
-            amount: Amount to be transferred.
+            amount: Amount to be transferred. Note care should be taken when performing calculations as money is involved.
+                a `Decimal` would have been the preferred type compared to `Union[int, float]` that was used.
+                it is advisable that static values are passed for this parameter. see
+                https://stackoverflow.com/questions/3730019/why-not-use-double-or-float-to-represent-currency
             narration: User defined reason for the transaction.
             name_enquiry_id: Session ID generated from the nameEnquiry request.
             sender_name: Name of the person sending money.
             client_fee_charge: It is an amount a client wishes to charge their customer
-                for a transfer being carried out.
+                for a transfer being carried out. Note care should be taken when performing calculations as money is involved.
+                a `Decimal` would have been the preferred type compared to `Union[int, float]` that was used.
+                it is advisable that static values are passed for this parameter. see
+                https://stackoverflow.com/questions/3730019/why-not-use-double-or-float-to-represent-currency
             client_account_number: Account number of the client where the charged fee is
                 sent to.
             request_reference: a unique identifier for this api call.
@@ -217,7 +226,7 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
         self,
         account_number: str,
         reference: str,
-        amount: int,
+        amount: Union[int, float],
         original_request_ref: str,
         status: TransactionStatus,
         page_number: int,
@@ -229,7 +238,10 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
         Args:
             account_number: The beneficiary’s account number.
             reference: The reference on the transfer instruction.
-            amount: The transaction amount.
+            amount: The transaction amount. Note care should be taken when performing calculations as money is involved.
+                a `Decimal` would have been the preferred type compared to `Union[int, float]` that was used.
+                it is advisable that static values are passed for this parameter. see
+                https://stackoverflow.com/questions/3730019/why-not-use-double-or-float-to-represent-currency
             original_request_ref: The request reference used in logging the instruction.
             status: The status of the transaction.
             page_size: This specifies the number of transfer instructions to be retrieved.
@@ -482,7 +494,7 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
     async def fund_virtual_account(
         self,
         tracking_reference: str,
-        amount: int,
+        amount: Union[int, float],
         narration: str,
         request_reference: Optional[str] = None,
     ) -> APIResponse:
@@ -490,7 +502,10 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
 
         Args:
             tracking_reference: The virtual account tracking reference.
-            amount: The amount you want to fund your account.
+            amount: The amount you want to fund your account. Note care should be taken when performing calculations as money is involved.
+                a `Decimal` would have been the preferred type compared to `Union[int, float]` that was used.
+                it is advisable that static values are passed for this parameter. see
+                https://stackoverflow.com/questions/3730019/why-not-use-double-or-float-to-represent-currency
             narration: The additional description for the transaction.
             request_reference: a unique identifier for this api call.
                 it is automatically generated if not provided.
@@ -516,7 +531,7 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
     async def withdraw_from_virtual_account(
         self,
         tracking_reference: str,
-        amount: int,
+        amount: Union[int, float],
         narration: str,
         client_fee_charge: int = 0,
         request_reference: Optional[str] = None,
@@ -525,7 +540,10 @@ class AsyncTransaction(BaseAsyncAPIWrapper):
 
         Args:
             tracking_reference: The virtual account tracking reference.
-            amount: The amount you want to fund your account.
+            amount: The amount you want to fund your account. Note care should be taken when performing calculations as money is involved.
+                a `Decimal` would have been the preferred type compared to `Union[int, float]` that was used.
+                it is advisable that static values are passed for this parameter. see
+                https://stackoverflow.com/questions/3730019/why-not-use-double-or-float-to-represent-currency
             narration: The additional description for the transaction.
             client_fee_charge: It is an amount a client wishes to charge their customer for a transfer
                 being carried out.

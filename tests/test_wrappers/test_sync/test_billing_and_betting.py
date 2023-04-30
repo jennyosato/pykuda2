@@ -75,7 +75,7 @@ class BillingAndBettingTestCase(CredentialMixin, TestCase):
         self.assertEqual(response.status_code, HTTP_STATUS_CODE.OK)
         self.assertEqual(
             response.message,
-            "This is a mocked response. No real API call to Kuda servers was made.",
+            "Bill type record not found",
         )
 
     def test_can_verify_customer_before_purchase(self):

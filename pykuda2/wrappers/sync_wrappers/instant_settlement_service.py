@@ -1,3 +1,5 @@
+from typing import Union
+
 from pykuda2 import Mode, ServiceType, APIResponse
 from pykuda2.base import BaseAPIWrapper
 
@@ -176,7 +178,7 @@ class InstantSettlementService(BaseAPIWrapper):
         )
 
     def log_transaction(
-        self, amount: int, transaction_id: str, terminal_id: str
+        self, amount: Union[int, float], transaction_id: str, terminal_id: str
     ) -> APIResponse:
         """Logs a complete transaction.
 
@@ -187,7 +189,10 @@ class InstantSettlementService(BaseAPIWrapper):
         Logging a transaction sends a notification to Kuda which triggers instant settlement.
 
         Args:
-            amount: The transaction amount.
+            amount: The transaction amount. Note care should be taken when performing calculations as money is involved.
+                a `Decimal` would have been the preferred type compared to `Union[int, float]` that was used.
+                it is advisable that static values are passed for this parameter. see
+                https://stackoverflow.com/questions/3730019/why-not-use-double-or-float-to-represent-currency
             transaction_id: The transaction reference number or unique identifier.
             terminal_id: The terminal unique identifier.
 
