@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pykuda2"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = ["Jennifer <st.jennyandy@gmail.com>","Gbenga Adeyi <adeyigbenga005@gmail.com>"]
 readme = "README.md"

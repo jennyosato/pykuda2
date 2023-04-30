@@ -36,7 +36,7 @@ from pykuda2 import Kuda
 
 # Fetch your credentials from your environment path
 KUDA_EMAIL_ADDRESS = os.getenv("KUDA_EMAIL_ADDRESS")
-KUDA_API_KEY = os.getenv("KUDA_EMAIL_ADDRESS")
+KUDA_API_KEY = os.getenv("KUDA_API_KEY")
 
 # Instantiate the Kuda API wrapper
 kuda = Kuda(email=KUDA_EMAIL_ADDRESS, api_key=KUDA_API_KEY)
@@ -64,7 +64,7 @@ from fastapi import FastAPI
 
 # Fetch your credentials from your environment path
 KUDA_EMAIL_ADDRESS = os.getenv("KUDA_EMAIL_ADDRESS")
-KUDA_API_KEY = os.getenv("KUDA_EMAIL_ADDRESS")
+KUDA_API_KEY = os.getenv("KUDA_API_KEY")
 
 # Instantiate the Kuda API wrapper
 kuda = AsyncKuda(email=KUDA_EMAIL_ADDRESS, api_key=KUDA_API_KEY)
