@@ -33,12 +33,12 @@ class Kuda(BaseAPIWrapper):
         # a hacky solution to this issue. We use this `Kuda` wrapper to get the
         # `access_token` and feed it to all these attributes, so they don't have
         # to make a request to get the access token.
-        self.accounts._token = self._token
-        self.transactions._token = self._token
-        self.billing_and_betting._token = self._token
-        self.gift_cards._token = self._token
-        self.savings._token = self._token
-        self.cards._token = self._token
+        self.accounts._saved_token = self._token
+        self.transactions._saved_token = self._token
+        self.billing_and_betting._saved_token = self._token
+        self.gift_cards._saved_token = self._token
+        self.savings._saved_token = self._token
+        self.cards._saved_token = self._token
 
 
 class AsyncKuda(BaseAsyncAPIWrapper):
