@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "pykuda2"
-version = "0.1.1"
-description = ""
+version = "0.1.2"
+description = "A developer friendly wrapper for Kuda API"
 authors = ["Jennifer <st.jennyandy@gmail.com>","Gbenga Adeyi <adeyigbenga005@gmail.com>"]
 readme = "README.md"
 packages = [{ include = "pykuda2" }]

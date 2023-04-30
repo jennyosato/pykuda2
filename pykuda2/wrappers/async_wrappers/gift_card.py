@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 
 from pykuda2.base import BaseAsyncAPIWrapper
 from pykuda2.utils import ServiceType, APIResponse
@@ -25,7 +25,7 @@ class AsyncGiftCard(BaseAsyncAPIWrapper):
 
     async def purchase_gift_card(
         self,
-        amount: int,
+        amount: Union[int, float],
         customer_name: str,
         customer_mobile: str,
         customer_email: str,
@@ -36,7 +36,10 @@ class AsyncGiftCard(BaseAsyncAPIWrapper):
         """Buy gift cards from the admin account
 
         Args:
-            amount: The gift card amount to be purchased. It could be in USD/ GBP/ EUR/ NGN/ AED , e.t.c.
+            amount: The gift card amount to be purchased. It could be in USD/ GBP/ EUR/ NGN/ AED , e.t.c. Note care should be taken when performing calculations as money is involved.
+                a `Decimal` would have been the preferred type compared to `Union[int, float]` that was used.
+                it is advisable that static values are passed for this parameter. see
+                https://stackoverflow.com/questions/3730019/why-not-use-double-or-float-to-represent-currency
             customer_name: Name of the customer receiving the gift card.
             customer_mobile: Mobile number of customer.
             customer_email: The email address of customer.
@@ -70,7 +73,7 @@ class AsyncGiftCard(BaseAsyncAPIWrapper):
     async def purchase_gift_card_from_virtual_account(
         self,
         tracking_reference: str,
-        amount: int,
+        amount: Union[int, float],
         customer_name: str,
         customer_mobile: str,
         customer_email: str,
@@ -82,7 +85,10 @@ class AsyncGiftCard(BaseAsyncAPIWrapper):
 
         Args:
             tracking_reference: The unique identifier of the virtual account.
-            amount: The gift card amount to be purchased. It could be in USD/ GBP/ EUR/ NGN/ AED , e.t.c.
+            amount: The gift card amount to be purchased. It could be in USD/ GBP/ EUR/ NGN/ AED , e.t.c. Note care should be taken when performing calculations as money is involved.
+                a `Decimal` would have been the preferred type compared to `Union[int, float]` that was used.
+                it is advisable that static values are passed for this parameter. see
+                https://stackoverflow.com/questions/3730019/why-not-use-double-or-float-to-represent-currency
             customer_name: Name of the customer receiving the gift card.
             customer_mobile: Mobile number of customer.
             customer_email: The email address of customer.
@@ -117,7 +123,7 @@ class AsyncGiftCard(BaseAsyncAPIWrapper):
     async def get_gift_card_status(
         self,
         tracking_reference: str,
-        amount: int,
+        amount: Union[int, float],
         customer_name: str,
         customer_mobile: str,
         customer_email: str,
@@ -129,7 +135,10 @@ class AsyncGiftCard(BaseAsyncAPIWrapper):
 
         Args:
             tracking_reference: The unique identifier of the virtual account.
-            amount: The gift card amount to be purchased. It could be in USD/ GBP/ EUR/ NGN/ AED , e.t.c.
+            amount: The gift card amount to be purchased. It could be in USD/ GBP/ EUR/ NGN/ AED , e.t.c. Note care should be taken when performing calculations as money is involved.
+                a `Decimal` would have been the preferred type compared to `Union[int, float]` that was used.
+                it is advisable that static values are passed for this parameter. see
+                https://stackoverflow.com/questions/3730019/why-not-use-double-or-float-to-represent-currency
             customer_name: Name of the customer receiving the gift card.
             customer_mobile: Mobile number of customer.
             customer_email: The email address of customer.
